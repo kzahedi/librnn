@@ -2,8 +2,8 @@
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
 <node COLOR="#000000" CREATED="1168402688084" ID="Freemind_Link_1432908316" MODIFIED="1168408832262" TEXT="libRNN">
 <font NAME="FreeSans" SIZE="20"/>
-<hook NAME="accessories/plugins/AutomaticLayout.properties"/>
 <hook NAME="accessories/plugins/CreationModificationPlugin_new.properties"/>
+<hook NAME="accessories/plugins/AutomaticLayout.properties"/>
 <node COLOR="#0033ff" CREATED="1168402718719" ID="_" MODIFIED="1168408831989" POSITION="right" TEXT="Application">
 <font NAME="SansSerif" SIZE="18"/>
 <node COLOR="#00b439" CREATED="1168402737157" ID="Freemind_Link_804836490" MODIFIED="1168408832071" TEXT="Evolution">
@@ -85,6 +85,9 @@
 </node>
 <node COLOR="#990000" CREATED="1168408626072" ID="Freemind_Link_1190496784" MODIFIED="1168408832172" TEXT="Model Change no XSD Change">
 <edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1168463229101" ID="Freemind_Link_813721432" MODIFIED="1168463253587" TEXT="File not part of library but part of program which include libRNN?">
 <font NAME="SansSerif" SIZE="14"/>
 </node>
 </node>
