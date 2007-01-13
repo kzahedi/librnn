@@ -5,7 +5,6 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
 
-
 using namespace std;
 
 RecurrentNeuralNetwork::RecurrentNeuralNetwork()
