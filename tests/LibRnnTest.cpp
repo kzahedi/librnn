@@ -1,6 +1,8 @@
 #include "LibRnnTest.h"
 #include "librnn/RecurrentNeuralNetwork.h"
 
+using namespace librnn;
+
 // Registers the fixture into the 'registry'
 CPPUNIT_TEST_SUITE_REGISTRATION( LibRnnTest );
 
