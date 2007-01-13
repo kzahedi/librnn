@@ -8,6 +8,7 @@
 #include <timing.hpp>
 
 using namespace std;
+using namespace librnn;
 
 #ifdef USE_LOG4CPP_OUTPUT
 static long testInitLogger()

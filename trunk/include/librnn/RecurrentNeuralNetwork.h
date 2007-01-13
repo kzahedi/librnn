@@ -1,21 +1,25 @@
 #ifndef __RNN_H__
 #define __RNN_H__
-class RecurrentNeuralNetwork 
+
+namespace librnn
 {
-  public:
-    RecurrentNeuralNetwork();
-    ~RecurrentNeuralNetwork();
+  class RecurrentNeuralNetwork 
+  {
+    public:
+      RecurrentNeuralNetwork();
+      ~RecurrentNeuralNetwork();
 
-    void init(int numberOfNeurons, int numberOfSynapses);
-
-
-    int getNumberOfSynapses();
-    int getNumberOfNeurons();
+      void init(int numberOfNeurons, int numberOfSynapses);
 
 
-  private:
-    int _numberOfSynapses;
-    int _numberOfNeurons;
-    double *a;
-};
+      int getNumberOfSynapses();
+      int getNumberOfNeurons();
+
+
+    private:
+      int _numberOfSynapses;
+      int _numberOfNeurons;
+      double *a;
+  };
+}
 #endif  //__RNN_H__
