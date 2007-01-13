@@ -1,0 +1,154 @@
+dnl Autoconf requirements
+AC_INIT([libarnn], [0.0.1], [keyan@isee.sourceforge.net])
+AC_CONFIG_SRCDIR(include/librnn/RecurrentNeuralNetwork.h)
+AC_CONFIG_FILES([stamp-h], [echo timestamp > stamp-h]) 
+AC_CONFIG_HEADERS([config.h])
+AM_PATH_CPPUNIT(1.10.2)
+AC_PREREQ([2.60])
+AM_INIT_AUTOMAKE
+
+CFLAGS = -Wall -O3
+CXXFLAGS = -Wall -O3
+
+AC_PROG_CC([gcc4.1 gcc cc])
+AC_PROG_CXX([g++-4.1 g++ c++ CC])
+AC_DISABLE_STATIC
+AC_PROG_LIBTOOL
+
+AC_LANG(C++)
+
+AC_C_CONST
+AC_TYPE_SIZE_T
+AC_STRUCT_TM
+
+# Checks for library functions.
+AC_FUNC_STRFTIME
+AC_CHECK_FUNCS([strchr strdup strstr gmtime_r])
+AC_CHECK_HEADERS([dlfcn.h])
+
+# C++ requirements
+AC_CXX_HAVE_STL
+AC_CXX_NAMESPACES
+
+AM_PATH_CPPUNIT(1.9.6)
+
+AC_ARG_ENABLE(debug,
+    AC_HELP_STRING(--enable-debug, [Have GCC compile with symbols (Default = no)]),
+    enable_debug=$enableval, enable_debug=no)
+
+if test "$enable_debug" = "yes" ; then
+    GCC_CFLAGS="$CFLAGS -Wall -g -D_DEBUG"
+    GCC_CXXFLAGS="$CXXFLAGS -Wall -g -D_DEBUG"
+else
+    GCC_CFLAGS="$CFLAGS -DNDEBUG"
+    GCC_CXXFLAGS="$CXXFLAGS -DNDEBUG"
+fi
+
+dnl graph setting
+AC_ARG_ENABLE(graph,
+            AC_HELP_STRING([--enable-graph=list/vector], [type of graph implementation default is list.]),
+                            enable_graph=$enableval, enable_graph=list)
+
+if test "$enable_graph" = "list" ; then
+  AC_DEFINE(GRAPH_TYPE_LIST, 1, [Define Graph with list])
+elif test "$enable_graph" = "vector" ; then
+  AC_DEFINE(GRAPH_TYPE_VECTOR, 1, [Define Graph with vector])
+else
+  AC_MSG_ERROR([undefined graph type specified])
+fi
+
+# log4cpp settings
+AC_ARG_ENABLE(log4cpp,
+    AC_HELP_STRING(--enable-log4cpp, [Compile the code with log4ccp output (Default = no)]),
+    enable_log4cpp=$enableval, enable_log4cpp=no)
+
+if test "$enable_log4cpp" = "yes" ; then
+AC_DEFINE(USE_LOG4CPP_OUTPUT, 1, [Define if log4cpp output should be used])
+AC_PATH_PROG(LOG4CPP_CONFIG,log4cpp-config)
+AC_ARG_WITH(log4cpp,
+            AC_HELP_STRING([--with-log4cpp=PATH], [where log4cpp is installed]),
+            [LOG4CPP_CONFIG="${with_log4cpp}/bin/log4cpp-config"])
+if test -f "${LOG4CPP_CONFIG}"; then
+    LDFLAGS="`${LOG4CPP_CONFIG} --libs` $LDFLAGS"
+    CPPFLAGS="`${LOG4CPP_CONFIG} --cflags` $CPPFLAGS"
+else
+    AC_MSG_WARN([log4cpp-config not found, guessing at log4cpp build settings])
+    LIBS="-llog4cpp $LIBS"
+fi
+AC_CHECK_HEADER([log4cpp/Category.hh],,AC_MSG_ERROR([unable to find log4cpp header files]))
+AC_CHECK_HEADER([log4cpp/PropertyConfigurator.hh],,AC_MSG_ERROR([you need at least log4cpp 0.3.x]))
+AC_TRY_LINK(
+	[#include <log4cpp/Category.hh>],
+	[log4cpp::Category::getInstance("foo")],
+	[AC_DEFINE(HAVE_LIBLOG4CPP,1,[Define if log4cpp library was found])],
+	[AC_MSG_ERROR([unable to link with log4cpp])])
+fi
+
+# checks for pthreads
+ACX_PTHREAD([enable_threads="pthread"],[enable_threads="no"])
+if test $enable_threads != "pthread"; then
+    AC_MSG_ERROR([unable to find pthreads, currently this is required])
+else
+    AC_DEFINE(HAVE_PTHREAD,1,[Define if you have POSIX threads libraries and header files.])
+    LIBS="$PTHREAD_LIBS $LIBS"
+    CFLAGS="$PTHREAD_CFLAGS $CFLAGS"
+    CXXFLAGS="$PTHREAD_CFLAGS $CXXFLAGS"
+fi
+
+
+# boost settings
+AC_ARG_ENABLE(boost,
+    AC_HELP_STRING(--enable-boost, [Compile the code with boost support (Default = yes)]),
+    enable_boost=$enableval, enable_boost=yes)
+
+if test "$enable_boost" = "yes" ; then
+AC_CHECK_HEADER([boost/config.hpp],AC_DEFINE(USE_BOOST, 1, [Define if boost should be used]),AC_MSG_ERROR([unable to find boost header files]))
+fi
+
+
+
+dnl xerces setting
+dnl AC_ARG_WITH(xerces, 
+dnl             AC_HELP_STRING([--with-xerces=PATH], [where xerces-c is installed]),
+dnl             [if test x_$with_xerces != x_/usr; then
+dnl                 LDFLAGS="-L${with_xerces}/lib $LDFLAGS"
+dnl                 CPPFLAGS="-I${with_xerces}/include $CPPFLAGS"
+dnl             fi])
+dnl LIBS="-lxerces-c $LIBS"
+dnl AC_CHECK_HEADER([xercesc/dom/DOM.hpp],,
+dnl                 AC_MSG_ERROR([unable to find xerces header files]))
+dnl AC_TRY_LINK(
+dnl 	[#include <xercesc/util/PlatformUtils.hpp>],
+dnl         [xercesc::XMLPlatformUtils::Initialize()],
+dnl 	[AC_DEFINE(HAVE_LIBXERCESC,1,[Define if Xerces-C library was found])],
+dnl 	[AC_MSG_ERROR([unable to link with Xerces])])
+
+
+dnl checks for header files
+AC_CHECK_HEADER(iostream,
+                     [AC_DEFINE([HAVE_IOSTREAM], [1],
+                        [Define to 1 if you have <iostream>.])],
+                     [AC_MSG_ERROR([Sorry, pleas install iosteam-dev])])
+
+dnl AC_CHECK_LIB([argtable2],[arg_int0],,[AC_MSG_ERROR([Sorry, pleas install libargtable2])])
+dnl 
+dnl AC_CHECK_HEADER(argtable2.h,
+dnl                      [AC_DEFINE([HAVE_ARGTABLE], [1],
+dnl                         [Define to 1 if you have libartable.])],
+dnl                      [AC_MSG_ERROR([Sorry, pleas install libargtable2-dev])])
+dnl 
+
+
+
+
+dnl checks for types
+dnl checks for structures
+dnl checks for compiler characteristics
+dnl checks for library functions
+dnl checks for system services
+AC_CONFIG_FILES([Makefile src/Makefile tests/Makefile])
+AC_OUTPUT
+
+
+     
+
