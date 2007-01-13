@@ -1,3 +1,10 @@
+#ifndef __TIMING_HPP__
+#define __TIMING_HPP__
+
+#include <iostream>
+
+using namespace std;
+
 static long _startTime = -1;
 
 static long getMilliseconds()
@@ -45,3 +52,4 @@ static void printTime(long time)
   cout << "time elapsed: " << time << "mu-s" << endl;
 }
 
+#endif // __TIMING_HPP__

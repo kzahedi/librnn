@@ -6,9 +6,6 @@
 /* Define Graph with vector */
 #undef GRAPH_TYPE_VECTOR
 
-/* Define to 1 if you have libartable. */
-#undef HAVE_ARGTABLE
-
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
@@ -20,9 +17,6 @@
 
 /* Define to 1 if you have <iostream>. */
 #undef HAVE_IOSTREAM
-
-/* Define to 1 if you have the `argtable2' library (-largtable2). */
-#undef HAVE_LIBARGTABLE2
 
 /* Define if log4cpp library was found */
 #undef HAVE_LIBLOG4CPP

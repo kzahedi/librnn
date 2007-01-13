@@ -1,12 +1,15 @@
 #include <librnn/librnn.h>
+#include <iostream>
 #include <sys/time.h>
 #include <time.h>
 #include <vector>
 
-#include <iostream.h>
 
 #include <timing.hpp>
 
+using namespace std;
+
+#ifdef USE_LOG4CPP_OUTPUT
 static long testInitLogger()
 {
   cout << "Logger initialisation:" << endl;
@@ -16,6 +19,8 @@ static long testInitLogger()
   printTime(time);
   return time;
 }
+#endif
+
 static long testConstructor()
 {
   cout << "RecurrentNeuralNetwork constructor:" << endl;
@@ -42,7 +47,9 @@ static long testDestructor()
 int main()
 {
   cout << "starting librnn runtime test" << endl;
+#ifdef USE_LOG4CPP_OUTPUT
   testInitLogger();
+#endif
   testConstructor();
   testDestructor();
 }
