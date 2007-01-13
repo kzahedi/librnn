@@ -12,7 +12,6 @@ RecurrentNeuralNetwork::RecurrentNeuralNetwork()
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.debug("constructor called");
 #endif
-  printf("constructor called\n");
   _numberOfSynapses = -1;
   _numberOfNeurons  = -1;
 }

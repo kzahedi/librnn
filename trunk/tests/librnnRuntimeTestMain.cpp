@@ -23,7 +23,7 @@ static long testInitLogger()
 
 static long testConstructor()
 {
-  cout << "RecurrentNeuralNetwork constructor:" << endl;
+  cout << "RecurrentNeuralNetwork constructor:\t";
   startTiming();
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
   long time = stopTiming();
@@ -34,7 +34,7 @@ static long testConstructor()
 
 static long testDestructor()
 {
-  cout << "RecurrentNeuralNetwork destructor:" << endl;
+  cout << "RecurrentNeuralNetwork destructor:\t";
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
   startTiming();
   delete rnn;
@@ -46,7 +46,7 @@ static long testDestructor()
 
 int main()
 {
-  cout << "starting librnn runtime test" << endl;
+  cout << "starting librnn runtime test." << endl;
 #ifdef USE_LOG4CPP_OUTPUT
   testInitLogger();
 #endif

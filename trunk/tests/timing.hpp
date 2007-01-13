@@ -49,7 +49,7 @@ static long stopTiming()
 
 static void printTime(long time)
 {
-  cout << "time elapsed: " << time << "mu-s" << endl;
+  cout << ((double)time/1000.0) << "ms" << endl;
 }
 
 #endif // __TIMING_HPP__
