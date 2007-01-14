@@ -1,4 +1,4 @@
-#include <librnn/librnn.h>
+#include <librnn/RecurrentNeuralNetwork.h>
 
 #include <utility>                   // for std::pair
 #include <algorithm>                 // for std::for_each
