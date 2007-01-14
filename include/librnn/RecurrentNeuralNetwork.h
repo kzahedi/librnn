@@ -1,16 +1,8 @@
 #ifndef __RNN_H__
 #define __RNN_H__
 
-#include <librnn/librnn.h>
-
-#ifdef IMPL_ADJ_LIST
-#include <ext/slist>
-using namespace __gnu_cxx;
-#endif
-
-#ifdef IMPL_ADJ_VECTOR
-#include <vector>
-#endif
+#include <librnn/globals.h>
+#include <librnn/Neuron.h>
 
 
 using namespace std;

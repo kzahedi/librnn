@@ -60,6 +60,28 @@ static long testAddNeurons()
   return time;
 }
 
+static long testAddSynapses()
+{
+  cout << "RecurrentNeuralNetwork addSynapses (1M adds):\t";
+  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
+  startTiming();
+  for(int i=0;i < 1000; i++)
+  {
+    Neuron *n = new Neuron();
+    for(int j=0;j < 1000; j++)
+    {
+      Synapse *s = new Synapse();
+      n->addAdjacentSynapse(s);
+    }
+    rnn->addNeuron(n);
+  }
+  long time = stopTiming();
+  printTime(time);
+  delete rnn;
+  return time;
+}
+
+
 
 int main()
 {
@@ -70,4 +92,5 @@ int main()
   testConstructor();
   testDestructor();
   testAddNeurons();
+  testAddSynapses();
 }
