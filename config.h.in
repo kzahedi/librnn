@@ -1,11 +1,5 @@
 /* config.h.in.  Generated from configure.in by autoheader.  */
 
-/* Define Graph with list */
-#undef GRAPH_TYPE_LIST
-
-/* Define Graph with vector */
-#undef GRAPH_TYPE_VECTOR
-
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
@@ -66,6 +60,18 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define Graph with adjacency vector */
+#undef IMPL_ADJ_ARRAY
+
+/* Define Graph with adjacency list */
+#undef IMPL_ADJ_LIST
+
+/* Define Graph with adjacency vector */
+#undef IMPL_ADJ_VECTOR
+
+/* Define Graph with boost graph vector */
+#undef IMPL_BOOT_LIST
+
 /* Name of package */
 #undef PACKAGE
 
@@ -94,8 +100,11 @@
 /* Define to 1 if your <sys/time.h> declares `struct tm'. */
 #undef TM_IN_SYS_TIME
 
-/* Define if boost should be used */
-#undef USE_BOOST
+/* Precision double. */
+#undef USE_DOUBLE_PRECISION
+
+/* Precision float. */
+#undef USE_FLOAT_PRECISION
 
 /* Define if log4cpp output should be used */
 #undef USE_LOG4CPP_OUTPUT

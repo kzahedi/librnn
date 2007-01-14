@@ -44,6 +44,22 @@ static long testDestructor()
   return time;
 }
 
+static long testAddNeurons()
+{
+  cout << "RecurrentNeuralNetwork addNeuron:\t";
+  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
+  startTiming();
+  for(int i=0;i < 10000; i++)
+  {
+    Neuron *n = new Neuron();
+    rnn->addNeuron(n);
+  }
+  long time = stopTiming();
+  printTime(time);
+  delete rnn;
+  return time;
+}
+
 
 int main()
 {
@@ -53,4 +69,5 @@ int main()
 #endif
   testConstructor();
   testDestructor();
+  testAddNeurons();
 }
