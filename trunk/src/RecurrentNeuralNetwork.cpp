@@ -13,28 +13,33 @@ RecurrentNeuralNetwork::RecurrentNeuralNetwork()
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.debug("constructor called");
 #endif
-  _numberOfSynapses = -1;
-  _numberOfNeurons  = -1;
+#ifdef IMPL_ADJ_LIST
+  _numberOfNeurons = 0;
+#endif
+
 }
 
 RecurrentNeuralNetwork::~RecurrentNeuralNetwork()
 {
 }
 
-void RecurrentNeuralNetwork::init(int numberOfNeurons, int numberOfSynapses)
-{
-#ifdef USE_LOG4CPP_OUTPUT
-  libRnnLogger.debug("number of neurons : %d", numberOfNeurons);
-  libRnnLogger.debug("number of synapses: %d", numberOfSynapses);
-#endif
-}
 
 int RecurrentNeuralNetwork::getNumberOfNeurons()
 {
+#ifdef IMPL_ADJ_LIST
   return _numberOfNeurons;
+#endif
+#ifdef IMPL_ADJ_VECTOR
+  return _neurons.size();
+#endif
 }
 
-int RecurrentNeuralNetwork::getNumberOfSynapses()
+bool RecurrentNeuralNetwork::addNeuron(Neuron *newNeuron)
 {
-  return _numberOfSynapses;
+  _neurons.push_front(newNeuron);
+#ifdef IMPL_ADJ_LIST
+  ++_numberOfNeurons;
+#endif
 }
+
+
