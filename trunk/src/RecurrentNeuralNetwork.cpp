@@ -36,8 +36,11 @@ int RecurrentNeuralNetwork::getNumberOfNeurons()
 
 bool RecurrentNeuralNetwork::addNeuron(Neuron *newNeuron)
 {
-  _neurons.push_front(newNeuron);
+#ifdef IMPL_ADJ_VECTOR
+  _neurons.push_back(newNeuron);
+#endif
 #ifdef IMPL_ADJ_LIST
+  _neurons.push_front(newNeuron);
   ++_numberOfNeurons;
 #endif
 }

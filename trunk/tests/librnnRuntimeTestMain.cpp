@@ -1,9 +1,9 @@
 #include <librnn/librnn.h>
 #include <iostream>
 #include <sys/time.h>
+#include <sys/resource.h>
 #include <time.h>
 #include <vector>
-
 
 #include <timing.hpp>
 
@@ -24,7 +24,7 @@ static long testInitLogger()
 
 static long testConstructor()
 {
-  cout << "RecurrentNeuralNetwork constructor:\t";
+  cout << "RecurrentNeuralNetwork constructor:\t\t";
   startTiming();
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
   long time = stopTiming();
@@ -35,7 +35,7 @@ static long testConstructor()
 
 static long testDestructor()
 {
-  cout << "RecurrentNeuralNetwork destructor:\t";
+  cout << "RecurrentNeuralNetwork destructor:\t\t";
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
   startTiming();
   delete rnn;
@@ -46,10 +46,10 @@ static long testDestructor()
 
 static long testAddNeurons()
 {
-  cout << "RecurrentNeuralNetwork addNeuron:\t";
+  cout << "RecurrentNeuralNetwork addNeuron (1M adds):\t";
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
   startTiming();
-  for(int i=0;i < 10000; i++)
+  for(int i=0;i < 1000000; i++)
   {
     Neuron *n = new Neuron();
     rnn->addNeuron(n);

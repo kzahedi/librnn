@@ -5,6 +5,7 @@
 
 #ifdef IMPL_ADJ_LIST
 #include <ext/slist>
+using namespace __gnu_cxx;
 #endif
 
 #ifdef IMPL_ADJ_VECTOR
@@ -12,7 +13,7 @@
 #endif
 
 
-using namespace __gnu_cxx;
+using namespace std;
 
 namespace librnn
 {
