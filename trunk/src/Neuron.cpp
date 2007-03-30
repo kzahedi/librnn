@@ -23,7 +23,7 @@ void Neuron::addIncidentSynapse(AbstractSynapse *newSynapse)
   _incident.push_back(newSynapse);
   _synapses.push_back(newSynapse);
 #endif
-#ifdef IMPL_ADJ_LIST
+#ifdef IMPL_ADJ_LISback
   _incident.push_front(newSynapse);
   _synapses.push_front(newSynapse);
 #endif

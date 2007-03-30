@@ -7,6 +7,8 @@
 
 #include <timing.hpp>
 
+//  get the size of implementation capacity()*sizoef(element)+sizeof(vector)
+
 using namespace std;
 using namespace librnn;
 
