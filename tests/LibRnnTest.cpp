@@ -19,8 +19,8 @@ void LibRnnTest::testConstructor()
 {
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
 
-  CPPUNIT_ASSERT_EQUAL(rnn->getNumberOfSynapses(), -1);
-  CPPUNIT_ASSERT_EQUAL(rnn->getNumberOfNeurons(), -1);
+//  CPPUNIT_ASSERT_EQUAL(rnn->getNumberOfSynapses(), -1);
+  CPPUNIT_ASSERT_EQUAL(rnn->getNumberOfNeurons(), 0);
 
   delete rnn;
 }
