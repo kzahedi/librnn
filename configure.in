@@ -1,5 +1,5 @@
 dnl Autoconf requirements
-AC_INIT([libarnn], [0.0.1], [keyan@isee.sourceforge.net])
+AC_INIT([libarnn], [0.0.1], [keyan@users.sourceforge.net])
 AC_CONFIG_SRCDIR(include/librnn/librnn.h)
 AC_CONFIG_FILES([stamp-h], [echo timestamp > stamp-h]) 
 AC_CONFIG_HEADERS([config.h])
