@@ -6,25 +6,36 @@
 #include <librnn/AbstractSynapse.h>
 
 #include <string>
+#include <iostream>
 
 using namespace std;
 
 namespace librnn
 {
-  class NeuronException
+
+  class NeuronException : public std::exception
   {
     public:
-      NeuronException(string message)
-      {
-        _message = message;
-      };
+      explicit NeuronException(const std::string& what)
+        :
+          m_what(what)
+    {}
 
-      string message()
+      virtual ~NeuronException() throw() {}
+
+      virtual const char * what() const throw()
       {
-        return _message;
-      };
+        return m_what.c_str();
+      }
+
+      virtual void message() const throw()
+      {
+        cerr << "NeuronException: " << m_what << endl;
+      }
+
+
     private:
-      string _message;
+      std::string m_what;
   };
 
   class Neuron: public AbstractNeuron

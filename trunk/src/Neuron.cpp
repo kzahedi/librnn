@@ -28,7 +28,7 @@ void Neuron::updateOutput() throw(NeuronException)
 {
   if(_transferfunction == NULL)
   {
-    throw new NeuronException("no transfer function specified");
+    throw NeuronException("no transfer function specified");
   }
   _output = _transferfunction(_activation);
 }
