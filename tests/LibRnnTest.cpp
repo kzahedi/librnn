@@ -69,7 +69,6 @@ void LibRnnTest::testSingleNeuronWithOscillation()
   Synapse *synapse = new Synapse(neuron, neuron, -5);
   neuron->addSynapse(synapse);
   neuron->setTransferfunction(transferfunction_tanh);
-  neuron->setTransferfunction(transferfunction_tanh);
   neuron->setActivation(1.0);
   neuron->updateOutput();
   CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), transferfunction_tanh(1.0),0.0000000001);
@@ -95,9 +94,9 @@ void LibRnnTest::testSingleNeuronWithOscillation()
     neuron->updateOutput();
     CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), 1.0, 0.01);
   }
-  catch(NeuronException ne)
+  catch(librnn::NeuronException ne)
   {
-    cerr << "NeuronException caught: " << ne.message() << endl;
+    ne.message();
   }
 
   delete neuron;
