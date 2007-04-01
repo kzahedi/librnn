@@ -77,7 +77,7 @@
 #define PACKAGE "libarnn"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "keyan@isee.sourceforge.net"
+#define PACKAGE_BUGREPORT "keyan@users.sourceforge.net"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "libarnn"

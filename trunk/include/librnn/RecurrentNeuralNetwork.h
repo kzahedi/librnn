@@ -3,6 +3,7 @@
 
 #include <librnn/globals.h>
 #include <librnn/Neuron.h>
+#include <librnn/Synapse.h>
 
 
 using namespace std;

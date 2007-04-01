@@ -1,5 +1,10 @@
 #include "LibRnnTest.h"
+#include "librnn/defines.h"
 #include "librnn/RecurrentNeuralNetwork.h"
+#include "librnn/transferfunctions.h"
+
+#include <math.h>
+#include <iostream>
 
 using namespace librnn;
 
@@ -25,3 +30,93 @@ void LibRnnTest::testConstructor()
   delete rnn;
 }
 
+void LibRnnTest::testTransferfunction()
+{
+  REAL testActivation = 0.0;
+  Neuron *neuron = new Neuron();
+  neuron->setActivation(testActivation);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getActivation(), testActivation,0.0000000001);
+  neuron->setTransferfunction(&transferfunction_tanh);
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getActivation(), transferfunction_tanh(testActivation),0.0000000001);
+  
+  testActivation = 1.0;
+  neuron->setActivation(testActivation);
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), transferfunction_tanh(testActivation),0.0000000001);
+
+  neuron->setTransferfunction(transferfunction_id);
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), (testActivation),0.0000000001);
+
+  testActivation = -1.0;
+  neuron->setActivation(testActivation);
+  neuron->setTransferfunction(&transferfunction_tanh);
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), transferfunction_tanh(testActivation),0.0000000001);
+
+  neuron->setTransferfunction(transferfunction_id);
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), (testActivation),0.0000000001);
+
+  delete neuron;
+}
+
+
+void LibRnnTest::testSingleNeuronWithOscillation()
+{
+  Neuron *neuron   = new Neuron();
+  Synapse *synapse = new Synapse(neuron, neuron, -5);
+  neuron->addSynapse(synapse);
+  neuron->setTransferfunction(transferfunction_tanh);
+  neuron->setTransferfunction(transferfunction_tanh);
+  neuron->setActivation(1.0);
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), transferfunction_tanh(1.0),0.0000000001);
+  try
+  {
+    for(int i=0; i < 100; i++)
+    {
+      neuron->updateActivation();
+      neuron->updateOutput();
+    }
+
+    if(neuron->getOutput() < 0)
+    {
+      neuron->updateActivation();
+      neuron->updateOutput();
+    }
+
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
+    neuron->updateActivation();
+    neuron->updateOutput();
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), -1.0, 0.01);
+    neuron->updateActivation();
+    neuron->updateOutput();
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), 1.0, 0.01);
+  }
+  catch(NeuronException ne)
+  {
+    cerr << "NeuronException caught: " << ne.message() << endl;
+  }
+
+  delete neuron;
+  delete synapse;
+}
+
+
+void LibRnnTest::testNoTransferfunctionException()
+{
+  Neuron *neuron   = new Neuron();
+  neuron->setActivation(1.0);
+  try
+  {
+    neuron->updateOutput();
+    CPPUNIT_FAIL("no exception thrown");
+  }
+  catch(librnn::NeuronException ne)
+  {
+    delete neuron;
+    return;
+  }
+}

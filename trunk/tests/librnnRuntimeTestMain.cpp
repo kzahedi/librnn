@@ -73,7 +73,7 @@ static long testAddSynapses()
     for(int j=0;j < 1000; j++)
     {
       Synapse *s = new Synapse();
-      n->addAdjacentSynapse(s);
+      n->addSynapse(s);
     }
     rnn->addNeuron(n);
   }

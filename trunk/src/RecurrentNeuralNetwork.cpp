@@ -1,3 +1,5 @@
+// first naive implementation to get a feeling for RNN
+// to test between list and vector implementation
 #include <librnn/RecurrentNeuralNetwork.h>
 
 #include <utility>                   // for std::pair

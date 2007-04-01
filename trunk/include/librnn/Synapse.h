@@ -13,12 +13,21 @@ namespace librnn
       Synapse();
       ~Synapse();
 
-      dReal strength();
+      Synapse(AbstractNeuron *source, AbstractNeuron *destination);
+      Synapse(AbstractNeuron *source, AbstractNeuron *destination, REAL strength);
+
+      AbstractNeuron* source();
+      AbstractNeuron* destination();
+
+      REAL strength();
 
     private:
+      void init();
+
       AbstractNeuron *_source;
       AbstractNeuron *_destination;
-      double _weight;
+
+      double _strength;
   };
 }
 
