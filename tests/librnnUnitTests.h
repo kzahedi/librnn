@@ -3,9 +3,9 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class LibRnnTest : public CppUnit::TestFixture
+class librnnUnitTests : public CppUnit::TestFixture
 {
-  CPPUNIT_TEST_SUITE( LibRnnTest );
+  CPPUNIT_TEST_SUITE( librnnUnitTests );
   CPPUNIT_TEST( testConstructor );
   CPPUNIT_TEST( testTransferfunction );
   CPPUNIT_TEST( testSingleNeuronWithOscillation );

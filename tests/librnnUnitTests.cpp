@@ -1,4 +1,4 @@
-#include "LibRnnTest.h"
+#include "librnnUnitTests.h"
 #include "librnn/defines.h"
 #include "librnn/RecurrentNeuralNetwork.h"
 #include "librnn/transferfunctions.h"
@@ -9,18 +9,18 @@
 using namespace librnn;
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( LibRnnTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( librnnUnitTests );
 
 
-void LibRnnTest::setUp()
+void librnnUnitTests::setUp()
 { }
 
 
-void LibRnnTest::tearDown()
+void librnnUnitTests::tearDown()
 { }
 
 
-void LibRnnTest::testConstructor()
+void librnnUnitTests::testConstructor()
 {
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
 
@@ -30,7 +30,7 @@ void LibRnnTest::testConstructor()
   delete rnn;
 }
 
-void LibRnnTest::testTransferfunction()
+void librnnUnitTests::testTransferfunction()
 {
   REAL testActivation = 0.0;
   Neuron *neuron = new Neuron();
@@ -63,7 +63,7 @@ void LibRnnTest::testTransferfunction()
 }
 
 
-void LibRnnTest::testSingleNeuronWithOscillation()
+void librnnUnitTests::testSingleNeuronWithOscillation()
 {
   Neuron *neuron   = new Neuron();
   Synapse *synapse = new Synapse(neuron, neuron, -5);
@@ -104,7 +104,7 @@ void LibRnnTest::testSingleNeuronWithOscillation()
 }
 
 
-void LibRnnTest::testNoTransferfunctionException()
+void librnnUnitTests::testNoTransferfunctionException()
 {
   Neuron *neuron   = new Neuron();
   neuron->setActivation(1.0);
@@ -122,7 +122,7 @@ void LibRnnTest::testNoTransferfunctionException()
 
 
 
-void LibRnnTest::testRecurrentNeuralNetworkWithSingleNeuron()
+void librnnUnitTests::testRecurrentNeuralNetworkWithSingleNeuron()
 {
   // create single neuron without recurrent neural network interface as control
   Neuron *neuron   = new Neuron();
