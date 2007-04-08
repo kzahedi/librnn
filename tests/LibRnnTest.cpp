@@ -72,32 +72,32 @@ void LibRnnTest::testSingleNeuronWithOscillation()
   neuron->setActivation(1.0);
   neuron->updateOutput();
   CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), transferfunction_tanh(1.0),0.0000000001);
-  try
+  for(int i=0; i < 100; i++)
   {
-    for(int i=0; i < 100; i++)
-    {
-      neuron->updateActivation();
-      neuron->updateOutput();
-    }
-
-    if(neuron->getOutput() < 0)
-    {
-      neuron->updateActivation();
-      neuron->updateOutput();
-    }
-
-    CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
     neuron->updateActivation();
     neuron->updateOutput();
-    CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), -1.0, 0.01);
+  }
+
+  if(neuron->getOutput() < 0)
+  {
     neuron->updateActivation();
     neuron->updateOutput();
-    CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), 1.0, 0.01);
   }
-  catch(librnn::NeuronException ne)
-  {
-    ne.message();
-  }
+
+  //check for oscillation
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
+  neuron->updateActivation();
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), -1.0, 0.01);
+  neuron->updateActivation();
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), 1.0, 0.01);
+  neuron->updateActivation();
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), -1.0, 0.01);
+  neuron->updateActivation();
+  neuron->updateOutput();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), 1.0, 0.01);
 
   delete neuron;
   delete synapse;
@@ -118,4 +118,25 @@ void LibRnnTest::testNoTransferfunctionException()
     delete neuron;
     return;
   }
+}
+
+
+
+void LibRnnTest::testRecurrentNeuralNetworkWithSingleNeuron()
+{
+  // create single neuron without recurrent neural network interface as control
+  Neuron *neuron   = new Neuron();
+  Synapse *synapse = new Synapse(neuron, neuron, -5);
+  neuron->addSynapse(synapse);
+  neuron->setTransferfunction(transferfunction_tanh);
+  neuron->setActivation(1.0);
+  neuron->updateOutput();
+
+  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
+  Neuron *n  = new Neuron();
+  Synapse *s = new Synapse(neuron, neuron, -5);
+  rnn->addNeuron(n);
+  rnn->addSynapse(s);
+  CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
 }

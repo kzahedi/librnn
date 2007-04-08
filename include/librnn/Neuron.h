@@ -53,6 +53,8 @@ namespace librnn
 
       void setActivation(REAL activation);
 
+      int  getSynapsesCount();
+
       REAL getActivation();
       REAL getOutput();
 
@@ -71,6 +73,7 @@ namespace librnn
       slist<AbstractSynapse*> _synapses;
 
       slist<AbstractSynapse*>::iterator _incidentIterator;
+      int _numberOfSynapses;
 #endif
 
 #ifdef IMPL_ADJ_VECTOR

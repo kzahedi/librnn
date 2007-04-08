@@ -1,8 +1,0 @@
-Organisation:
-src/          - directory containing source files
-build/        - directory containing object files
-doc/          - directory containing additional documentation files (LaTeX, etc)
-tests/        - directory containing test cases (source files)
-include/      - directory containing include files, ready for install
-lib/          - directory containing shared library files, ready for install
-bin/          - directory containing the compiled binary, ready to run

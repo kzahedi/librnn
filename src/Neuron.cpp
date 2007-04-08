@@ -6,6 +6,9 @@ using namespace librnn;
 Neuron::Neuron()
 {
   _transferfunction = NULL;
+#ifdef IMPL_ADJ_LIST
+  _numberOfSynapses = 0;
+#endif
 }
 
 Neuron::~Neuron()
@@ -61,6 +64,7 @@ void Neuron::addSynapse(AbstractSynapse *newSynapse)
 #endif
 #ifdef IMPL_ADJ_LIST
   _synapses.push_front(newSynapse);
+  _numberOfSynapses++;
 #endif
 
   if(newSynapse->source() == this)
@@ -96,6 +100,14 @@ void Neuron::addAdjacentSynapse(AbstractSynapse *newSynapse)
   
 }
 
-
+int Neuron::getSynapsesCount()
+{
+#ifdef IMPL_ADJ_LIST
+  return _numberOfSynapses;
+#endif
+#ifdef IMPL_ADJ_VECTOR
+  return _synapses.size();
+#endif
+}
 
 

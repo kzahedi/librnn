@@ -18,6 +18,7 @@ RecurrentNeuralNetwork::RecurrentNeuralNetwork()
 #ifdef IMPL_ADJ_LIST
   _numberOfNeurons = 0;
 #endif
+  _numberOfSynapses = 0;
 
 }
 
@@ -36,7 +37,7 @@ int RecurrentNeuralNetwork::getNumberOfNeurons()
 #endif
 }
 
-bool RecurrentNeuralNetwork::addNeuron(Neuron *newNeuron)
+void RecurrentNeuralNetwork::addNeuron(Neuron *newNeuron)
 {
 #ifdef IMPL_ADJ_VECTOR
   _neurons.push_back(newNeuron);
@@ -47,4 +48,35 @@ bool RecurrentNeuralNetwork::addNeuron(Neuron *newNeuron)
 #endif
 }
 
+void RecurrentNeuralNetwork::addSynapse(Synapse *newSynapse)
+{
+  _numberOfSynapses++;
+  if(newSynapse->source() == newSynapse->destination())
+  {
+    newSynapse->source()->addSynapse(newSynapse);
+  }
+  else
+  {
+    newSynapse->destination()->addSynapse(newSynapse);
+  }
+}
 
+int RecurrentNeuralNetwork::getSynapsesCount()
+{
+  return _numberOfSynapses;
+}
+
+int RecurrentNeuralNetwork::countSynapses()
+{
+  _numberOfSynapses = 0;
+
+  for(_neuronIterator = _neurons.begin(); 
+      _neuronIterator != _neurons.end();
+      _neuronIterator++)
+  {
+    cout << "_numberOfSynapses: " << _numberOfSynapses << endl;
+    _numberOfSynapses += (*_neuronIterator)->getSynapsesCount();
+    cout << "_numberOfSynapses: " << _numberOfSynapses << endl;
+  }
+  return _numberOfSynapses;
+}
