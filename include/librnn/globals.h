@@ -7,13 +7,14 @@
 #endif
 
 #ifdef IMPL_ADJ_LIST
-#include <ext/slist>
 using namespace __gnu_cxx;
-#endif
-
-#ifdef IMPL_ADJ_VECTOR
+using namespace std;
+#include <ext/slist>
+#elif IMPL_ADJ_VECTOR
+using namespace std;
 #include <vector>
+#else
+#error You must #define IMPL_ADJ_VECTOR or IMPL_ADJ_LIST 
 #endif
-
 
 #include <librnn/defines.h>
