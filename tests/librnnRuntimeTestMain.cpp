@@ -31,9 +31,7 @@ static long testConstructor()
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
   long time = stopTiming();
   printTime(time);
-  printf("hier 21\n");
   delete rnn;
-  printf("hier 21\n");
   return time;
 }
 
