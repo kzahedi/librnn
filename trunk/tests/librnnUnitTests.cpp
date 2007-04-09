@@ -22,12 +22,15 @@ void librnnUnitTests::tearDown()
 
 void librnnUnitTests::testConstructor()
 {
+  printf("librnnUnitTests::testConstructor hier 0\n");
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
+  printf("librnnUnitTests::testConstructor hier 1\n");
 
 //  CPPUNIT_ASSERT_EQUAL(rnn->getNumberOfSynapses(), -1);
   CPPUNIT_ASSERT_EQUAL(rnn->getNumberOfNeurons(), 0);
-
+  printf("librnnUnitTests::testConstructor hier 2\n");
   delete rnn;
+  printf("librnnUnitTests::testConstructor hier 3\n");
 }
 
 void librnnUnitTests::testTransferfunction()

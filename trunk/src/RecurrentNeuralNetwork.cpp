@@ -19,7 +19,6 @@ RecurrentNeuralNetwork::RecurrentNeuralNetwork()
   _numberOfNeurons = 0;
 #endif
   _numberOfSynapses = 0;
-
 }
 
 RecurrentNeuralNetwork::~RecurrentNeuralNetwork()

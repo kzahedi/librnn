@@ -31,7 +31,9 @@ static long testConstructor()
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
   long time = stopTiming();
   printTime(time);
+  printf("hier 21\n");
   delete rnn;
+  printf("hier 21\n");
   return time;
 }
 
@@ -88,11 +90,11 @@ static long testAddSynapses()
 int main()
 {
   cout << "starting librnn runtime test." << endl;
+  testAddNeurons();
 #ifdef USE_LOG4CPP_OUTPUT
   testInitLogger();
 #endif
   testConstructor();
   testDestructor();
-  testAddNeurons();
   testAddSynapses();
 }
