@@ -15,9 +15,11 @@ RecurrentNeuralNetwork::RecurrentNeuralNetwork()
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.debug("constructor called");
 #endif
+
 #ifdef IMPL_ADJ_LIST
   _numberOfNeurons = 0;
 #endif
+
   _numberOfSynapses = 0;
 }
 
@@ -73,9 +75,7 @@ int RecurrentNeuralNetwork::countSynapses()
       _neuronIterator != _neurons.end();
       _neuronIterator++)
   {
-    cout << "_numberOfSynapses: " << _numberOfSynapses << endl;
     _numberOfSynapses += (*_neuronIterator)->getSynapsesCount();
-    cout << "_numberOfSynapses: " << _numberOfSynapses << endl;
   }
   return _numberOfSynapses;
 }
