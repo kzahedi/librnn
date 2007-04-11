@@ -1,3 +1,4 @@
+#include <librnn/config.h>
 #include <librnn/globals.h>
 #include <librnn/RecurrentNeuralNetwork.h>
 #include <librnn/Neuron.h>
