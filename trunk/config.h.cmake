@@ -1,0 +1,5 @@
+#cmakedefine USE_LOG4CPP_OUTPUT
+#cmakedefine USE_DOUBLE_PRECISION
+#cmakedefine USE_FLOAT_PRECISION
+#cmakedefine IMPL_ADJ_LIST
+#cmakedefine IMPL_ADJ_VECTOR
