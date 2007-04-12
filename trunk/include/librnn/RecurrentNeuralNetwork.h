@@ -1,12 +1,11 @@
 #ifndef __RNN_H__
 #define __RNN_H__
 
-#include <librnn/globals.h>
 #include <librnn/Neuron.h>
 #include <librnn/Synapse.h>
+#include <librnn/librnn.h>
 
-
-using namespace std;
+using namespace librnn;
 
 namespace librnn
 {

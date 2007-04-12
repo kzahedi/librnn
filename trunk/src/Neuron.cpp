@@ -1,5 +1,6 @@
-#include <iostream>
 #include <librnn/Neuron.h>
+
+#include <iostream>
 
 using namespace librnn;
 
