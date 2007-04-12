@@ -1,9 +1,7 @@
 #ifndef __NEURON_H__
 #define __NEURON_H__
 
-#include <librnn/globals.h>
 #include <librnn/AbstractNeuron.h>
-#include <librnn/AbstractSynapse.h>
 
 #include <string>
 #include <iostream>
@@ -84,7 +82,6 @@ namespace librnn
       vector<AbstractSynapse*>::iterator _incidentIterator;
 #endif
   };
-
 }
 
 #endif // __NEURON_H__

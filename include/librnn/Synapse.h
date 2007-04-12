@@ -1,8 +1,6 @@
 #ifndef __SYNAPSE_H__
 #define __SYNAPSE_H__
 
-#include <librnn/globals.h>
-#include <librnn/AbstractNeuron.h>
 #include <librnn/AbstractSynapse.h>
 
 namespace librnn
