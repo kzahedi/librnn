@@ -1,3 +1,29 @@
+/**************************************************************************
+ *                                                                        *
+ * This file is part of librnn. Copyright (C) 2003-2006 Keyan Zahedi.     *
+ * All rights reserved. Email: keyan@users.sourceforge.net                *
+ * Web: http://sourceforge.net/projects/librnn                            *
+ *                                                                        *
+ * For a list of contributors see the file AUTHORS.                       *
+ *                                                                        *
+ * librnn is free software; you can redistribute it and/or modify it      *
+ * under the terms of the GNU General Public License as published by the  *
+ * Free Software Foundation; either version 2 of the License, or (at      *
+ * your option) any later version.                                        *
+ *                                                                        *
+ * librnn is distributed in the hope that it will be useful, but WITHOUT  *
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
+ * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ *                                                                        *
+ * You should have received a copy of the GNU General Public License      *
+ * along with librnn in the file COPYING; if not, write to the Free       *
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA     *
+ * 02110-1301, USA.                                                       *
+ *                                                                        *
+ **************************************************************************/
+
+
+
 #include "librnnUnitTests.h"
 #include "librnn/defines.h"
 #include "librnn/RecurrentNeuralNetwork.h"
@@ -56,7 +82,7 @@ void librnnUnitTests::testTransferfunction()
 
   neuron->setTransferfunction(&transferfunction_id);
   neuron->updateOutput();
-  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), (testActivation),0.0000000001);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), transferfunction_id(testActivation),0.0000000001);
 
   delete neuron;
 }
@@ -64,7 +90,7 @@ void librnnUnitTests::testTransferfunction()
 
 void librnnUnitTests::testSingleNeuronWithOscillation()
 {
-  Neuron *neuron   = new Neuron();
+  Neuron  *neuron  = new Neuron();
   Synapse *synapse = new Synapse(neuron, neuron, -5);
   neuron->addSynapse(synapse);
   neuron->setTransferfunction(transferfunction_tanh);
@@ -83,20 +109,24 @@ void librnnUnitTests::testSingleNeuronWithOscillation()
     neuron->updateOutput();
   }
 
+  CPPUNIT_ASSERT_EQUAL(1, neuron->getSynapsesCount());
+
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(-5.0, neuron->getSynapse(0)->strength(), 0.01);
+
   //check for oscillation
   CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
   neuron->updateActivation();
   neuron->updateOutput();
-  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), -1.0, 0.01);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(-1.0, neuron->getOutput(), 0.01);
   neuron->updateActivation();
   neuron->updateOutput();
-  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), 1.0, 0.01);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
   neuron->updateActivation();
   neuron->updateOutput();
-  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), -1.0, 0.01);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(-1.0, neuron->getOutput(), 0.01);
   neuron->updateActivation();
   neuron->updateOutput();
-  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getOutput(), 1.0, 0.01);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
 
   delete neuron;
   delete synapse;
@@ -123,19 +153,44 @@ void librnnUnitTests::testNoTransferfunctionException()
 
 void librnnUnitTests::testRecurrentNeuralNetworkWithSingleNeuron()
 {
-  // create single neuron without recurrent neural network interface as control
-  Neuron *neuron   = new Neuron();
-  Synapse *synapse = new Synapse(neuron, neuron, -5);
-  neuron->addSynapse(synapse);
-  neuron->setTransferfunction(transferfunction_tanh);
-  neuron->setActivation(1.0);
+  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
+  Neuron  *neuron = new Neuron();
+  Synapse *s = new Synapse(neuron, neuron, -5);
+
+  neuron->setTransferfunction(&transferfunction_tanh);
+  rnn->addNeuron(neuron);
+  rnn->addSynapse(s);
+
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(1, neuron->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
+
+  neuron->setActivation(-10);
+  neuron->updateOutput();
+  neuron->updateActivation();
   neuron->updateOutput();
 
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron *n  = new Neuron();
-  Synapse *s = new Synapse(neuron, neuron, -5);
-  rnn->addNeuron(n);
-  rnn->addSynapse(s);
-  CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
-  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
+  rnn->update();
+
+  for(int i=0; i < 100; i++)
+  {
+    rnn->update();
+  }
+
+  if(neuron->getOutput() < 0)
+  {
+    rnn->update();
+  }
+
+  //check for oscillation
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
+  rnn->update();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(-1.0, neuron->getOutput(), 0.01);
+  rnn->update();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
+  rnn->update();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(-1.0, neuron->getOutput(), 0.01);
+  rnn->update();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
+
 }

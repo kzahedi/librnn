@@ -1,29 +1,55 @@
+/**************************************************************************
+ *                                                                        *
+ * This file is part of librnn. Copyright (C) 2003-2006 Keyan Zahedi.     *
+ * All rights reserved. Email: keyan@users.sourceforge.net                *
+ * Web: http://sourceforge.net/projects/librnn                            *
+ *                                                                        *
+ * For a list of contributors see the file AUTHORS.                       *
+ *                                                                        *
+ * librnn is free software; you can redistribute it and/or modify it      *
+ * under the terms of the GNU General Public License as published by the  *
+ * Free Software Foundation; either version 2 of the License, or (at      *
+ * your option) any later version.                                        *
+ *                                                                        *
+ * librnn is distributed in the hope that it will be useful, but WITHOUT  *
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
+ * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ *                                                                        *
+ * You should have received a copy of the GNU General Public License      *
+ * along with librnn in the file COPYING; if not, write to the Free       *
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA     *
+ * 02110-1301, USA.                                                       *
+ *                                                                        *
+ **************************************************************************/
+
+
+
 #ifndef __SYNAPSE_H__
 #define __SYNAPSE_H__
 
-#include <librnn/AbstractSynapse.h>
+#include <librnn/librnn.h>
 
 namespace librnn
 {
-  class Synapse: public AbstractSynapse
+  class Synapse
   {
     public:
       Synapse();
       ~Synapse();
 
-      Synapse(AbstractNeuron *source, AbstractNeuron *destination);
-      Synapse(AbstractNeuron *source, AbstractNeuron *destination, REAL strength);
+      Synapse(Neuron *source, Neuron *destination);
+      Synapse(Neuron *source, Neuron *destination, REAL strength);
 
-      AbstractNeuron* source();
-      AbstractNeuron* destination();
+      Neuron* source();
+      Neuron* destination();
 
       REAL strength();
 
     private:
       void init();
 
-      AbstractNeuron *_source;
-      AbstractNeuron *_destination;
+      Neuron *_source;
+      Neuron *_destination;
 
       double _strength;
   };

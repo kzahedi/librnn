@@ -1,3 +1,29 @@
+/**************************************************************************
+ *                                                                        *
+ * This file is part of librnn. Copyright (C) 2003-2006 Keyan Zahedi.     *
+ * All rights reserved. Email: keyan@users.sourceforge.net                *
+ * Web: http://sourceforge.net/projects/librnn                            *
+ *                                                                        *
+ * For a list of contributors see the file AUTHORS.                       *
+ *                                                                        *
+ * librnn is free software; you can redistribute it and/or modify it      *
+ * under the terms of the GNU General Public License as published by the  *
+ * Free Software Foundation; either version 2 of the License, or (at      *
+ * your option) any later version.                                        *
+ *                                                                        *
+ * librnn is distributed in the hope that it will be useful, but WITHOUT  *
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
+ * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ *                                                                        *
+ * You should have received a copy of the GNU General Public License      *
+ * along with librnn in the file COPYING; if not, write to the Free       *
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA     *
+ * 02110-1301, USA.                                                       *
+ *                                                                        *
+ **************************************************************************/
+
+
+
 #include <librnn/Neuron.h>
 
 #include <iostream>
@@ -10,6 +36,9 @@ Neuron::Neuron()
 #ifdef IMPL_ADJ_LIST
   _numberOfSynapses = 0;
 #endif
+  _bias       = 0;
+  _activation = 0;
+  _output     = 0;
 }
 
 Neuron::~Neuron()
@@ -20,10 +49,18 @@ Neuron::~Neuron()
 void Neuron::updateActivation()
 {
   _activation = _bias;
+  int i=0;
+  double w = 0.0;
+  double o = 0.0;
   for(_incidentIterator = _incident.begin();
       _incidentIterator != _incident.end(); _incidentIterator++)
   {
-    _activation += (*_incidentIterator)->strength() * ((*_incidentIterator)->source())->getOutput();
+    w = (*_incidentIterator)->strength();
+    o = (((*_incidentIterator)->source())->getOutput());
+
+
+    _activation = _activation + w * o;
+
   }
 }
 
@@ -49,7 +86,7 @@ REAL Neuron::getOutput()
 
 REAL Neuron::getActivation()
 {
-  return _output;
+  return _activation;
 }
 
 
@@ -58,7 +95,7 @@ void Neuron::setActivation(REAL activation)
   _activation = activation;
 }
 
-void Neuron::addSynapse(AbstractSynapse *newSynapse)
+void Neuron::addSynapse(Synapse *newSynapse)
 {
 #ifdef IMPL_ADJ_VECTOR
   _synapses.push_back(newSynapse);
@@ -73,13 +110,13 @@ void Neuron::addSynapse(AbstractSynapse *newSynapse)
     addAdjacentSynapse(newSynapse);
   }
 
-  if(newSynapse->source() == this)
+  if(newSynapse->destination() == this)
   {
     addIncidentSynapse(newSynapse);
   }
 }
 
-void Neuron::addIncidentSynapse(AbstractSynapse *newSynapse)
+void Neuron::addIncidentSynapse(Synapse *newSynapse)
 {
 #ifdef IMPL_ADJ_VECTOR
   _incident.push_back(newSynapse);
@@ -90,7 +127,7 @@ void Neuron::addIncidentSynapse(AbstractSynapse *newSynapse)
 }
 
 
-void Neuron::addAdjacentSynapse(AbstractSynapse *newSynapse)
+void Neuron::addAdjacentSynapse(Synapse *newSynapse)
 {
 #ifdef IMPL_ADJ_VECTOR
   _adjacent.push_back(newSynapse);
@@ -112,3 +149,7 @@ int Neuron::getSynapsesCount()
 }
 
 
+Synapse* Neuron::getSynapse(int index)
+{
+  return _synapses[index];
+}
