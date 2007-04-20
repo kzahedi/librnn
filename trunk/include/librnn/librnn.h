@@ -29,11 +29,13 @@
 #include <librnn/config.h>
 #include <librnn/defines.h>
 
-//#include <librnn/AbstractSynapse.h>
-//#include <librnn/AbstractNeuron.h>
+#ifdef USE_LOG4CPP_OUTPUT
+#include <librnn/Logger.hpp>
+#endif
 
 #include <librnn/Neuron.h>
 #include <librnn/Synapse.h>
 #include <librnn/RecurrentNeuralNetwork.h>
+#include <librnn/transferfunctions.h>
 
 #endif // __LIBRNN_H__

@@ -29,14 +29,12 @@
 
 #include <librnn/config.h>
 
-#ifdef USE_LOG4CPP_OUTPUT
-#include <librnn/Logger.hpp>
-#endif
-
 #ifdef USE_FLOAT_PRECISION
-typedef float REAL;
+//typedef float REAL;
+#define REAL float
 #elif USE_DOUBLE_PRECISION
-typedef double REAL;
+//typedef double REAL;
+#define REAL double
 #else
 #error You must #define USE_FLOAT_PRECISION or USE_DOUBLE_PRECISION 
 #endif

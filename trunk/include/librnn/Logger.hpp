@@ -41,10 +41,9 @@ extern "C"
   {
     if(_loggerDefined)
     {
-      printf("not calling anymore\n");
+      libRnnLogger.debug("Logger::initLogger already called. Not calling anymore.");
       return;
     }
-    printf("calling again\n");
     _loggerDefined = true;
     time_t    time_now;
     struct tm *time_ptr;
@@ -54,14 +53,14 @@ extern "C"
     time_ptr = gmtime(&time_now);
 
     strftime(string, 1024, "logs/librnn-%F-%H-%M-%S.log", time_ptr);
-    log4cpp::Appender* app  = new log4cpp::FileAppender("FileAppender", string);
     log4cpp::Appender* app2 = new log4cpp::FileAppender("stdout", fileno(stdout));
+    log4cpp::Appender* app  = new log4cpp::FileAppender("FileAppender", string);
     log4cpp::Layout* layout = new log4cpp::PatternLayout();
-    app->setLayout(layout);
+    app2->setLayout(layout);
     libRnnLogger.setAdditivity(false);
     libRnnLogger.setAppender(app2);
     libRnnLogger.addAppender(app);
-    libRnnLogger.setPriority(log4cpp::Priority::DEBUG);
+    libRnnLogger.setPriority(log4cpp::Priority::FATAL);
 
   }
 }

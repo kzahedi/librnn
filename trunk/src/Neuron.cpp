@@ -35,7 +35,10 @@ Neuron::Neuron()
   _transferfunction = NULL;
 #ifdef IMPL_ADJ_LIST
   _numberOfSynapses = 0;
+  _numberOfAdjacentSynapses = 0;
+  _numberOfIncidentSynapses = 0;
 #endif
+
   _bias       = 0;
   _activation = 0;
   _output     = 0;
@@ -52,15 +55,18 @@ void Neuron::updateActivation()
   int i=0;
   double w = 0.0;
   double o = 0.0;
+#ifdef USE_LOG4CPP_OUTPUT
+  libRnnLogger.debug("Neuron::updateActivation activation before loop = %f", _activation);
+#endif
   for(_incidentIterator = _incident.begin();
       _incidentIterator != _incident.end(); _incidentIterator++)
   {
     w = (*_incidentIterator)->strength();
     o = (((*_incidentIterator)->source())->getOutput());
-
-
-    _activation = _activation + w * o;
-
+    _activation += w * o;
+#ifdef USE_LOG4CPP_OUTPUT
+    libRnnLogger.debug("Neuron::updateActivation activation in loop = %f ( += %f * %f)", _activation, w, o);
+#endif
   }
 }
 
@@ -123,6 +129,7 @@ void Neuron::addIncidentSynapse(Synapse *newSynapse)
 #endif
 #ifdef IMPL_ADJ_LIST
   _incident.push_front(newSynapse);
+  _numberOfIncidentSynapses++;
 #endif
 }
 
@@ -134,6 +141,7 @@ void Neuron::addAdjacentSynapse(Synapse *newSynapse)
 #endif
 #ifdef IMPL_ADJ_LIST
   _adjacent.push_front(newSynapse);
+  _numberOfAdjacentSynapses++;
 #endif
   
 }
@@ -149,7 +157,38 @@ int Neuron::getSynapsesCount()
 }
 
 
+int Neuron::getIncidentSynapsesCount()
+{
+#ifdef IMPL_ADJ_LIST
+  return _numberOfIncidentSynapses;
+#endif
+#ifdef IMPL_ADJ_VECTOR
+  return _incident.size();
+#endif
+}
+
+
+int Neuron::getAdjacentSynapsesCount()
+{
+#ifdef IMPL_ADJ_LIST
+  return _numberOfAdjacentSynapses;
+#endif
+#ifdef IMPL_ADJ_VECTOR
+  return _adjacent.size();
+#endif
+}
+
 Synapse* Neuron::getSynapse(int index)
 {
   return _synapses[index];
+}
+
+void Neuron::setBias(REAL bias)
+{
+  _bias = bias;
+}
+
+REAL Neuron::getBias()
+{
+  return _bias;
 }

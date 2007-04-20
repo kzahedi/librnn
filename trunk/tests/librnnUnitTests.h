@@ -37,6 +37,7 @@ class librnnUnitTests : public CppUnit::TestFixture
   CPPUNIT_TEST( testSingleNeuronWithOscillation );
   CPPUNIT_TEST( testNoTransferfunctionException );
   CPPUNIT_TEST( testRecurrentNeuralNetworkWithSingleNeuron );
+  CPPUNIT_TEST( testSmallNeuroModule );
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -48,6 +49,7 @@ public:
   void testSingleNeuronWithOscillation();
   void testNoTransferfunctionException();
   void testRecurrentNeuralNetworkWithSingleNeuron();
+  void testSmallNeuroModule();
 };
 
 #endif // __LIBRNN_TEST_H__
