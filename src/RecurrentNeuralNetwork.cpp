@@ -120,6 +120,7 @@ void RecurrentNeuralNetwork::update()
   {
     (*_neuronIterator)->updateActivation();
   }
+
   for(_neuronIterator = _neurons.begin(); 
       _neuronIterator != _neurons.end();
       _neuronIterator++)

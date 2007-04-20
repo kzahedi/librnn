@@ -24,10 +24,8 @@
 
 
 
-#include "librnnUnitTests.h"
-#include "librnn/defines.h"
-#include "librnn/RecurrentNeuralNetwork.h"
-#include "librnn/transferfunctions.h"
+#include <librnnUnitTests.h>
+#include <librnn/librnn.h>
 
 #include <math.h>
 #include <iostream>
@@ -39,7 +37,11 @@ CPPUNIT_TEST_SUITE_REGISTRATION( librnnUnitTests );
 
 
 void librnnUnitTests::setUp()
-{ }
+{
+#ifdef USE_LOG4CPP_OUTPUT
+  initLogger();
+#endif
+}
 
 
 void librnnUnitTests::tearDown()
@@ -192,5 +194,63 @@ void librnnUnitTests::testRecurrentNeuralNetworkWithSingleNeuron()
   CPPUNIT_ASSERT_DOUBLES_EQUAL(-1.0, neuron->getOutput(), 0.01);
   rnn->update();
   CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
+
+}
+
+
+void librnnUnitTests::testSmallNeuroModule()
+{
+#ifdef USE_LOG4CPP_OUTPUT
+  libRnnLogger.setPriority(log4cpp::Priority::FATAL);
+#endif // USE_LOG4CPP_OUTPUT
+
+  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
+  Neuron  *inputNeuron = new Neuron();
+  Neuron  *outputNeuron = new Neuron();
+  Synapse *woi = new Synapse(inputNeuron,  outputNeuron,  2.0);
+  Synapse *woo = new Synapse(outputNeuron, outputNeuron, -2.5);
+
+  inputNeuron->setTransferfunction(&transferfunction_id);
+  outputNeuron->setTransferfunction(&transferfunction_tanh);
+  rnn->addNeuron(inputNeuron);
+  rnn->addNeuron(outputNeuron);
+  rnn->addSynapse(woi);
+  rnn->addSynapse(woo);
+
+  CPPUNIT_ASSERT_EQUAL(1, inputNeuron->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(2, outputNeuron->getSynapsesCount());
+
+  CPPUNIT_ASSERT_EQUAL(1, inputNeuron->getAdjacentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(0, inputNeuron->getIncidentSynapsesCount());
+
+  CPPUNIT_ASSERT_EQUAL(1, outputNeuron->getAdjacentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(2, outputNeuron->getIncidentSynapsesCount());
+  rnn->update();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, inputNeuron->getOutput(), 0.00001);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, outputNeuron->getOutput(), 0.00001);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, inputNeuron->getActivation(), 0.00001);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, outputNeuron->getActivation(), 0.00001);
+
+
+  REAL output = 0;
+  REAL bias   = -1;
+  REAL delta  = 2.0 / 1000.0;
+
+  // mini bifurcation diagram test
+  for(int i=0; i < 1000; i++)
+  {
+    inputNeuron->setBias(bias);
+    inputNeuron->updateActivation();
+    inputNeuron->updateOutput();
+    for(int j=0; j < 1000; j++)
+    {
+      rnn->update();
+      output = transferfunction_tanh( -2.5 * output + 2.0 * bias);
+      libRnnLogger.debug("rnn->update: %f vs. %f", outputNeuron->getOutput(), output);
+      //cout << "test " << j << " " << i << endl;
+    }
+    bias += delta;
+  }
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(output, outputNeuron->getOutput(), 0.000001);
 
 }

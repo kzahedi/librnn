@@ -78,9 +78,15 @@ namespace librnn
       void setActivation(REAL activation);
 
       int  getSynapsesCount();
+      int  getAdjacentSynapsesCount();
+      int  getIncidentSynapsesCount();
 
       REAL getActivation();
       REAL getOutput();
+
+      void setBias(REAL bias);
+      REAL getBias();
+
 
       Synapse* getSynapse(int index);
 
@@ -101,6 +107,8 @@ namespace librnn
 
       slist<Synapse*>::iterator _incidentIterator;
       int _numberOfSynapses;
+      int _numberOfAdjacentSynapses;
+      int _numberOfIncidentSynapses;
 #endif
 
 #ifdef IMPL_ADJ_VECTOR

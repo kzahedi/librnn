@@ -27,38 +27,13 @@
 #ifndef __RNN_H__
 #define __RNN_H__
 
-#include <librnn/Neuron.h>
-#include <librnn/Synapse.h>
 #include <librnn/librnn.h>
 
 using namespace librnn;
+using namespace std;
 
 namespace librnn
 {
-  class RecurrentNeuralNetworkException : public std::exception
-  {
-    public:
-      explicit RecurrentNeuralNetworkException(const std::string& what)
-        :
-          m_what(what)
-    {}
-
-      virtual ~RecurrentNeuralNetworkException() throw() {}
-
-      virtual const char * what() const throw()
-      {
-        return m_what.c_str();
-      }
-
-      virtual void message() const throw()
-      {
-        cerr << "RecurrentNeuralNetworkException: " << m_what << endl;
-      }
-
-    private:
-      std::string m_what;
-  };
-
 
   class RecurrentNeuralNetwork 
   {
