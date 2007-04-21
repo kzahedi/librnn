@@ -109,7 +109,57 @@ static long testAddSynapses()
   return time;
 }
 
+void testLog4cppTimeConsumption()
+{
+  cout << "testLog4cppTimeConsumption";
+  startTiming();
+#ifdef USE_LOG4CPP_OUTPUT
+  libRnnLogger.setPriority(log4cpp::Priority::FATAL);
+#endif // USE_LOG4CPP_OUTPUT
 
+  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
+  Neuron  *inputNeuron = new Neuron();
+  Neuron  *outputNeuron = new Neuron();
+  Synapse *woi = new Synapse(inputNeuron,  outputNeuron,  2.0);
+  Synapse *woo = new Synapse(outputNeuron, outputNeuron, -2.5);
+
+  inputNeuron->setTransferfunction(&transferfunction_id);
+  outputNeuron->setTransferfunction(&transferfunction_tanh);
+  rnn->addNeuron(inputNeuron);
+  rnn->addNeuron(outputNeuron);
+  rnn->addSynapse(woi);
+  rnn->addSynapse(woo);
+
+  REAL output = 0;
+  REAL bias   = -1;
+  REAL delta  = 2.0 / 1000.0;
+
+  // mini bifurcation diagram test
+  for(int i=0; i < 1000; i++)
+  {
+    inputNeuron->setBias(bias);
+    inputNeuron->updateActivation();
+    inputNeuron->updateOutput();
+    for(int j=0; j < 1000; j++)
+    {
+      rnn->update();
+      output = transferfunction_tanh( -2.5 * output + 2.0 * bias);
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("rnn->update: %f vs. %f", outputNeuron->getOutput(), output);
+#endif // USE_LOG4CPP_OUTPUT
+    }
+    bias += delta;
+  }
+
+  long time = stopTiming();
+  printTime(time);
+
+  delete rnn;
+  delete inputNeuron;
+  delete outputNeuron;
+  delete woi;
+  delete woo;
+}
 
 int main()
 {
@@ -121,4 +171,5 @@ int main()
   testConstructor();
   testDestructor();
   testAddSynapses();
+  testLog4cppTimeConsumption();
 }

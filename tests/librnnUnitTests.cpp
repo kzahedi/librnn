@@ -201,7 +201,7 @@ void librnnUnitTests::testRecurrentNeuralNetworkWithSingleNeuron()
 void librnnUnitTests::testSmallNeuroModule()
 {
 #ifdef USE_LOG4CPP_OUTPUT
-  libRnnLogger.setPriority(log4cpp::Priority::FATAL);
+  libRnnLogger.setPriority(log4cpp::Priority::DEBUG);
 #endif // USE_LOG4CPP_OUTPUT
 
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
@@ -246,7 +246,9 @@ void librnnUnitTests::testSmallNeuroModule()
     {
       rnn->update();
       output = transferfunction_tanh( -2.5 * output + 2.0 * bias);
+#ifdef USE_LOG4CPP_OUTPUT
       libRnnLogger.debug("rnn->update: %f vs. %f", outputNeuron->getOutput(), output);
+#endif
       //cout << "test " << j << " " << i << endl;
     }
     bias += delta;
