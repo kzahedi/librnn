@@ -41,14 +41,20 @@ namespace librnn
       RecurrentNeuralNetwork();
       ~RecurrentNeuralNetwork();
 
-      int getNumberOfNeurons();
+      int getNeuronCount();
 
       void addNeuron(Neuron *neuron);
+      void delNeuron(Neuron *neuron);
+
       void addSynapse(Synapse *synapse);
+      void delSynapse(Synapse *synapse);
+
       int  getSynapsesCount();
       int  countSynapses();
 
       void update();
+
+      void removeDeadEndSynapses();
 
     private:
       int _numberOfSynapses;

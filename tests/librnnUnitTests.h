@@ -27,17 +27,22 @@
 #ifndef __LIBRNN_TEST_H__
 #define __LIBRNN_TEST_H__
 
+#include <librnn/librnn.h>
 #include <cppunit/extensions/HelperMacros.h>
 
 class librnnUnitTests : public CppUnit::TestFixture
 {
-  CPPUNIT_TEST_SUITE( librnnUnitTests );
-  CPPUNIT_TEST( testConstructor );
-  CPPUNIT_TEST( testTransferfunction );
-  CPPUNIT_TEST( testSingleNeuronWithOscillation );
-  CPPUNIT_TEST( testNoTransferfunctionException );
-  CPPUNIT_TEST( testRecurrentNeuralNetworkWithSingleNeuron );
-  CPPUNIT_TEST( testSmallNeuroModule );
+  CPPUNIT_TEST_SUITE(librnnUnitTests);
+  CPPUNIT_TEST(testConstructor);
+  CPPUNIT_TEST(testTransferfunction);
+  CPPUNIT_TEST(testSingleNeuronWithOscillation);
+  CPPUNIT_TEST(testNoTransferfunctionException);
+  CPPUNIT_TEST(testRecurrentNeuralNetworkWithSingleNeuron);
+#ifdef TIME_CONSUMING_TEST
+  CPPUNIT_TEST(testSmallNeuroModule);
+#endif // TIME_CONSUMING
+  CPPUNIT_TEST(testAddingAndDeletingOfSynapses);
+  CPPUNIT_TEST(testAddingAndDeletingOfNeurons);
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -49,7 +54,11 @@ public:
   void testSingleNeuronWithOscillation();
   void testNoTransferfunctionException();
   void testRecurrentNeuralNetworkWithSingleNeuron();
+#ifdef TIME_CONSUMING_TEST
   void testSmallNeuroModule();
+#endif // TIME_CONSUMING
+  void testAddingAndDeletingOfSynapses();
+  void testAddingAndDeletingOfNeurons();
 };
 
 #endif // __LIBRNN_TEST_H__

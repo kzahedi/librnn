@@ -28,6 +28,8 @@
 
 #include <iostream>
 
+#define REMOVE_FROM_LIST(vec,e,i) for(i=vec.begin(); i!=vec.end(); i++) { if ( (*i) == e) { vec.erase(i); break; } }
+
 using namespace librnn;
 
 Neuron::Neuron()
@@ -58,11 +60,11 @@ void Neuron::updateActivation()
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.debug("Neuron::updateActivation activation before loop = %f", _activation);
 #endif
-  for(_incidentIterator = _incident.begin();
-      _incidentIterator != _incident.end(); _incidentIterator++)
+  for(_synapseIterator = _incident.begin();
+      _synapseIterator != _incident.end(); _synapseIterator++)
   {
-    w = (*_incidentIterator)->strength();
-    o = (((*_incidentIterator)->source())->getOutput());
+    w = (*_synapseIterator)->strength();
+    o = (((*_synapseIterator)->source())->getOutput());
     _activation += w * o;
 #ifdef USE_LOG4CPP_OUTPUT
     libRnnLogger.debug("Neuron::updateActivation activation in loop = %f ( += %f * %f)", _activation, w, o);
@@ -101,49 +103,97 @@ void Neuron::setActivation(REAL activation)
   _activation = activation;
 }
 
-void Neuron::addSynapse(Synapse *newSynapse)
+
+
+void Neuron::addSynapse(Synapse *synapse)
 {
 #ifdef IMPL_ADJ_VECTOR
-  _synapses.push_back(newSynapse);
+  _synapses.push_back(synapse);
 #endif
 #ifdef IMPL_ADJ_LIST
-  _synapses.push_front(newSynapse);
+  _synapses.push_front(synapse);
   _numberOfSynapses++;
 #endif
 
-  if(newSynapse->source() == this)
+  if(synapse->source() == this)
   {
-    addAdjacentSynapse(newSynapse);
+    addAdjacentSynapse(synapse);
   }
 
-  if(newSynapse->destination() == this)
+  if(synapse->destination() == this)
   {
-    addIncidentSynapse(newSynapse);
+    addIncidentSynapse(synapse);
   }
 }
 
-void Neuron::addIncidentSynapse(Synapse *newSynapse)
+
+
+void Neuron::delSynapse(Synapse *synapse)
 {
 #ifdef IMPL_ADJ_VECTOR
-  _incident.push_back(newSynapse);
+  REMOVE_FROM_LIST(_synapses, synapse, _synapseIterator);
 #endif
 #ifdef IMPL_ADJ_LIST
-  _incident.push_front(newSynapse);
+  _synapses.remove(synapse);
+  _numberOfSynapses--;
+#endif
+
+  if(synapse->source() == this)
+  {
+    delAdjacentSynapse(synapse);
+  }
+
+  if(synapse->destination() == this)
+  {
+    delIncidentSynapse(synapse);
+  }
+}
+
+void Neuron::delIncidentSynapse(Synapse *synapse)
+{
+#ifdef IMPL_ADJ_VECTOR
+  REMOVE_FROM_LIST(_incident, synapse, _synapseIterator);
+#endif
+#ifdef IMPL_ADJ_LIST
+  _incident.remove(synapse);
+  _numberOfIncidentSynapses--;
+#endif
+}
+
+
+
+void Neuron::addIncidentSynapse(Synapse *synapse)
+{
+#ifdef IMPL_ADJ_VECTOR
+  _incident.push_back(synapse);
+#endif
+#ifdef IMPL_ADJ_LIST
+  _incident.push_front(synapse);
   _numberOfIncidentSynapses++;
 #endif
 }
 
-
-void Neuron::addAdjacentSynapse(Synapse *newSynapse)
+void Neuron::delAdjacentSynapse(Synapse *synapse)
 {
 #ifdef IMPL_ADJ_VECTOR
-  _adjacent.push_back(newSynapse);
+  REMOVE_FROM_LIST(_adjacent, synapse, _synapseIterator);
 #endif
 #ifdef IMPL_ADJ_LIST
-  _adjacent.push_front(newSynapse);
+  _adjacent.remove(synapse);
+  _numberOfAdjacentSynapses--;
+#endif
+}
+
+
+void Neuron::addAdjacentSynapse(Synapse *synapse)
+{
+#ifdef IMPL_ADJ_VECTOR
+  _adjacent.push_back(synapse);
+#endif
+#ifdef IMPL_ADJ_LIST
+  _adjacent.push_front(synapse);
   _numberOfAdjacentSynapses++;
 #endif
-  
 }
 
 int Neuron::getSynapsesCount()
