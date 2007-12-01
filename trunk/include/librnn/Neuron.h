@@ -36,14 +36,13 @@ using namespace std;
 
 namespace librnn
 {
-
   class NeuronException : public std::exception
   {
     public:
       explicit NeuronException(const std::string& what)
         :
           m_what(what)
-    {}
+      {}
 
       virtual ~NeuronException() throw() {}
 
@@ -75,6 +74,7 @@ namespace librnn
 
       void addSynapse(Synapse *synapse);
       void delSynapse(Synapse *synapse);
+      Synapse* getSynapse(int index);
 
       void setActivation(REAL activation);
 
@@ -88,8 +88,7 @@ namespace librnn
       void setBias(REAL bias);
       REAL getBias();
 
-
-      Synapse* getSynapse(int index);
+      vSYNAPSE cleanUpConnectionsTo(Neuron *neuron);
 
     private:
       void addIncidentSynapse(Synapse *synapse);
@@ -103,24 +102,11 @@ namespace librnn
 
       Transferfunction _transferfunction;
 
-#ifdef IMPL_ADJ_LIST
-      slist<Synapse*> _incident;
-      slist<Synapse*> _adjacent;
-      slist<Synapse*> _synapses;
+      vSYNAPSE _incident;
+      vSYNAPSE _adjacent;
+      vSYNAPSE _synapses;
 
-      slist<Synapse*>::iterator _incidentIterator;
-      int _numberOfSynapses;
-      int _numberOfAdjacentSynapses;
-      int _numberOfIncidentSynapses;
-#endif
-
-#ifdef IMPL_ADJ_VECTOR
-      vector<Synapse*> _incident;
-      vector<Synapse*> _adjacent;
-      vector<Synapse*> _synapses;
-
-      vector<Synapse*>::iterator _synapseIterator;
-#endif
+      vSYNAPSE::iterator _synapseIterator;
   };
 }
 

@@ -29,37 +29,30 @@
 
 #include <librnn/config.h>
 
+// using float or double precision
 #ifdef USE_FLOAT_PRECISION
-//typedef float REAL;
 #define REAL float
 #elif USE_DOUBLE_PRECISION
-//typedef double REAL;
 #define REAL double
 #else
 #error You must #define USE_FLOAT_PRECISION or USE_DOUBLE_PRECISION 
 #endif
 
-#ifdef IMPL_ADJ_LIST
-using namespace __gnu_cxx;
-using namespace std;
-#include <ext/slist>
-#elif IMPL_ADJ_VECTOR
+// using vector as container class
 using namespace std;
 #include <vector>
-#else
-#error You must #define IMPL_ADJ_VECTOR or IMPL_ADJ_LIST 
-#endif
 
-
+// transfer-function function pointer
 typedef REAL (*Transferfunction) (REAL);
 
-//forward declaration
+#define vSYNAPSE vector<Synapse*>
+#define vNEURON  vector<Neuron*>
+
+//forward declaration, such that synapses and neurons can reference each other
 namespace librnn 
 {
   class Synapse;
   class Neuron;
 }
-
-#define REMOVE_FROM_LIST(vec,e,i) for(i=vec.begin(); i!=vec.end(); i++) { if ( (*i) == e) { vec.erase(i); break; } }
 
 #endif //__DEFINES_H__

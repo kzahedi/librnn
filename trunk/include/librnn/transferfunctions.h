@@ -26,10 +26,14 @@
 
 #include <math.h>
 
+
+
 static REAL transferfunction_tanh(REAL x)
 {
   return (REAL)tanh(x);
 }
+
+
 
 static REAL transferfunction_id(REAL x)
 {

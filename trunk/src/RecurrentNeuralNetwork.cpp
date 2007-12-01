@@ -33,126 +33,183 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
 
+
 using namespace std;
 using namespace librnn;
 
+
+
+/*! 
+ * \brief Constructor
+ *
+ * The constructor of the class. Currently no initialisation functionality is
+ * required.
+ *
+ */
 RecurrentNeuralNetwork::RecurrentNeuralNetwork()
 {
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.debug("constructor called");
 #endif
-
-#ifdef IMPL_ADJ_LIST
-  _numberOfNeurons = 0;
-#endif
-
-  _numberOfSynapses = 0;
 }
 
+
+
+/*! 
+ * \brief Destructor
+ *
+ * The destructor of the class. Currently no de-initialisation functionality is
+ * required.
+ *
+ */
 RecurrentNeuralNetwork::~RecurrentNeuralNetwork()
 {
 }
 
 
+
+/*! 
+ * \brief Returns the number of neurons in the network.
+ *
+ * This function returns the number of neurons, which are accessible and
+ * processed by this instance of a recurrent neural network.
+ *
+ * \return non-negative integer referring to the number of neurons in the
+ * network
+ *
+ */
 int RecurrentNeuralNetwork::getNeuronCount()
 {
-#ifdef IMPL_ADJ_LIST
-  return _numberOfNeurons;
-#endif
-#ifdef IMPL_ADJ_VECTOR
   return _neurons.size();
-#endif
 }
 
+
+
+/*! 
+ * \brief Adds a neuron to the network.
+ *
+ * This function adds one previously defined neuron to this instance of a
+ * recurrent neural network. Only neurons that are added to the recurrent neural
+ * network, will be processed by the update function. Synapses which connect
+ * neurons may only be added to the network after the neurons were added. If the
+ * source is compiled with design by contract, the function check for uniqueness
+ * of the neuron before adding.
+ *
+ * \param Neuron neuron 
+ *
+ */
 void RecurrentNeuralNetwork::addNeuron(Neuron *neuron)
 {
-#ifdef IMPL_ADJ_VECTOR
   _neurons.push_back(neuron);
-#endif
-#ifdef IMPL_ADJ_LIST
-  _neurons.push_front(neuron);
-  ++_numberOfNeurons;
-#endif
 }
 
+
+/*! 
+ * \brief Deletes a neuron from the network.
+ *
+ * This function deletes a neuron from this instance of a
+ * recurrent neural network. Every synapse that is connected to this neuron will
+ * be deleted with it, such that there are no synapses with dead ends, which
+ * could cause software exceptions.
+ *
+ * \param Neuron neuron 
+ *
+ */
 void RecurrentNeuralNetwork::delNeuron(Neuron *neuron)
 {
-#ifdef IMPL_ADJ_VECTOR
-  REMOVE_FROM_LIST(_neurons,neuron,_neuronIterator);
-#endif
-#ifdef IMPL_ADJ_LIST
-  _neurons.remove(neuron);
-  --_numberOfNeurons;
-#endif
+  vSYNAPSE list;
+  vSYNAPSE::iterator i;
+
+  FOR(_neuronIterator, _neurons)
+  {
+    list = (*_neuronIterator)->cleanUpConnectionsTo(neuron);
+    FOR(_synapseIterator, list)
+    {
+      REMOVE_ELEMENT_FROM_VECTOR(_synapses, (*_synapseIterator), i)
+      delete (*_synapseIterator);
+    }
+  }
+  REMOVE_ELEMENT_FROM_VECTOR(_neurons,neuron,_neuronIterator)
+  delete neuron;
 }
 
-void RecurrentNeuralNetwork::addSynapse(Synapse *newSynapse)
-{
-  _numberOfSynapses++;
 
-  Neuron *source      = newSynapse->source();
-  Neuron *destination = newSynapse->destination();
+
+/*! 
+ * \brief Adds a synapse to the neural network
+ *
+ * A synapse must be fully defined before it is added to the neural network.
+ * The neurons, which are connected by the synapses must be part of the network
+ * before the synapse is added.
+ *
+ * \param Synapse synapse 
+ * \return boolean if the synapse was added or not
+ *
+ */
+void RecurrentNeuralNetwork::addSynapse(Synapse *synapse)
+{
+  Neuron *source      = synapse->source();
+  Neuron *destination = synapse->destination();
+
+  _synapses.push_back(synapse);
 
   if(source == destination)
   {
-    source->addSynapse(newSynapse);
+    source->addSynapse(synapse);
   }
   else
   {
-    source->addSynapse(newSynapse);
-    destination->addSynapse(newSynapse);
+    source->addSynapse(synapse);
+    destination->addSynapse(synapse);
   }
-
 }
 
-void RecurrentNeuralNetwork::delSynapse(Synapse *rmSynapse)
+
+
+void RecurrentNeuralNetwork::delSynapse(Synapse *synapse)
 {
-  _numberOfSynapses--;
 
-  Neuron *source      = rmSynapse->source();
-  Neuron *destination = rmSynapse->destination();
+  Neuron *source      = synapse->source();
+  Neuron *destination = synapse->destination();
 
-  source->delSynapse(rmSynapse);
-  destination->delSynapse(rmSynapse);
+  source->delSynapse(synapse);
+  destination->delSynapse(synapse);
+
+  REMOVE_ELEMENT_FROM_VECTOR(_synapses,synapse,_synapseIterator)
 }
+
+
 
 int RecurrentNeuralNetwork::getSynapsesCount()
 {
-  return _numberOfSynapses;
+  return _synapses.size();
 }
+
+
 
 int RecurrentNeuralNetwork::countSynapses()
 {
-  _numberOfSynapses = 0;
+  int numberOfSynapses = 0;
 
-  for(_neuronIterator = _neurons.begin(); 
-      _neuronIterator != _neurons.end();
-      _neuronIterator++)
+  FOR(_neuronIterator, _neurons)
   {
-    _numberOfSynapses += (*_neuronIterator)->getSynapsesCount();
+    numberOfSynapses += (*_neuronIterator)->getSynapsesCount();
   }
-  return _numberOfSynapses;
+  return numberOfSynapses;
 }
+
+
 
 void RecurrentNeuralNetwork::update()
 {
-  for(_neuronIterator = _neurons.begin(); 
-      _neuronIterator != _neurons.end();
-      _neuronIterator++)
+  FOR(_neuronIterator, _neurons)
   {
     (*_neuronIterator)->updateActivation();
   }
 
-  for(_neuronIterator = _neurons.begin(); 
-      _neuronIterator != _neurons.end();
-      _neuronIterator++)
+  FOR(_neuronIterator, _neurons)
   {
     (*_neuronIterator)->updateOutput();
   }
-
-}
-
-void RecurrentNeuralNetwork::removeDeadEndSynapses()
-{
 
 }
