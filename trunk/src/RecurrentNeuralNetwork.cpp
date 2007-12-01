@@ -54,7 +54,7 @@ RecurrentNeuralNetwork::~RecurrentNeuralNetwork()
 }
 
 
-int RecurrentNeuralNetwork::getNumberOfNeurons()
+int RecurrentNeuralNetwork::getNeuronCount()
 {
 #ifdef IMPL_ADJ_LIST
   return _numberOfNeurons;
@@ -64,14 +64,25 @@ int RecurrentNeuralNetwork::getNumberOfNeurons()
 #endif
 }
 
-void RecurrentNeuralNetwork::addNeuron(Neuron *newNeuron)
+void RecurrentNeuralNetwork::addNeuron(Neuron *neuron)
 {
 #ifdef IMPL_ADJ_VECTOR
-  _neurons.push_back(newNeuron);
+  _neurons.push_back(neuron);
 #endif
 #ifdef IMPL_ADJ_LIST
-  _neurons.push_front(newNeuron);
+  _neurons.push_front(neuron);
   ++_numberOfNeurons;
+#endif
+}
+
+void RecurrentNeuralNetwork::delNeuron(Neuron *neuron)
+{
+#ifdef IMPL_ADJ_VECTOR
+  REMOVE_FROM_LIST(_neurons,neuron,_neuronIterator);
+#endif
+#ifdef IMPL_ADJ_LIST
+  _neurons.remove(neuron);
+  --_numberOfNeurons;
 #endif
 }
 
@@ -92,6 +103,17 @@ void RecurrentNeuralNetwork::addSynapse(Synapse *newSynapse)
     destination->addSynapse(newSynapse);
   }
 
+}
+
+void RecurrentNeuralNetwork::delSynapse(Synapse *rmSynapse)
+{
+  _numberOfSynapses--;
+
+  Neuron *source      = rmSynapse->source();
+  Neuron *destination = rmSynapse->destination();
+
+  source->delSynapse(rmSynapse);
+  destination->delSynapse(rmSynapse);
 }
 
 int RecurrentNeuralNetwork::getSynapsesCount()
@@ -127,5 +149,10 @@ void RecurrentNeuralNetwork::update()
   {
     (*_neuronIterator)->updateOutput();
   }
+
+}
+
+void RecurrentNeuralNetwork::removeDeadEndSynapses()
+{
 
 }

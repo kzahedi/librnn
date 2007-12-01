@@ -72,6 +72,7 @@ static long testDestructor()
   return time;
 }
 
+#ifdef TIME_CONSUMING_TEST
 static long testAddNeurons()
 {
   cout << "RecurrentNeuralNetwork addNeuron (1M adds):\t";
@@ -87,7 +88,9 @@ static long testAddNeurons()
   delete rnn;
   return time;
 }
+#endif // TIME_CONSUMING
 
+#ifdef TIME_CONSUMING_TEST
 static long testAddSynapses()
 {
   cout << "RecurrentNeuralNetwork addSynapses (1M adds):\t";
@@ -108,10 +111,12 @@ static long testAddSynapses()
   delete rnn;
   return time;
 }
+#endif // TIME_CONSUMING
 
+#ifdef TIME_CONSUMING_TEST
 void testLog4cppTimeConsumption()
 {
-  cout << "testLog4cppTimeConsumption";
+  cout << "testLog4cppTimeConsumption:\t";
   startTiming();
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.setPriority(log4cpp::Priority::FATAL);
@@ -160,16 +165,21 @@ void testLog4cppTimeConsumption()
   delete woi;
   delete woo;
 }
+#endif // TIME_CONSUMING
 
 int main()
 {
   cout << "starting librnn runtime test." << endl;
+#ifdef TIME_CONSUMING_TEST
   testAddNeurons();
+#endif // TIME_CONSUMING
 #ifdef USE_LOG4CPP_OUTPUT
   testInitLogger();
 #endif
   testConstructor();
   testDestructor();
+#ifdef TIME_CONSUMING_TEST
   testAddSynapses();
   testLog4cppTimeConsumption();
+#endif // TIME_CONSUMING
 }

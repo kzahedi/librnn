@@ -60,5 +60,6 @@ namespace librnn
   class Neuron;
 }
 
+#define REMOVE_FROM_LIST(vec,e,i) for(i=vec.begin(); i!=vec.end(); i++) { if ( (*i) == e) { vec.erase(i); break; } }
 
 #endif //__DEFINES_H__

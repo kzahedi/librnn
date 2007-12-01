@@ -73,7 +73,8 @@ namespace librnn
 
       void setTransferfunction(Transferfunction transferfunction);
 
-      void addSynapse(Synapse *newSynapse);
+      void addSynapse(Synapse *synapse);
+      void delSynapse(Synapse *synapse);
 
       void setActivation(REAL activation);
 
@@ -91,8 +92,10 @@ namespace librnn
       Synapse* getSynapse(int index);
 
     private:
-      void addIncidentSynapse(Synapse *newSynapse);
-      void addAdjacentSynapse(Synapse *newSynapse);
+      void addIncidentSynapse(Synapse *synapse);
+      void addAdjacentSynapse(Synapse *synapse);
+      void delIncidentSynapse(Synapse *synapse);
+      void delAdjacentSynapse(Synapse *synapse);
 
       REAL _activation;
       REAL _bias;
@@ -116,7 +119,7 @@ namespace librnn
       vector<Synapse*> _adjacent;
       vector<Synapse*> _synapses;
 
-      vector<Synapse*>::iterator _incidentIterator;
+      vector<Synapse*>::iterator _synapseIterator;
 #endif
   };
 }
