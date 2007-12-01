@@ -26,17 +26,25 @@
 
 #include <librnn/Synapse.h>
 
+
+
 using namespace librnn;
+
+
 
 Synapse::Synapse()
 {
   init();
 }
 
+
+
 Synapse::~Synapse()
 {
 
 }
+
+
 
 Synapse::Synapse(Neuron *source, Neuron *destination)
 {
@@ -44,6 +52,8 @@ Synapse::Synapse(Neuron *source, Neuron *destination)
   _source      = source;
   _destination = _destination;
 }
+
+
 
 Synapse::Synapse(Neuron *source, Neuron *destination, REAL strength)
 {
@@ -53,20 +63,27 @@ Synapse::Synapse(Neuron *source, Neuron *destination, REAL strength)
 }
 
 
+
 REAL Synapse::strength() 
 {
   return _strength;
 }
+
+
 
 void Synapse::init()
 {
   _strength = 0;
 }
 
+
+
 Neuron* Synapse::source()
 {
   return _source;
 }
+
+
 
 Neuron* Synapse::destination()
 {

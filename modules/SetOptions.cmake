@@ -1,7 +1,3 @@
-SET(LIBRNN_IMPLEMENTATION_MODE ADJANCENY_VECTOR CACHE STRING
-  "Choose the type of implementation, options are: ADJANCENY_LIST ADJANCENY_VECTOR."
-  FORCE)
-
 OPTION(LIBRNN_DEBUG
   "Build the librnn using debugging code."
   ON)
@@ -22,6 +18,11 @@ OPTION(LIBRNN_USE_ONLY_FAST_TESTS
   "Build the test only with fast tests."
   OFF)
 
+OPTION(LIBRNN_DESIGN_BY_CONTRACT
+  "Build function with design by contract."
+  ON)
+
+
 
 
 IF(LIBRNN_DEBUG)
@@ -29,4 +30,3 @@ IF(LIBRNN_DEBUG)
 else(LIBRNN_DEBUG)
   set(CMAKE_BUILD_TYPE Relase)
 ENDIF(LIBRNN_DEBUG)
-

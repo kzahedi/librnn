@@ -394,8 +394,6 @@ void librnnUnitTests::testAddingAndDeletingOfNeurons()
 
   CPPUNIT_ASSERT_EQUAL(4, rnn->getNeuronCount());
 
-  rnn->removeDeadEndSynapses();
-
   CPPUNIT_ASSERT_EQUAL(15, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(25, rnn->countSynapses());
 

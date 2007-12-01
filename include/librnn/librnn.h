@@ -26,8 +26,10 @@
 
 #ifndef __LIBRNN_H__
 #define __LIBRNN_H__
+
 #include <librnn/config.h>
 #include <librnn/defines.h>
+#include <librnn/macros.h>
 
 #ifdef USE_LOG4CPP_OUTPUT
 #include <librnn/Logger.hpp>
