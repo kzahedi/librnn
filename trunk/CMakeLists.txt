@@ -23,12 +23,14 @@
  ##########################################################################
 project (librnn)
 
+INCLUDE(modules/CMakeVersionConfig.cmake)
 INCLUDE(modules/CMakeIncludeFiles.cmake)
 INCLUDE(modules/SetDefaults.cmake)
 INCLUDE(modules/SetOptions.cmake)
 INCLUDE(modules/SetTestingOptions.cmake)
 INCLUDE(modules/ConfigFile.cmake)
 INCLUDE(modules/OutputConfiguration.cmake)
+INCLUDE(modules/CPackConfiguration.cmake)
 
 
 # Recurse into the "Hello" and "Demo" subdirectories.  This does not actually
