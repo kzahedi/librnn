@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -82,11 +82,11 @@ namespace librnn
 
       int getNeuronCount();
 
-      void addNeuron(Neuron *neuron);
-      void delNeuron(Neuron *neuron);
+      void add(Neuron *neuron);
+      void remove(Neuron *neuron);
 
-      void addSynapse(Synapse *synapse);
-      void delSynapse(Synapse *synapse);
+      void add(Synapse *synapse);
+      void remove(Synapse *synapse);
 
       int  getSynapsesCount();
       int  countSynapses();
@@ -95,14 +95,14 @@ namespace librnn
 
     private:
       /// vector of neurons in the network 
-      vNEURON _neurons; 
+      __vNEURON _neurons; 
       /// iterator for the neurons vector
-      vNEURON::iterator _neuronIterator; 
+      __vNEURON_ITERATOR _neuronIterator; 
 
       /// vector of synapses in the network 
-      vSYNAPSE _synapses; 
+      __vSYNAPSE _synapses; 
       /// iterator for the synapses vector 
-      vSYNAPSE::iterator _synapseIterator;
+      __vSYNAPSE_ITERATOR _synapseIterator;
 
   };
 }

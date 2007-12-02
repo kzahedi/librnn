@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -39,13 +39,6 @@ Synapse::Synapse()
 
 
 
-Synapse::~Synapse()
-{
-
-}
-
-
-
 Synapse::Synapse(Neuron *source, Neuron *destination)
 {
   init();
@@ -55,8 +48,9 @@ Synapse::Synapse(Neuron *source, Neuron *destination)
 
 
 
-Synapse::Synapse(Neuron *source, Neuron *destination, REAL strength)
+Synapse::Synapse(Neuron *source, Neuron *destination, __REAL strength)
 {
+  init();
   _strength    = strength;
   _source      = source;
   _destination = destination;
@@ -64,7 +58,16 @@ Synapse::Synapse(Neuron *source, Neuron *destination, REAL strength)
 
 
 
-REAL Synapse::strength() 
+Synapse::~Synapse()
+{
+#ifdef USE_LOG4CPP_OUTPUT
+  libRnnLogger.debug("this synapse is removed");
+#endif // USE_LOG4CPP_OUTPUT
+}
+
+
+
+__REAL Synapse::strength() 
 {
   return _strength;
 }
@@ -74,6 +77,7 @@ REAL Synapse::strength()
 void Synapse::init()
 {
   _strength = 0;
+  _status   = __SYNAPSE_STATUS_VALID;
 }
 
 
@@ -88,4 +92,15 @@ Neuron* Synapse::source()
 Neuron* Synapse::destination()
 {
   return _destination;
+}
+
+
+void Synapse::setStatus(int status)
+{
+  _status = status;
+}
+
+int Synapse::status()
+{
+  return _status;
 }

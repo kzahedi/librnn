@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -40,13 +40,17 @@ Neuron::Neuron()
   _bias       = 0;
   _activation = 0;
   _output     = 0;
+  _id = numberOfNeurons;
+  numberOfNeurons++;
 }
 
 
 
 Neuron::~Neuron()
 {
-
+#ifdef USE_LOG4CPP_OUTPUT
+  libRnnLogger.debug("This neuron is deleted");
+#endif
 }
 
 
@@ -95,28 +99,28 @@ void Neuron::setTransferfunction(Transferfunction transferfunction)
 
 
 
-REAL Neuron::getOutput()
+__REAL Neuron::getOutput()
 {
   return _output;
 }
 
 
 
-REAL Neuron::getActivation()
+__REAL Neuron::getActivation()
 {
   return _activation;
 }
 
 
 
-void Neuron::setActivation(REAL activation)
+void Neuron::setActivation(__REAL activation)
 {
   _activation = activation;
 }
 
 
 
-void Neuron::addSynapse(Synapse *synapse)
+void Neuron::add(Synapse *synapse)
 {
   _synapses.push_back(synapse);
 
@@ -133,10 +137,10 @@ void Neuron::addSynapse(Synapse *synapse)
 
 
 
-void Neuron::delSynapse(Synapse *synapse)
+void Neuron::remove(Synapse *synapse)
 {
 
-  REMOVE_ELEMENT_FROM_VECTOR(_synapses, synapse, _synapseIterator);
+  __REMOVE_ELEMENT_FROM_VECTOR(_synapses, synapse, _synapseIterator)
 
   if(synapse->source() == this)
   {
@@ -154,7 +158,7 @@ void Neuron::delSynapse(Synapse *synapse)
 void Neuron::delIncidentSynapse(Synapse *synapse)
 {
 
-  REMOVE_ELEMENT_FROM_VECTOR(_incident, synapse, _synapseIterator);
+  __REMOVE_ELEMENT_FROM_VECTOR(_incident, synapse, _synapseIterator);
 
 }
 
@@ -169,7 +173,7 @@ void Neuron::addIncidentSynapse(Synapse *synapse)
 
 void Neuron::delAdjacentSynapse(Synapse *synapse)
 {
-  REMOVE_ELEMENT_FROM_VECTOR(_adjacent, synapse, _synapseIterator);
+  __REMOVE_ELEMENT_FROM_VECTOR(_adjacent, synapse, _synapseIterator);
 }
 
 
@@ -209,21 +213,142 @@ Synapse* Neuron::getSynapse(int index)
 
 
 
-void Neuron::setBias(REAL bias)
+void Neuron::setBias(__REAL bias)
 {
   _bias = bias;
 }
 
 
 
-REAL Neuron::getBias()
+__REAL Neuron::getBias()
 {
   return _bias;
 }
 
 
 
-vSYNAPSE Neuron::cleanUpConnectionsTo(Neuron *neuron)
+void Neuron::cleanUpConnectionsTo(Neuron *neuron)
 {
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("Neuron::cleanUpConnectionsTo: START %d\n_synapses.size() = %d", _id, _synapses.size());
+#endif
+  bool inList = false;
 
+  __FOR(_synapseIterator, _synapses)
+  {
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("checking synapse with source %d and destination %d and status %d",
+          (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId(),
+          (*_synapseIterator)->status());
+#endif
+    if( (*_synapseIterator)->source() == neuron ||
+        (*_synapseIterator)->destination() == neuron)
+    {
+      (*_synapseIterator)->setStatus(__SYNAPSE_STATUS_DEAD);
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("setting synapse with source %d and destination %d dead %d",
+          (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId(),
+          (*_synapseIterator)->status());
+#endif
+    }
+  }
+
+
+
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("erasing from _synapses list");
+#endif
+  __FOR(_synapseIterator, _synapses)
+  {
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("checking if synapse with source %d and destination %d is dead",
+          (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId());
+      if((*_synapseIterator)->status() == __SYNAPSE_STATUS_DEAD)
+      {
+        libRnnLogger.debug("true");
+      }
+      else
+      {
+        libRnnLogger.debug("false");
+      }
+#endif
+    if( (*_synapseIterator)->status() == __SYNAPSE_STATUS_DEAD)
+    {
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("removing synapse with source %d and destination %d from _synapses",
+          (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId());
+#endif
+      _synapses.erase(_synapseIterator);
+      _synapseIterator--;
+    }
+  }
+
+
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("erasing from _incident list");
+#endif
+  __FOR(_synapseIterator, _incident)
+  {
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("checking if synapse with source %d and destination %d is dead",
+          (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId());
+      if((*_synapseIterator)->status() == __SYNAPSE_STATUS_DEAD)
+      {
+        libRnnLogger.debug("true");
+      }
+      else
+      {
+        libRnnLogger.debug("false");
+      }
+#endif
+    if( (*_synapseIterator)->status() == __SYNAPSE_STATUS_DEAD)
+    {
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("removing synapse with source %d and destination %d from _incident",
+          (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId());
+#endif
+      _incident.erase(_synapseIterator);
+      _synapseIterator--;
+    }
+  }
+
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("erasing from _adjacent list");
+#endif
+  __FOR(_synapseIterator, _adjacent)
+  {
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("checking if synapse with source %d and destination %d is dead",
+          (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId());
+      if((*_synapseIterator)->status() == __SYNAPSE_STATUS_DEAD)
+      {
+        libRnnLogger.debug("true");
+      }
+      else
+      {
+        libRnnLogger.debug("false");
+      }
+#endif
+    if( (*_synapseIterator)->status() == __SYNAPSE_STATUS_DEAD)
+    {
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("removing synapse with source %d and destination %d from _adjacent",
+          (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId());
+#endif
+      _adjacent.erase(_synapseIterator);
+      _synapseIterator--;
+    }
+  }
+
+
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("Neuron::cleanUpConnectionsTo: END");
+#endif
+}
+
+
+
+int Neuron::getId()
+{
+  return _id;
 }

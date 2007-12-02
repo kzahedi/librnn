@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS __FOR A PARTICULAR PURPOSE.                                    *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -59,7 +59,7 @@ void librnnUnitTests::testConstructor()
 
 void librnnUnitTests::testTransferfunction()
 {
-  REAL testActivation = 0.0;
+  __REAL testActivation = 0.0;
   Neuron *neuron = new Neuron();
   neuron->setActivation(testActivation);
   CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getActivation(), testActivation,0.0000000001);
@@ -94,7 +94,7 @@ void librnnUnitTests::testSingleNeuronWithOscillation()
 {
   Neuron  *neuron  = new Neuron();
   Synapse *synapse = new Synapse(neuron, neuron, -5);
-  neuron->addSynapse(synapse);
+  neuron->add(synapse);
   neuron->setTransferfunction(transferfunction_tanh);
   neuron->setActivation(1.0);
   neuron->updateOutput();
@@ -160,8 +160,8 @@ void librnnUnitTests::testRecurrentNeuralNetworkWithSingleNeuron()
   Synapse *s = new Synapse(neuron, neuron, -5);
 
   neuron->setTransferfunction(&transferfunction_tanh);
-  rnn->addNeuron(neuron);
-  rnn->addSynapse(s);
+  rnn->add(neuron);
+  rnn->add(s);
 
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(1, neuron->getSynapsesCount());
@@ -194,7 +194,6 @@ void librnnUnitTests::testRecurrentNeuralNetworkWithSingleNeuron()
   CPPUNIT_ASSERT_DOUBLES_EQUAL(-1.0, neuron->getOutput(), 0.01);
   rnn->update();
   CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.01);
-
 }
 
 #ifdef TIME_CONSUMING_TEST
@@ -212,10 +211,10 @@ void librnnUnitTests::testSmallNeuroModule()
 
   inputNeuron->setTransferfunction(&transferfunction_id);
   outputNeuron->setTransferfunction(&transferfunction_tanh);
-  rnn->addNeuron(inputNeuron);
-  rnn->addNeuron(outputNeuron);
-  rnn->addSynapse(woi);
-  rnn->addSynapse(woo);
+  rnn->add(inputNeuron);
+  rnn->add(outputNeuron);
+  rnn->add(woi);
+  rnn->add(woo);
 
   CPPUNIT_ASSERT_EQUAL(1, inputNeuron->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(2, outputNeuron->getSynapsesCount());
@@ -231,9 +230,9 @@ void librnnUnitTests::testSmallNeuroModule()
   CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, inputNeuron->getActivation(), 0.00001);
   CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, outputNeuron->getActivation(), 0.00001);
 
-  REAL output = 0;
-  REAL bias   = -1;
-  REAL delta  = 2.0 / 1000.0;
+  __REAL output = 0;
+  __REAL bias   = -1;
+  __REAL delta  = 2.0 / 1000.0;
 
   // mini bifurcation diagram test
   for(int i=0; i < 1000; i++)
@@ -253,7 +252,6 @@ void librnnUnitTests::testSmallNeuroModule()
     bias += delta;
   }
   CPPUNIT_ASSERT_DOUBLES_EQUAL(output, outputNeuron->getOutput(), 0.000001);
-
 }
 #endif
 
@@ -274,8 +272,8 @@ void librnnUnitTests::testAddingAndDeletingOfSynapses()
   Synapse *w5 = new Synapse(neuron, neuron, -100);
 
   neuron->setTransferfunction(&transferfunction_tanh);
-  rnn->addNeuron(neuron);
-  rnn->addSynapse(woo);
+  rnn->add(neuron);
+  rnn->add(woo);
 
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(1, neuron->getSynapsesCount());
@@ -292,39 +290,39 @@ void librnnUnitTests::testAddingAndDeletingOfSynapses()
 
   CPPUNIT_ASSERT_DOUBLES_EQUAL(-1.00, neuron->getOutput(), 0.00001);
 
-  rnn->delSynapse(woo);
+  rnn->remove(woo);
   CPPUNIT_ASSERT_EQUAL(0, neuron->getSynapsesCount());
 
-  rnn->addSynapse(w1);
-  rnn->addSynapse(w2);
-  rnn->addSynapse(w3);
-  rnn->addSynapse(w4);
-  rnn->addSynapse(w5);
+  rnn->add(w1);
+  rnn->add(w2);
+  rnn->add(w3);
+  rnn->add(w4);
+  rnn->add(w5);
   CPPUNIT_ASSERT_EQUAL(5, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(5, neuron->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(5, rnn->countSynapses());
 
-  rnn->delSynapse(w2);
+  rnn->remove(w2);
   CPPUNIT_ASSERT_EQUAL(4, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(4, neuron->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(4, rnn->countSynapses());
 
-  rnn->delSynapse(w3);
+  rnn->remove(w3);
   CPPUNIT_ASSERT_EQUAL(3, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(3, neuron->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(3, rnn->countSynapses());
 
-  rnn->delSynapse(w1);
+  rnn->remove(w1);
   CPPUNIT_ASSERT_EQUAL(2, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(2, neuron->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(2, rnn->countSynapses());
 
-  rnn->delSynapse(w4);
+  rnn->remove(w4);
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(1, neuron->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
 
-  rnn->delSynapse(w5);
+  rnn->remove(w5);
   CPPUNIT_ASSERT_EQUAL(0, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(0, neuron->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(0, rnn->countSynapses());
@@ -352,7 +350,7 @@ void librnnUnitTests::testAddingAndDeletingOfNeurons()
   Synapse *w42 = new Synapse(n2, n4, 1);
   Synapse *w43 = new Synapse(n3, n4, 1);
 
-  Synapse *w14 = new Synapse(n1, n4, 1);
+  Synapse *w14 = new Synapse(n4, n1, 1);
 
   Synapse *w22 = new Synapse(n2, n2, 1);
   Synapse *w21 = new Synapse(n1, n2, 1);
@@ -363,38 +361,72 @@ void librnnUnitTests::testAddingAndDeletingOfNeurons()
   Synapse *w34 = new Synapse(n4, n3, 1);
   Synapse *w35 = new Synapse(n5, n3, 1);
 
-  rnn->addNeuron(n1);
-  rnn->addNeuron(n2);
-  rnn->addNeuron(n3);
-  rnn->addNeuron(n4);
-  rnn->addNeuron(n5);
+  rnn->add(n1);
+  rnn->add(n2);
+  rnn->add(n3);
+  rnn->add(n4);
+  rnn->add(n5);
 
-  rnn->addSynapse(w51);
-  rnn->addSynapse(w55);
-  rnn->addSynapse(w52);
-  rnn->addSynapse(w44);
-  rnn->addSynapse(w41);
-  rnn->addSynapse(w42);
-  rnn->addSynapse(w43);
-  rnn->addSynapse(w14);
-  rnn->addSynapse(w22);
-  rnn->addSynapse(w21);
-  rnn->addSynapse(w31);
-  rnn->addSynapse(w32);
-  rnn->addSynapse(w33);
-  rnn->addSynapse(w34);
-  rnn->addSynapse(w35);
+  rnn->add(w51);
+  rnn->add(w55);
+  rnn->add(w52);
+  rnn->add(w44);
+  rnn->add(w41);
+  rnn->add(w42);
+  rnn->add(w43);
+  rnn->add(w14);
+  rnn->add(w22);
+  rnn->add(w21);
+  rnn->add(w31);
+  rnn->add(w32);
+  rnn->add(w33);
+  rnn->add(w34);
+  rnn->add(w35);
 
   CPPUNIT_ASSERT_EQUAL(5, rnn->getNeuronCount());
 
   CPPUNIT_ASSERT_EQUAL(15, rnn->getSynapsesCount());
-  CPPUNIT_ASSERT_EQUAL(25, rnn->countSynapses());
+  CPPUNIT_ASSERT_EQUAL(26, rnn->countSynapses());
 
-  rnn->delNeuron(n1);
+  CPPUNIT_ASSERT_EQUAL(4, n5->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(6, n4->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(6, n3->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(5, n2->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(5, n1->getSynapsesCount());
+
+  CPPUNIT_ASSERT_EQUAL(3, n5->getIncidentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(4, n4->getIncidentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(5, n3->getIncidentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(2, n2->getIncidentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(1, n1->getIncidentSynapsesCount());
+
+  CPPUNIT_ASSERT_EQUAL(2, n5->getAdjacentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(3, n4->getAdjacentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(2, n3->getAdjacentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(4, n2->getAdjacentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(4, n1->getAdjacentSynapsesCount());
+
+  rnn->remove(n1);
 
   CPPUNIT_ASSERT_EQUAL(4, rnn->getNeuronCount());
+  CPPUNIT_ASSERT_EQUAL(4, n4->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(5, n3->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(4, n2->getSynapsesCount());
 
-  CPPUNIT_ASSERT_EQUAL(15, rnn->getSynapsesCount());
-  CPPUNIT_ASSERT_EQUAL(25, rnn->countSynapses());
+  CPPUNIT_ASSERT_EQUAL(2, n5->getIncidentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(3, n4->getIncidentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(4, n3->getIncidentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(1, n2->getIncidentSynapsesCount());
 
+  CPPUNIT_ASSERT_EQUAL(2, n5->getAdjacentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(2, n4->getAdjacentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(2, n3->getAdjacentSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(4, n2->getAdjacentSynapsesCount());
+
+  CPPUNIT_ASSERT_EQUAL(10, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(16, rnn->countSynapses());
+
+  CPPUNIT_ASSERT_EQUAL(16, rnn->countSynapses());
+
+  CPPUNIT_ASSERT_EQUAL(3, n5->getSynapsesCount());
 }
