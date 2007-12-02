@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -135,9 +135,9 @@ void testLog4cppTimeConsumption()
   rnn->addSynapse(woi);
   rnn->addSynapse(woo);
 
-  REAL output = 0;
-  REAL bias   = -1;
-  REAL delta  = 2.0 / 1000.0;
+  __REAL output = 0;
+  __REAL bias   = -1;
+  __REAL delta  = 2.0 / 1000.0;
 
   // mini bifurcation diagram test
   for(int i=0; i < 1000; i++)

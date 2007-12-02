@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -98,10 +98,11 @@ int RecurrentNeuralNetwork::getNeuronCount()
  * \param Neuron neuron 
  *
  */
-void RecurrentNeuralNetwork::addNeuron(Neuron *neuron)
+void RecurrentNeuralNetwork::add(Neuron *neuron)
 {
   _neurons.push_back(neuron);
 }
+
 
 
 /*! 
@@ -115,21 +116,33 @@ void RecurrentNeuralNetwork::addNeuron(Neuron *neuron)
  * \param Neuron neuron 
  *
  */
-void RecurrentNeuralNetwork::delNeuron(Neuron *neuron)
+void RecurrentNeuralNetwork::remove(Neuron *neuron)
 {
-  vSYNAPSE list;
-  vSYNAPSE::iterator i;
+  __vSYNAPSE list;
+  __vSYNAPSE_ITERATOR i;
 
-  FOR(_neuronIterator, _neurons)
+  __FOR(_neuronIterator, _neurons)
   {
-    list = (*_neuronIterator)->cleanUpConnectionsTo(neuron);
-    FOR(_synapseIterator, list)
+    //list = (*_neuronIterator)->cleanUpConnectionsTo(neuron);
+    Neuron *n = (*_neuronIterator);
+    n->cleanUpConnectionsTo(neuron);
+  }
+
+  __FOR(_synapseIterator, _synapses)
+  {
+    if( (*_synapseIterator)->status() == __SYNAPSE_STATUS_DEAD)
     {
-      REMOVE_ELEMENT_FROM_VECTOR(_synapses, (*_synapseIterator), i)
+#ifdef USE_LOG4CPP_OUTPUT
+      libRnnLogger.debug("RecurrentNeuralNetwork::remove(Neuron): remove synapse with source %d and destination %d", 
+          (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId());
+#endif
+      _synapses.erase(_synapseIterator);
       delete (*_synapseIterator);
+      _synapseIterator--;
     }
   }
-  REMOVE_ELEMENT_FROM_VECTOR(_neurons,neuron,_neuronIterator)
+
+  __REMOVE_ELEMENT_FROM_VECTOR(_neurons, neuron, _neuronIterator)
   delete neuron;
 }
 
@@ -146,7 +159,7 @@ void RecurrentNeuralNetwork::delNeuron(Neuron *neuron)
  * \return boolean if the synapse was added or not
  *
  */
-void RecurrentNeuralNetwork::addSynapse(Synapse *synapse)
+void RecurrentNeuralNetwork::add(Synapse *synapse)
 {
   Neuron *source      = synapse->source();
   Neuron *destination = synapse->destination();
@@ -155,27 +168,26 @@ void RecurrentNeuralNetwork::addSynapse(Synapse *synapse)
 
   if(source == destination)
   {
-    source->addSynapse(synapse);
+    source->add(synapse);
   }
   else
   {
-    source->addSynapse(synapse);
-    destination->addSynapse(synapse);
+    source->add(synapse);
+    destination->add(synapse);
   }
 }
 
 
 
-void RecurrentNeuralNetwork::delSynapse(Synapse *synapse)
+void RecurrentNeuralNetwork::remove(Synapse *synapse)
 {
-
   Neuron *source      = synapse->source();
   Neuron *destination = synapse->destination();
 
-  source->delSynapse(synapse);
-  destination->delSynapse(synapse);
+  source->remove(synapse);
+  destination->remove(synapse);
 
-  REMOVE_ELEMENT_FROM_VECTOR(_synapses,synapse,_synapseIterator)
+  __REMOVE_ELEMENT_FROM_VECTOR(_synapses,synapse,_synapseIterator)
 }
 
 
@@ -191,7 +203,7 @@ int RecurrentNeuralNetwork::countSynapses()
 {
   int numberOfSynapses = 0;
 
-  FOR(_neuronIterator, _neurons)
+  __FOR(_neuronIterator, _neurons)
   {
     numberOfSynapses += (*_neuronIterator)->getSynapsesCount();
   }
@@ -202,14 +214,13 @@ int RecurrentNeuralNetwork::countSynapses()
 
 void RecurrentNeuralNetwork::update()
 {
-  FOR(_neuronIterator, _neurons)
+  __FOR(_neuronIterator, _neurons)
   {
     (*_neuronIterator)->updateActivation();
   }
 
-  FOR(_neuronIterator, _neurons)
+  __FOR(_neuronIterator, _neurons)
   {
     (*_neuronIterator)->updateOutput();
   }
-
 }

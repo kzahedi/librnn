@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -31,9 +31,9 @@
 
 // using float or double precision
 #ifdef USE_FLOAT_PRECISION
-#define REAL float
+#define __REAL float
 #elif USE_DOUBLE_PRECISION
-#define REAL double
+#define __REAL double
 #else
 #error You must #define USE_FLOAT_PRECISION or USE_DOUBLE_PRECISION 
 #endif
@@ -43,10 +43,13 @@ using namespace std;
 #include <vector>
 
 // transfer-function function pointer
-typedef REAL (*Transferfunction) (REAL);
+typedef __REAL (*Transferfunction) (__REAL);
 
-#define vSYNAPSE vector<Synapse*>
-#define vNEURON  vector<Neuron*>
+#define __vSYNAPSE vector<Synapse*>
+#define __vNEURON  vector<Neuron*>
+
+#define __vSYNAPSE_ITERATOR vector<Synapse*>::iterator
+#define __vNEURON_ITERATOR  vector<Neuron*>::iterator
 
 //forward declaration, such that synapses and neurons can reference each other
 namespace librnn 
@@ -54,5 +57,7 @@ namespace librnn
   class Synapse;
   class Neuron;
 }
+
+static int numberOfNeurons = 0;
 
 #endif //__DEFINES_H__

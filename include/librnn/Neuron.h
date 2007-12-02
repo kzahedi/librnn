@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -72,23 +72,26 @@ namespace librnn
 
       void setTransferfunction(Transferfunction transferfunction);
 
-      void addSynapse(Synapse *synapse);
-      void delSynapse(Synapse *synapse);
+      void add(Synapse *synapse);
+      void remove(Synapse *synapse);
       Synapse* getSynapse(int index);
 
-      void setActivation(REAL activation);
+      void setActivation(__REAL activation);
 
       int  getSynapsesCount();
       int  getAdjacentSynapsesCount();
       int  getIncidentSynapsesCount();
 
-      REAL getActivation();
-      REAL getOutput();
+      __REAL getActivation();
+      __REAL getOutput();
 
-      void setBias(REAL bias);
-      REAL getBias();
+      void setBias(__REAL bias);
+      __REAL getBias();
 
-      vSYNAPSE cleanUpConnectionsTo(Neuron *neuron);
+      void cleanUpConnectionsTo(Neuron *neuron);
+
+      int getId();
+
 
     private:
       void addIncidentSynapse(Synapse *synapse);
@@ -96,17 +99,19 @@ namespace librnn
       void delIncidentSynapse(Synapse *synapse);
       void delAdjacentSynapse(Synapse *synapse);
 
-      REAL _activation;
-      REAL _bias;
-      REAL _output;
+      int _id;
+
+      __REAL _activation;
+      __REAL _bias;
+      __REAL _output;
 
       Transferfunction _transferfunction;
 
-      vSYNAPSE _incident;
-      vSYNAPSE _adjacent;
-      vSYNAPSE _synapses;
+      __vSYNAPSE _incident;
+      __vSYNAPSE _adjacent;
+      __vSYNAPSE _synapses;
 
-      vSYNAPSE::iterator _synapseIterator;
+      __vSYNAPSE::iterator _synapseIterator;
   };
 }
 
