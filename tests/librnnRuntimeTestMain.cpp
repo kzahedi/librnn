@@ -81,7 +81,7 @@ static long testAddNeurons()
   for(int i=0;i < 1000000; i++)
   {
     Neuron *n = new Neuron();
-    rnn->addNeuron(n);
+    rnn->add(n);
   }
   long time = stopTiming();
   printTime(time);
@@ -102,9 +102,9 @@ static long testAddSynapses()
     for(int j=0;j < 1000; j++)
     {
       Synapse *s = new Synapse();
-      n->addSynapse(s);
+      n->add(s);
     }
-    rnn->addNeuron(n);
+    rnn->add(n);
   }
   long time = stopTiming();
   printTime(time);
@@ -130,10 +130,10 @@ void testLog4cppTimeConsumption()
 
   inputNeuron->setTransferfunction(&transferfunction_id);
   outputNeuron->setTransferfunction(&transferfunction_tanh);
-  rnn->addNeuron(inputNeuron);
-  rnn->addNeuron(outputNeuron);
-  rnn->addSynapse(woi);
-  rnn->addSynapse(woo);
+  rnn->add(inputNeuron);
+  rnn->add(outputNeuron);
+  rnn->add(woi);
+  rnn->add(woo);
 
   __REAL output = 0;
   __REAL bias   = -1;
