@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -27,11 +27,6 @@
 // first naive implementation to get a feeling for RNN
 // to test between list and vector implementation
 #include <librnn/RecurrentNeuralNetwork.h>
-
-#include <utility>                   // for std::pair
-#include <algorithm>                 // for std::for_each
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-
 
 
 using namespace std;
@@ -102,6 +97,7 @@ void RecurrentNeuralNetwork::add(Neuron *neuron)
 {
   _neurons.push_back(neuron);
 }
+
 
 
 
@@ -224,3 +220,51 @@ void RecurrentNeuralNetwork::update()
     (*_neuronIterator)->updateOutput();
   }
 }
+
+
+void RecurrentNeuralNetwork::add(Neuron *neuron, Synapse *synapse)
+{
+  neuron->add(synapse);
+}
+
+void RecurrentNeuralNetwork::updateActivation(Neuron *neuron)
+{
+  neuron->updateActivation();
+}
+
+void RecurrentNeuralNetwork::updateOutput(Neuron *neuron)
+{
+  neuron->updateOutput();
+}
+
+int RecurrentNeuralNetwork::getSynapsesCount(Neuron *neuron)
+{
+  return neuron->getSynapsesCount();
+}
+
+int RecurrentNeuralNetwork::getAdjacentSynapsesCount(Neuron *neuron)
+{
+  return neuron->getAdjacentSynapsesCount();
+}
+
+int RecurrentNeuralNetwork::getIncidentSynapsesCount(Neuron *neuron)
+{
+  return neuron->getIncidentSynapsesCount();
+}
+
+
+Synapse*  RecurrentNeuralNetwork::getSynapse(Neuron *neuron, int index)
+{
+  return neuron->getSynapse(index);
+}
+
+__REAL RecurrentNeuralNetwork::getActivation(Neuron *neuron)
+{
+  return neuron->getActivation();
+}
+
+__REAL RecurrentNeuralNetwork::getOutput(Neuron *neuron)
+{
+  return neuron->getOutput();
+}
+

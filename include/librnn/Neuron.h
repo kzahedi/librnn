@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -61,6 +61,7 @@ namespace librnn
       std::string m_what;
   };
 
+#ifdef USE_VECTOR
   class Neuron
   {
     public:
@@ -113,6 +114,40 @@ namespace librnn
 
       __vSYNAPSE::iterator _synapseIterator;
   };
-}
+#endif // USE_VECTOR
+#ifdef USE_MATRIX
+  class Neuron
+  {
+    public:
+      Neuron();
+      ~Neuron();
 
+      void updateActivation();
+      void updateOutput() throw(librnn::NeuronException);
+
+      void setTransferfunction(Transferfunction transferfunction);
+
+      void setActivation(__REAL activation);
+      __REAL getActivation();
+
+      __REAL getOutput();
+
+      void setBias(__REAL bias);
+      __REAL getBias();
+
+      int getId();
+
+      void copy(Neuron *neuron);
+
+    private:
+      int _id;
+
+      __REAL _activation;
+      __REAL _bias;
+      __REAL _output;
+
+      Transferfunction _transferfunction;
+  };
+#endif // USE_MATRIX
+}
 #endif // __NEURON_H__

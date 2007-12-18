@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -27,17 +27,19 @@
 #ifndef __LIBRNN_H__
 #define __LIBRNN_H__
 
-#include <librnn/config.h>
-#include <librnn/defines.h>
-#include <librnn/macros.h>
 
 #ifdef USE_LOG4CPP_OUTPUT
 #include <librnn/Logger.hpp>
 #endif
 
+#include <librnn/defines.h>
+
 #include <librnn/Neuron.h>
 #include <librnn/Synapse.h>
 #include <librnn/RecurrentNeuralNetwork.h>
 #include <librnn/transferfunctions.h>
+
+#include <librnn/config.h>
+#include <librnn/macros.h>
 
 #endif // __LIBRNN_H__

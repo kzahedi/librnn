@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -99,12 +99,12 @@ static long testAddSynapses()
   for(int i=0;i < 1000; i++)
   {
     Neuron *n = new Neuron();
+    rnn->add(n);
     for(int j=0;j < 1000; j++)
     {
       Synapse *s = new Synapse();
-      n->add(s);
+      rnn->add(n,s);
     }
-    rnn->add(n);
   }
   long time = stopTiming();
   printTime(time);
@@ -143,8 +143,8 @@ void testLog4cppTimeConsumption()
   for(int i=0; i < 1000; i++)
   {
     inputNeuron->setBias(bias);
-    inputNeuron->updateActivation();
-    inputNeuron->updateOutput();
+    rnn->updateActivation(inputNeuron);
+    rnn->updateOutput(inputNeuron);
     for(int j=0; j < 1000; j++)
     {
       rnn->update();

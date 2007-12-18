@@ -13,7 +13,7 @@
  #                                                                        #
  # librnn is distributed in the hope that it will be useful, but WITHOUT  #
  # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  #
- # FITNESS __FOR A PARTICULAR PURPOSE.                                      #
+ # FITNESS FOR A PARTICULAR PURPOSE.                                      #
  #                                                                        #
  # You should have received a copy of the GNU General Public License      #
  # along with librnn in the file COPYING; if not, write to the Free       #
