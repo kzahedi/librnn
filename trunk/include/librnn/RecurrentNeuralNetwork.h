@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS __FOR A PARTICULAR PURPOSE.                                      *
+ * FITNESS FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -84,6 +84,13 @@ namespace librnn
 
       void add(Neuron *neuron);
       void remove(Neuron *neuron);
+      void add(Neuron *neuron, Synapse *synapse);
+
+      void updateActivation(Neuron *neuron);
+      void updateOutput(Neuron *neuron);
+      
+      __REAL getActivation(Neuron *neuron);
+      __REAL getOutput(Neuron *neuron);
 
       void add(Synapse *synapse);
       void remove(Synapse *synapse);
@@ -91,18 +98,35 @@ namespace librnn
       int  getSynapsesCount();
       int  countSynapses();
 
+      int  getSynapsesCount(Neuron *neuron);
+      int  getAdjacentSynapsesCount(Neuron *neuron);
+      int  getIncidentSynapsesCount(Neuron *neuron);
+
+      Synapse*  getSynapse(Neuron *neuron, int index);
+
       void update();
 
     private:
-      /// vector of neurons in the network 
-      __vNEURON _neurons; 
+#ifdef USE_VECTOR
+      // TODO for vector only
+      /// vector of neurons in the network
+      __vNEURON           _neurons;
       /// iterator for the neurons vector
-      __vNEURON_ITERATOR _neuronIterator; 
+      __vNEURON_ITERATOR  _neuronIterator;
 
-      /// vector of synapses in the network 
-      __vSYNAPSE _synapses; 
-      /// iterator for the synapses vector 
+      /// vector of synapses in the network
+      __vSYNAPSE          _synapses;
+      /// iterator for the synapses vector
       __vSYNAPSE_ITERATOR _synapseIterator;
+#endif // USE_VECTOR
+
+#ifdef USE_MATRIX
+      // TODO for matrix only
+      int _numberOfNeurons;
+      int _numberOfSynapses;
+      Neuron              *_neurons;
+      Synapse             *_synapses;
+#endif // USE_MATRIX
 
   };
 }
