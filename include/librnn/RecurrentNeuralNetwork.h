@@ -121,6 +121,8 @@ namespace librnn
 #endif // USE_VECTOR
 
 #ifdef USE_MATRIX
+      void __cleanUpAndExit();
+      void __cleanUp();
       // TODO for matrix only
       int _numberOfNeurons;
       int _numberOfSynapses;
