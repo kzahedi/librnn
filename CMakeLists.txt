@@ -31,6 +31,7 @@ INCLUDE(modules/SetTestingOptions.cmake)
 INCLUDE(modules/ConfigFile.cmake)
 INCLUDE(modules/OutputConfiguration.cmake)
 INCLUDE(modules/CPackConfiguration.cmake)
+INCLUDE(modules/CMakeOSSpecifics.cmake)
 
 
 # Recurse into the "Hello" and "Demo" subdirectories.  This does not actually
