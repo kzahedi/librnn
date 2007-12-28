@@ -27,7 +27,9 @@
 #include <librnn/librnn.h>
 #include <iostream>
 #include <sys/time.h>
+#ifndef WIN32
 #include <sys/resource.h>
+#endif
 #include <time.h>
 #include <vector>
 
