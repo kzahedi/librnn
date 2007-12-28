@@ -64,6 +64,7 @@ RecurrentNeuralNetwork::RecurrentNeuralNetwork()
  */
 RecurrentNeuralNetwork::~RecurrentNeuralNetwork()
 {
+  __cleanUp();
 }
 
 
@@ -130,9 +131,45 @@ void RecurrentNeuralNetwork::add(Neuron *neuron)
  */
 void RecurrentNeuralNetwork::remove(Neuron *neuron)
 {
+  int removeIndex = -1;
+  for(int i=0; i < _numberOfNeurons; i++)
+  {
+    if( neuron->getId() == (_neurons[i]).getId())
+    {
+      removeIndex = i;
+      break;
+    }
+  }
+  if(removeIndex == -1)
+  {
 #ifdef USE_LOG4CPP_OUTPUT
-  libRnnLogger.fatal("remove - not implement yet");
+    libRnnLogger.fatal("removed unknown neuron with index %d", neuron->getId());
+    __cleanUpAndExit();
 #endif // USE_LOG4CPP_OUTPUT
+  }
+
+  Neuron *tmpNeuronArray = new Neuron[_numberOfNeurons-1];
+  int tmpIndex = -1;
+  int copyIndex = -1;
+  for(int i=0; i < _numberOfNeurons; i++)
+  {
+    copyIndex++;
+    if(i == removeIndex)
+    {
+      continue;
+    }
+    tmpIndex++;
+    tmpNeuronArray[tmpIndex] = _neurons[copyIndex];
+  }
+  delete[] _neurons;
+  _neurons = new Neuron[_numberOfNeurons-1];
+  for(int i=0; i < _numberOfNeurons-1; i++)
+  {
+    _neurons[i] = tmpNeuronArray[i];
+  }
+  _numberOfNeurons--;
+
+
 }
 
 
@@ -262,5 +299,16 @@ __REAL RecurrentNeuralNetwork::getOutput(Neuron *neuron)
   libRnnLogger.fatal("getOutput - not implement yet");
 #endif // USE_LOG4CPP_OUTPUT
   return -1;
+}
+
+void RecurrentNeuralNetwork::__cleanUp()
+{
+  delete[] _neurons;
+  delete[] _synapses;
+}
+
+void RecurrentNeuralNetwork::__cleanUpAndExit()
+{
+  exit(-1);
 }
 
