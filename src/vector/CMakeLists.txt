@@ -22,11 +22,11 @@
  #                                                                        #
  ##########################################################################
 
-add_library(rnn SHARED Neuron.cpp RecurrentNeuralNetwork.cpp Synapse.cpp)
+add_library(rnnVector SHARED Neuron.cpp RecurrentNeuralNetwork.cpp Synapse.cpp)
 include_directories("${PROJECT_SOURCE_DIR}/include/" "${PROJECT_BINARY_DIR}/include/")
 
 if(LIBRNN_USE_LOG4CPP_OUTPUT)
-  target_link_libraries(rnn log4cpp)
+  target_link_libraries(rnnVector log4cpp)
   message("linking log4cpp to rnn")
   message("NOT linking log4cpp to test programs")
 else(LIBRNN_USE_LOG4CPP_OUTPUT)
