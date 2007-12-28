@@ -331,6 +331,49 @@ void librnnUnitTests::testAddingAndDeletingOfSynapses()
   CPPUNIT_ASSERT_EQUAL(0, rnn->countSynapses());
 }
 
+void librnnUnitTests::testAddingAndDeletingOfNeuronsWithNoSynapses()
+{
+#ifdef USE_LOG4CPP_OUTPUT
+  libRnnLogger.setPriority(log4cpp::Priority::DEBUG);
+#endif // USE_LOG4CPP_OUTPUT
+
+  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
+  Neuron  *n1 = new Neuron();
+  Neuron  *n2 = new Neuron();
+  Neuron  *n3 = new Neuron();
+  Neuron  *n4 = new Neuron();
+  Neuron  *n5 = new Neuron();
+
+  rnn->add(n1);
+  rnn->add(n2);
+  rnn->add(n3);
+  rnn->add(n4);
+  rnn->add(n5);
+
+  CPPUNIT_ASSERT_EQUAL(5, rnn->getNeuronCount());
+
+  rnn->remove(n1);
+
+  CPPUNIT_ASSERT_EQUAL(4, rnn->getNeuronCount());
+
+  CPPUNIT_ASSERT_EQUAL(n2, rnn->neuron(0));
+  CPPUNIT_ASSERT_EQUAL(n3, rnn->neuron(1));
+  CPPUNIT_ASSERT_EQUAL(n4, rnn->neuron(2));
+  CPPUNIT_ASSERT_EQUAL(n5, rnn->neuron(3));
+
+  rnn->remove(n3);
+
+  CPPUNIT_ASSERT_EQUAL(n2, rnn->neuron(0));
+  CPPUNIT_ASSERT_EQUAL(n4, rnn->neuron(1));
+  CPPUNIT_ASSERT_EQUAL(n5, rnn->neuron(2));
+
+  rnn->remove(n4);
+
+  CPPUNIT_ASSERT_EQUAL(n2, rnn->neuron(0));
+  CPPUNIT_ASSERT_EQUAL(n5, rnn->neuron(1));
+
+}
+
 void librnnUnitTests::testAddingAndDeletingOfNeurons()
 {
 #ifdef USE_LOG4CPP_OUTPUT

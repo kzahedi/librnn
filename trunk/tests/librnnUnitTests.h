@@ -33,6 +33,7 @@
 class librnnUnitTests : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(librnnUnitTests);
+  CPPUNIT_TEST(testAddingAndDeletingOfNeuronsWithNoSynapses);
   CPPUNIT_TEST(testConstructor);
   CPPUNIT_TEST(testTransferfunction);
   CPPUNIT_TEST(testSingleNeuronWithOscillation);
@@ -59,6 +60,7 @@ public:
 #endif // TIME_CONSUMING
   void testAddingAndDeletingOfSynapses();
   void testAddingAndDeletingOfNeurons();
+  void testAddingAndDeletingOfNeuronsWithNoSynapses();
 };
 
 #endif // __LIBRNN_TEST_H__
