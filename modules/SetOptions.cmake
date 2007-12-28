@@ -22,6 +22,9 @@ OPTION(LIBRNN_DESIGN_BY_CONTRACT
   "Build function with design by contract."
   ON)
 
+OPTION(LIBRNN_USE_RUNTIME_TEST
+  "Compile and run runtime tests."
+  OFF)
 
 
 
