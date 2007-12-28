@@ -28,6 +28,13 @@ else(LIBRNN_DOUBLE_PRECISION)
   message("Building using FLOAT precision.")
 endif(LIBRNN_DOUBLE_PRECISION)
 
+message("> Runtime-test configuration.")
+IF(LIBRNN_USE_RUNTIME_TEST)
+  message("Building runtime tests.")
+else(LIBRNN_USE_RUNTIME_TEST)
+  message("NOT Building runtime tests.")
+endif(LIBRNN_USE_RUNTIME_TEST)
+
 message("> Build options: Unit tests.")
 IF(LIBRNN_USE_ONLY_FAST_TESTS)
   message("--> only testing with FAST tests.")
