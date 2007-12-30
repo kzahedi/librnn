@@ -126,11 +126,14 @@ namespace librnn
       void updateOutput() throw(librnn::NeuronException);
 
       void setTransferfunction(Transferfunction transferfunction);
+      __REAL transfer(__REAL x) throw(librnn::NeuronException);
 
       void setActivation(__REAL activation);
+
       __REAL getActivation();
 
       __REAL getOutput();
+      void setOutput(__REAL output);
 
       void setBias(__REAL bias);
       __REAL getBias();
