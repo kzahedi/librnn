@@ -268,3 +268,8 @@ __REAL RecurrentNeuralNetwork::getOutput(Neuron *neuron)
   return neuron->getOutput();
 }
 
+Neuron* RecurrentNeuralNetwork::getNeuron(int index)
+{
+  return _neurons[index];
+}
+
