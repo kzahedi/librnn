@@ -60,6 +60,20 @@ void Neuron::setTransferfunction(Transferfunction transferfunction)
   _transferfunction = transferfunction;
 }
 
+__REAL Neuron::transfer(__REAL x) throw(NeuronException)
+{
+  if(_transferfunction == NULL)
+  {
+    throw NeuronException("no transfer function specified");
+  }
+  return _transferfunction(_activation);
+}
+
+
+void Neuron::setOutput(__REAL output)
+{
+  _output = output;
+}
 
 
 __REAL Neuron::getOutput()
