@@ -13,7 +13,7 @@
  *                                                                        *
  * librnn is distributed in the hope that it will be useful, but WITHOUT  *
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or  *
- * FITNESS FOR A PARTICULAR PURPOSE.                                    *
+ * FITNESS FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
  * along with librnn in the file COPYING; if not, write to the Free       *
@@ -66,7 +66,7 @@ void librnnUnitTests::testTransferfunction()
   CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getActivation(), testActivation,0.0000000001);
   neuron->setTransferfunction(&transferfunction_tanh);
   rnn->updateOutput(neuron);
-  CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getActivation(), transferfunction_tanh(testActivation),0.0000000001);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(transferfunction_tanh(testActivation), neuron->getActivation(), 0.0000000001);
   
   testActivation = 1.0;
   neuron->setActivation(testActivation);
@@ -356,21 +356,21 @@ void librnnUnitTests::testAddingAndDeletingOfNeuronsWithNoSynapses()
 
   CPPUNIT_ASSERT_EQUAL(4, rnn->getNeuronCount());
 
-  CPPUNIT_ASSERT_EQUAL(n2, rnn->neuron(0));
-  CPPUNIT_ASSERT_EQUAL(n3, rnn->neuron(1));
-  CPPUNIT_ASSERT_EQUAL(n4, rnn->neuron(2));
-  CPPUNIT_ASSERT_EQUAL(n5, rnn->neuron(3));
+  CPPUNIT_ASSERT_EQUAL(n2, rnn->getNeuron(0));
+  CPPUNIT_ASSERT_EQUAL(n3, rnn->getNeuron(1));
+  CPPUNIT_ASSERT_EQUAL(n4, rnn->getNeuron(2));
+  CPPUNIT_ASSERT_EQUAL(n5, rnn->getNeuron(3));
 
   rnn->remove(n3);
 
-  CPPUNIT_ASSERT_EQUAL(n2, rnn->neuron(0));
-  CPPUNIT_ASSERT_EQUAL(n4, rnn->neuron(1));
-  CPPUNIT_ASSERT_EQUAL(n5, rnn->neuron(2));
+  CPPUNIT_ASSERT_EQUAL(n2, rnn->getNeuron(0));
+  CPPUNIT_ASSERT_EQUAL(n4, rnn->getNeuron(1));
+  CPPUNIT_ASSERT_EQUAL(n5, rnn->getNeuron(2));
 
   rnn->remove(n4);
 
-  CPPUNIT_ASSERT_EQUAL(n2, rnn->neuron(0));
-  CPPUNIT_ASSERT_EQUAL(n5, rnn->neuron(1));
+  CPPUNIT_ASSERT_EQUAL(n2, rnn->getNeuron(0));
+  CPPUNIT_ASSERT_EQUAL(n5, rnn->getNeuron(1));
 
 }
 
