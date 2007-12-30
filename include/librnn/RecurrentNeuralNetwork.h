@@ -103,6 +103,7 @@ namespace librnn
       int  getIncidentSynapsesCount(Neuron *neuron);
 
       Synapse*  getSynapse(Neuron *neuron, int index);
+      Neuron*   getNeuron(int index);
 
       void update();
 
@@ -126,8 +127,8 @@ namespace librnn
       // TODO for matrix only
       int _numberOfNeurons;
       int _numberOfSynapses;
-      Neuron              *_neurons;
-      Synapse             *_synapses;
+      Neuron              **_neurons;
+      Synapse             **_synapses;
 #endif // USE_MATRIX
 
   };
