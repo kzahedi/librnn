@@ -261,7 +261,6 @@ void librnnUnitTests::testSmallNeuroModule()
 
 void librnnUnitTests::testAddingAndDeletingOfSynapses()
 {
-  cout << "librnnUnitTests::testAddingAndDeletingOfSynapses " << endl;
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.setPriority(log4cpp::Priority::DEBUG);
 #endif // USE_LOG4CPP_OUTPUT
@@ -298,39 +297,70 @@ void librnnUnitTests::testAddingAndDeletingOfSynapses()
   rnn->remove(woo);
   CPPUNIT_ASSERT_EQUAL(0, rnn->getSynapsesCount(neuron));
 
-  cout << "adding synapse 1" << endl;
   rnn->add(w1);
-  cout << "adding synapse 2" << endl;
   rnn->add(w2);
-  cout << "adding synapse 3" << endl;
   rnn->add(w3);
-  cout << "adding synapse 4" << endl;
   rnn->add(w4);
-  cout << "adding synapse 5" << endl;
   rnn->add(w5);
+
+#ifdef USE_VECTOR
   CPPUNIT_ASSERT_EQUAL(5, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(5, rnn->getSynapsesCount(neuron));
   CPPUNIT_ASSERT_EQUAL(5, rnn->countSynapses());
-
-  rnn->remove(w2);
-  CPPUNIT_ASSERT_EQUAL(4, rnn->getSynapsesCount());
-  CPPUNIT_ASSERT_EQUAL(4, rnn->getSynapsesCount(neuron));
-  CPPUNIT_ASSERT_EQUAL(4, rnn->countSynapses());
-
-  rnn->remove(w3);
-  CPPUNIT_ASSERT_EQUAL(3, rnn->getSynapsesCount());
-  CPPUNIT_ASSERT_EQUAL(3, rnn->getSynapsesCount(neuron));
-  CPPUNIT_ASSERT_EQUAL(3, rnn->countSynapses());
-
-  rnn->remove(w1);
-  CPPUNIT_ASSERT_EQUAL(2, rnn->getSynapsesCount());
-  CPPUNIT_ASSERT_EQUAL(2, rnn->getSynapsesCount(neuron));
-  CPPUNIT_ASSERT_EQUAL(2, rnn->countSynapses());
-
-  rnn->remove(w4);
+#endif // USE_VECTOR
+#ifdef USE_MATRIX
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(neuron));
   CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
+#endif // USE_MATRIX
+
+  rnn->remove(w2);
+#ifdef USE_VECTOR
+  CPPUNIT_ASSERT_EQUAL(4, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(4, rnn->getSynapsesCount(neuron));
+  CPPUNIT_ASSERT_EQUAL(4, rnn->countSynapses());
+#endif // USE_VECTOR
+#ifdef USE_MATRIX
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(neuron));
+  CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
+#endif // USE_MATRIX
+
+  rnn->remove(w3);
+#ifdef USE_VECTOR
+  CPPUNIT_ASSERT_EQUAL(3, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(3, rnn->getSynapsesCount(neuron));
+  CPPUNIT_ASSERT_EQUAL(3, rnn->countSynapses());
+#endif // USE_VECTOR
+#ifdef USE_MATRIX
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(neuron));
+  CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
+#endif // USE_MATRIX
+
+  rnn->remove(w1);
+#ifdef USE_VECTOR
+  CPPUNIT_ASSERT_EQUAL(2, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(2, rnn->getSynapsesCount(neuron));
+  CPPUNIT_ASSERT_EQUAL(2, rnn->countSynapses());
+#endif // USE_VECTOR
+#ifdef USE_MATRIX
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(neuron));
+  CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
+#endif // USE_MATRIX
+
+  rnn->remove(w4);
+#ifdef USE_VECTOR
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(neuron));
+  CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
+#endif // USE_VECTOR
+#ifdef USE_MATRIX
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(neuron));
+  CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
+#endif // USE_MATRIX
 
   rnn->remove(w5);
   CPPUNIT_ASSERT_EQUAL(0, rnn->getSynapsesCount());

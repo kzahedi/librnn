@@ -98,6 +98,10 @@ Neuron* Synapse::destination()
 void Synapse::setStatus(int status)
 {
   _status = status;
+  if(_status == __SYNAPSE_STATUS_DEAD)
+  {
+    _strength == 0;
+  }
 }
 
 int Synapse::status()
