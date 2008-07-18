@@ -26,10 +26,18 @@ OPTION(LIBRNN_USE_RUNTIME_TEST
   "Compile and run runtime tests."
   OFF)
 
+SET(LIBRNN_ADDITIONAL_INCLUDE_PATHS "" CACHE STRING
+  "Additional include directories.")
 
+SET(LIBRNN_ADDITIONAL_LIBS_PATHS "" CACHE STRING
+  "Additional libraries directories.")
 
 IF(LIBRNN_DEBUG)
   set(CMAKE_BUILD_TYPE Debug)
 else(LIBRNN_DEBUG)
   set(CMAKE_BUILD_TYPE Relase)
 ENDIF(LIBRNN_DEBUG)
+
+include_directories("${LIBRNN_ADDITIONAL_INCLUDE_PATHS}")
+link_directories("${LIBRNN_ADDITIONAL_LIBS_PATHS}")
+
