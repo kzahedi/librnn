@@ -141,14 +141,16 @@ void RecurrentNeuralNetwork::add(Neuron *neuron)
     }
   }
 
-  for(int i=0; i < _numberOfNeurons; i++)
+  for(int i=0; i < _numberOfNeurons + 1; i++)
   {
     // last column
     _synapses[ _numberOfNeurons + (_numberOfNeurons * i)] = 
       new Synapse(NULL, NULL, 0); 
+    _synapses[ _numberOfNeurons + (_numberOfNeurons * i)]->setStatus(__SYNAPSE_STATUS_DEAD);
     // last row
     _synapses[ (_numberOfNeurons - 1 ) * _numberOfNeurons + i] =
       new Synapse(NULL, NULL, 0); 
+    _synapses[ (_numberOfNeurons - 1 ) * _numberOfNeurons + i]->setStatus(__SYNAPSE_STATUS_DEAD);
   }
 
   for(int i=0; i < _numberOfNeurons * _numberOfNeurons; i++)
@@ -224,15 +226,22 @@ void RecurrentNeuralNetwork::remove(Neuron *neuron)
  */
 void RecurrentNeuralNetwork::add(Synapse *synapse)
 {
-#ifdef USE_LOG4CPP_OUTPUT
-  libRnnLogger.fatal("add - not implement yet");
-#endif // USE_LOG4CPP_OUTPUT
   int sourceIndex = __getSourceIndex(synapse);
   int destinationIndex = __getDestinationIndex(synapse);
+  if(sourceIndex == -1 || destinationIndex == -1)
+  {
+#ifdef USE_LOG4CPP_OUTPUT
+    libRnnLogger.fatal("add - unknown source or destination");
+#endif // USE_LOG4CPP_OUTPUT
+    __cleanUpAndExit();
+  }
+
+  synapse->setStatus(__SYNAPSE_STATUS_VALID);
+  __setSynapse(destinationIndex, sourceIndex,synapse);
+
 
 
   _numberOfSynapses++;
-  synapse->setStatus(__SYNAPSE_STATUS_VALID);
 
 }
 
@@ -240,9 +249,6 @@ void RecurrentNeuralNetwork::add(Synapse *synapse)
 
 void RecurrentNeuralNetwork::remove(Synapse *synapse)
 {
-#ifdef USE_LOG4CPP_OUTPUT
-  libRnnLogger.fatal("remove - not implement yet");
-#endif // USE_LOG4CPP_OUTPUT
 }
 
 
@@ -256,18 +262,36 @@ int RecurrentNeuralNetwork::getSynapsesCount()
 
 int RecurrentNeuralNetwork::countSynapses()
 {
-#ifdef USE_LOG4CPP_OUTPUT
-  libRnnLogger.fatal("countSynapses - not implement yet");
-#endif // USE_LOG4CPP_OUTPUT
+  int count = 0;
+  for(int j = 0; j < _numberOfNeurons; j++)
+  {
+    for(int i = 0; i < _numberOfNeurons; i++)
+    {
+      if(__synapse(i,j)->status() == __SYNAPSE_STATUS_VALID)
+      {
+        count++;
+      }
+      if(i != j && __synapse(j,i)->status() == __SYNAPSE_STATUS_VALID)
+      {
+        count++;
+      }
+    }
+  }
+  return count;
 }
 
 
 
 void RecurrentNeuralNetwork::update()
 {
-#ifdef USE_LOG4CPP_OUTPUT
-  libRnnLogger.fatal("update - not implement yet");
-#endif // USE_LOG4CPP_OUTPUT
+  for(int i = 0; i < _numberOfNeurons; i++)
+  {
+    updateActivation(_neurons[i]);
+  }
+  for(int i = 0; i < _numberOfNeurons; i++)
+  {
+    updateOutput(_neurons[i]);
+  }
 }
 
 
@@ -279,15 +303,15 @@ void RecurrentNeuralNetwork::updateActivation(Neuron *neuron)
   libRnnLogger.fatal("updateActivation - not implement yet");
 #endif // USE_LOG4CPP_OUTPUT
   __REAL activation = 0;
-  for(int i=0; i < _numberOfNeurons; i++)
+  for(int i = 0; i < _numberOfNeurons; i++)
   {
-    activation = _neurons[i]->getBias();
-    for(int i=0; i < _numberOfNeurons; i++)
+    __REAL f = 0;
+    for(int j = 0; j < _numberOfNeurons; j++)
     {
-      // TODO update input from other synapses
+      f += __synapse(j,i)->strength() * _neurons[j]->getOutput();
     }
+    _neurons[i]->setActivation(f);
   }
-
 }
 
 void RecurrentNeuralNetwork::updateOutput(Neuron *neuron)
@@ -300,10 +324,27 @@ void RecurrentNeuralNetwork::updateOutput(Neuron *neuron)
 
 int RecurrentNeuralNetwork::getSynapsesCount(Neuron *neuron)
 {
+  int count = 0;
+  int index = __getNeuronIndex(neuron);
+  if(index == -1)
+  {
 #ifdef USE_LOG4CPP_OUTPUT
-  libRnnLogger.fatal("getSynapsesCount - not implement yet");
+    libRnnLogger.fatal("unknown neuron");
 #endif // USE_LOG4CPP_OUTPUT
-  return -1;
+    exit(-1);
+  }
+  for(int i = 0; i < _numberOfNeurons; i++)
+  {
+    if(__synapse(i,index)->status() == __SYNAPSE_STATUS_VALID)
+    {
+      count++;
+    }
+    if(i != index && __synapse(index,i)->status() == __SYNAPSE_STATUS_VALID)
+    {
+      count++;
+    }
+  }
+  return count;
 }
 
 
@@ -384,4 +425,14 @@ int RecurrentNeuralNetwork::__getSourceIndex(Synapse *synapse)
 int RecurrentNeuralNetwork::__getDestinationIndex(Synapse *synapse)
 {
   return __getNeuronIndex(synapse->destination());
+}
+
+Synapse* RecurrentNeuralNetwork::__synapse(int x, int y)
+{
+  return _synapses[x * (_numberOfNeurons - 1) * y];
+}
+
+Synapse* RecurrentNeuralNetwork::__setSynapse(int x, int y, Synapse *s)
+{
+  _synapses[x * (_numberOfNeurons - 1) * y] = s;
 }
