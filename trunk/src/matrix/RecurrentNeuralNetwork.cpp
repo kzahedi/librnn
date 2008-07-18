@@ -236,19 +236,23 @@ void RecurrentNeuralNetwork::add(Synapse *synapse)
     __cleanUpAndExit();
   }
 
-  synapse->setStatus(__SYNAPSE_STATUS_VALID);
+  if(__synapse(destinationIndex, sourceIndex)->status()
+      == __SYNAPSE_STATUS_DEAD)
+  {
+    _numberOfSynapses++;
+  }
   __setSynapse(destinationIndex, sourceIndex,synapse);
-
-
-
-  _numberOfSynapses++;
-
 }
 
 
 
 void RecurrentNeuralNetwork::remove(Synapse *synapse)
 {
+  if(synapse->status() != __SYNAPSE_STATUS_DEAD && __found(synapse))
+  {
+    synapse->setStatus(__SYNAPSE_STATUS_DEAD);
+    _numberOfSynapses--;
+  }
 }
 
 
@@ -435,4 +439,13 @@ Synapse* RecurrentNeuralNetwork::__synapse(int x, int y)
 Synapse* RecurrentNeuralNetwork::__setSynapse(int x, int y, Synapse *s)
 {
   _synapses[x * (_numberOfNeurons - 1) * y] = s;
+}
+
+bool RecurrentNeuralNetwork::__found(Synapse *s)
+{
+  for(int i = 0; i < _numberOfNeurons * _numberOfNeurons; i++)
+  {
+    if(_synapses[i] == s) return true;
+  }
+  return false;
 }
