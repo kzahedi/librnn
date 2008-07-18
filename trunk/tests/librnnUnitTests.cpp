@@ -261,6 +261,7 @@ void librnnUnitTests::testSmallNeuroModule()
 
 void librnnUnitTests::testAddingAndDeletingOfSynapses()
 {
+  cout << "librnnUnitTests::testAddingAndDeletingOfSynapses " << endl;
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.setPriority(log4cpp::Priority::DEBUG);
 #endif // USE_LOG4CPP_OUTPUT
@@ -287,6 +288,7 @@ void librnnUnitTests::testAddingAndDeletingOfSynapses()
   rnn->updateActivation(neuron);
   rnn->updateOutput(neuron);
 
+  //CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.00001);
   CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, neuron->getOutput(), 0.00001);
 
   rnn->update();
@@ -296,10 +298,15 @@ void librnnUnitTests::testAddingAndDeletingOfSynapses()
   rnn->remove(woo);
   CPPUNIT_ASSERT_EQUAL(0, rnn->getSynapsesCount(neuron));
 
+  cout << "adding synapse 1" << endl;
   rnn->add(w1);
+  cout << "adding synapse 2" << endl;
   rnn->add(w2);
+  cout << "adding synapse 3" << endl;
   rnn->add(w3);
+  cout << "adding synapse 4" << endl;
   rnn->add(w4);
+  cout << "adding synapse 5" << endl;
   rnn->add(w5);
   CPPUNIT_ASSERT_EQUAL(5, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(5, rnn->getSynapsesCount(neuron));
