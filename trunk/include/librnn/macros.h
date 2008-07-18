@@ -30,3 +30,4 @@
 #define __FOR(i,v) for(i = v.begin(); i != v.end(); i++)
 #define __FOR_REVERSE(i,v) for(i = v.end(); ((v.size()==1)?i:(i+1)) != v.begin(); i--)
 
+#define __MIN(a,b) ((a<b)?a:b)

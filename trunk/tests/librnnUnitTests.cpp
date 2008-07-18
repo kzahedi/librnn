@@ -96,7 +96,8 @@ void librnnUnitTests::testSingleNeuronWithOscillation()
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
   Neuron  *neuron  = new Neuron();
   Synapse *synapse = new Synapse(neuron, neuron, -5);
-  rnn->add(neuron,synapse);
+  rnn->add(neuron);
+  rnn->add(synapse);
   neuron->setTransferfunction(transferfunction_tanh);
   neuron->setActivation(1.0);
   rnn->updateOutput(neuron);
@@ -250,7 +251,6 @@ void librnnUnitTests::testSmallNeuroModule()
 #ifdef USE_LOG4CPP_OUTPUT
       libRnnLogger.debug("rnn->update: %f vs. %f", outputNeuron->getOutput(), output);
 #endif
-      //cout << "test " << j << " " << i << endl;
     }
     bias += delta;
   }
@@ -371,6 +371,7 @@ void librnnUnitTests::testAddingAndDeletingOfNeuronsWithNoSynapses()
 
   CPPUNIT_ASSERT_EQUAL(n2, rnn->getNeuron(0));
   CPPUNIT_ASSERT_EQUAL(n5, rnn->getNeuron(1));
+
 
 }
 

@@ -222,11 +222,6 @@ void RecurrentNeuralNetwork::update()
 }
 
 
-void RecurrentNeuralNetwork::add(Neuron *neuron, Synapse *synapse)
-{
-  neuron->add(synapse);
-}
-
 void RecurrentNeuralNetwork::updateActivation(Neuron *neuron)
 {
   neuron->updateActivation();

@@ -84,7 +84,6 @@ namespace librnn
 
       void add(Neuron *neuron);
       void remove(Neuron *neuron);
-      void add(Neuron *neuron, Synapse *synapse);
 
       void updateActivation(Neuron *neuron);
       void updateOutput(Neuron *neuron);
@@ -124,6 +123,9 @@ namespace librnn
 #ifdef USE_MATRIX
       void __cleanUpAndExit();
       void __cleanUp();
+      int __getNeuronIndex(Neuron *neuron);
+      int __getSourceIndex(Synapse *synapse);
+      int __getDestinationIndex(Synapse *synapse);
       // TODO for matrix only
       int _numberOfNeurons;
       int _numberOfSynapses;

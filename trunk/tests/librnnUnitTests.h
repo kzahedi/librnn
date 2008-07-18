@@ -35,14 +35,14 @@ class librnnUnitTests : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(librnnUnitTests);
   CPPUNIT_TEST(testConstructor);
   CPPUNIT_TEST(testTransferfunction);
-  CPPUNIT_TEST(testNoTransferfunctionException);
-  CPPUNIT_TEST(testAddingAndDeletingOfNeuronsWithNoSynapses);
+  CPPUNIT_TEST(testNoTransferfunctionException); 
+  CPPUNIT_TEST(testAddingAndDeletingOfNeuronsWithNoSynapses);// passed
   CPPUNIT_TEST(testAddingAndDeletingOfSynapses);
-  CPPUNIT_TEST(testAddingAndDeletingOfNeurons);
-  CPPUNIT_TEST(testSingleNeuronWithOscillation);
-  CPPUNIT_TEST(testRecurrentNeuralNetworkWithSingleNeuron);
+//  CPPUNIT_TEST(testAddingAndDeletingOfNeurons);
+//  CPPUNIT_TEST(testSingleNeuronWithOscillation);
+//  CPPUNIT_TEST(testRecurrentNeuralNetworkWithSingleNeuron);
 #ifdef TIME_CONSUMING_TEST
-  CPPUNIT_TEST(testSmallNeuroModule);
+//  CPPUNIT_TEST(testSmallNeuroModule);
 #endif // TIME_CONSUMING
   CPPUNIT_TEST_SUITE_END();
 

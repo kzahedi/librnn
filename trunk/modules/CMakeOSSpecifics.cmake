@@ -1,3 +1,6 @@
 if(MINGW)
   include(modules/SetMinGWOptions.cmake)
 endif(MINGW)
+if(APPLE)
+  include(modules/SetAppleOptions.cmake)
+endif(APPLE)

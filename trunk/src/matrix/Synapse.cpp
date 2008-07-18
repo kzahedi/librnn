@@ -81,8 +81,10 @@ Neuron* Synapse::destination()
 
 void Synapse::setStatus(int status)
 {
+  _status = status;
 }
 
 int Synapse::status()
 {
+  return _status;
 }

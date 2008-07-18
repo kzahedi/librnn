@@ -29,6 +29,8 @@
 
 #include <librnn/config.h>
 
+//#include <values.h>
+
 // using float or double precision
 #ifdef USE_FLOAT_PRECISION
 #define __REAL float
