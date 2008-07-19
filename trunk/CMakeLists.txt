@@ -26,6 +26,8 @@
 
 project (librnn)
 
+CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
+
 INCLUDE(modules/CMakeVersionConfig.cmake)
 INCLUDE(modules/CMakeIncludeFiles.cmake)
 INCLUDE(modules/SetDefaults.cmake)
