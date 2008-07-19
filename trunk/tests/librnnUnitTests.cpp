@@ -101,7 +101,7 @@ void librnnUnitTests::testSingleNeuronWithOscillation()
   neuron->setTransferfunction(transferfunction_tanh);
   neuron->setActivation(1.0);
   rnn->updateOutput(neuron);
-  CPPUNIT_ASSERT_DOUBLES_EQUAL(rnn->getOutput(neuron), transferfunction_tanh(1.0),0.0000000001);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(transferfunction_tanh(1.0),rnn->getOutput(neuron),0.0000000001);
   for(int i=0; i < 100; i++)
   {
     rnn->updateActivation(neuron);
@@ -132,9 +132,6 @@ void librnnUnitTests::testSingleNeuronWithOscillation()
   rnn->updateActivation(neuron);
   rnn->updateOutput(neuron);
   CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, rnn->getOutput(neuron), 0.01);
-
-  delete neuron;
-  delete synapse;
 }
 
 
@@ -244,7 +241,7 @@ void librnnUnitTests::testSmallNeuroModule()
     inputNeuron->setBias(bias);
     rnn->updateActivation(inputNeuron);
     rnn->updateOutput(inputNeuron);
-    for(int j=0; j < 1000; j++)
+    for(int j=0; j < 10000; j++)
     {
       rnn->update();
       output = transferfunction_tanh( -2.5 * output + 2.0 * bias);
@@ -493,6 +490,7 @@ void librnnUnitTests::testAddingAndDeletingOfNeurons()
   rnn->remove(n1);
 
   CPPUNIT_ASSERT_EQUAL(4, rnn->getNeuronCount());
+  CPPUNIT_ASSERT_EQUAL(10, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(4, rnn->getSynapsesCount(n4));
   CPPUNIT_ASSERT_EQUAL(5, rnn->getSynapsesCount(n3));
   CPPUNIT_ASSERT_EQUAL(4, rnn->getSynapsesCount(n2));
