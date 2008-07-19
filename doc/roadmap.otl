@@ -1,0 +1,30 @@
+|librnn Roadmap, Keyan
+
+[_] 0% Version 0.2.0
+	[_] 0% Merge both libraries into one
+		[_] 0% Switchable implementation (Version 0.1.1)
+			[_] 0% Move create function to RNN
+				[_] rnn->createNeuron instead of n = new Neuron()
+				[_] rnn->createSynapse instead of s = new Synapse()
+				[_] rnnMatrix = new RNN(__RNN_MATRIX)
+				[_] rnnVector = new RNN(__RNN_VECTOR) (Version 0.1.2)
+				[_] rnnMatrix << rnnVector
+				[_] rnnVector << rnnMatrix			  (Version 0.1.3)
+				[_] update testcases
+				[_] 0% add testcases                  (Version 0.1.4)
+					[_] rnnMatrix << rnnVector
+					[_] rnnVector << rnnMatrix
+		[_] 0% Make optional at compile time          (Version 0.1.5)
+			[_] Matrix implementation
+			[_] Vector implementation
+			[_] Switchable implementation
+	[_] 0% Documentation
+		[_] API: (Doxygen) __ref: doxygen.otl         (Version 0.1.6)
+		[_] PDF: (Latex)   __ref: latex.otl           (Version 0.1.7)
+		[_] Homepage:      __ref: homepage.otl
+	[_] 0% Version 0.3.0
+		[_] 0% Xcode support
+		[_] 0% Microsoft Visual Studio support
+		[_] 0% Version 0.2.1 Optimisation -- Speed
+		[_] 0% Version 0.2.2 Optimisation -- Memory
+	

@@ -1,3 +1,0 @@
-- make cmake write a config.h so that the -D must not be repeated for every
-  source code including librnn
-- check for boost-graph-dev

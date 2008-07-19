@@ -127,8 +127,7 @@ namespace librnn
       int __getSourceIndex(Synapse *synapse);
       int __getDestinationIndex(Synapse *synapse);
       bool __found(Synapse *s);
-      Synapse* __synapse(int x, int y);
-      Synapse* __setSynapse(int x, int y, Synapse *s);
+      int __synapseIndex(int x, int y);
       // TODO for matrix only
       int _numberOfNeurons;
       int _numberOfSynapses;

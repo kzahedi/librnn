@@ -21,6 +21,9 @@
  # 02110-1301, USA.                                                       #
  #                                                                        #
  ##########################################################################
+
+
+
 project (librnn)
 
 INCLUDE(modules/CMakeVersionConfig.cmake)
@@ -33,10 +36,5 @@ INCLUDE(modules/OutputConfiguration.cmake)
 INCLUDE(modules/CPackConfiguration.cmake)
 INCLUDE(modules/CMakeOSSpecifics.cmake)
 
-
-# Recurse into the "Hello" and "Demo" subdirectories.  This does not actually
-# cause another cmake executable to run.  The same process will walk through
-# the project's entire directory structure.
 add_subdirectory (src)
 add_subdirectory (tests)
-
