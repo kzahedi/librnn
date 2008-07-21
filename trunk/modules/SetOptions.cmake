@@ -44,10 +44,6 @@ OPTION(LIBRNN_USE_ONLY_FAST_TESTS
   "Build the test only with fast tests."
   OFF)
 
-OPTION(LIBRNN_DESIGN_BY_CONTRACT
-  "Build function with design by contract."
-  ON)
-
 OPTION(LIBRNN_USE_RUNTIME_TEST
   "Compile and run runtime tests."
   OFF)
@@ -64,6 +60,11 @@ else(LIBRNN_DEBUG)
   set(CMAKE_BUILD_TYPE Relase)
 ENDIF(LIBRNN_DEBUG)
 
+if(${LIBRNN_ADDITIONAL_INCLUDE_PATHS})
 include_directories("${LIBRNN_ADDITIONAL_INCLUDE_PATHS}")
+endif(${LIBRNN_ADDITIONAL_INCLUDE_PATHS})
+
+if("${LIBRNN_ADDITIONAL_LIBS_PATHS}")
 link_directories("${LIBRNN_ADDITIONAL_LIBS_PATHS}")
+endif("${LIBRNN_ADDITIONAL_LIBS_PATHS}")
 

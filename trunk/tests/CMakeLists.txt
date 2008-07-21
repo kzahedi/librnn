@@ -22,7 +22,15 @@
  #                                                                        #
  ##########################################################################
 
+if(${LIBRNN_ADDITIONAL_INCLUDE_PATHS})
+include_directories("${LIBRNN_ADDITIONAL_INCLUDE_PATHS}")
+endif(${LIBRNN_ADDITIONAL_INCLUDE_PATHS})
+
+if("${LIBRNN_ADDITIONAL_LIBS_PATHS}")
+link_directories("${LIBRNN_ADDITIONAL_LIBS_PATHS}")
+endif("${LIBRNN_ADDITIONAL_LIBS_PATHS}")
 
 
 add_subdirectory(vector)
 add_subdirectory(matrix)
+

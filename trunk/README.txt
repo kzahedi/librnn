@@ -55,12 +55,24 @@ README.txt
 				- MinGW Make
 			- MSYS      (www.mingw.org)
 
+		If you use MinGW/MSYS, you have to install log4pp and cppunit yourself. For log4pp
+		use: 
+		 http://opera7up.narod.ru/download/mingw-ddk/log4cpp-0.3.4b.tar.bz2
+
+ 		 > cmake -G "MinGW Makefiles"
+		 > mingw32-make.exe
+		 
 		After successful installation, run cmake and make to compile librnn. 
 		Microsoft Visual Studio currently not supported, but will follow soon.
 	
 3. Known issues
 
-	- Currently the chosen implementation has to be determined at compile time. 
+	3.1 General
+		- Currently the chosen implementation has to be determined at compile time. 
+
+	3.2 WinXP
+		- WinXP: In order for the testcases to run, the libraries must be copied manually
+				 from the ./lib/ directory into the tests/matrix and tests/vector directories
 
 4. Roadmap
 	see doc/roadmap.olt (ASCII file)
