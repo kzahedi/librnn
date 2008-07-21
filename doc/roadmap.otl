@@ -1,30 +1,49 @@
 |librnn Roadmap, Keyan
 
-[_] 0% Version 0.2.0
-	[_] 0% Merge both libraries into one
-		[_] 0% Switchable implementation (Version 0.1.1)
-			[_] 0% Move create function to RNN
-				[_] rnn->createNeuron instead of n = new Neuron()
-				[_] rnn->createSynapse instead of s = new Synapse()
-				[_] rnnMatrix = new RNN(__RNN_MATRIX)
-				[_] rnnVector = new RNN(__RNN_VECTOR) (Version 0.1.2)
-				[_] rnnMatrix << rnnVector
-				[_] rnnVector << rnnMatrix			  (Version 0.1.3)
-				[_] update testcases
-				[_] 0% add testcases                  (Version 0.1.4)
-					[_] rnnMatrix << rnnVector
-					[_] rnnVector << rnnMatrix
-		[_] 0% Make optional at compile time          (Version 0.1.5)
-			[_] Matrix implementation
-			[_] Vector implementation
-			[_] Switchable implementation
-	[_] 0% Documentation
-		[_] API: (Doxygen) __ref: doxygen.otl         (Version 0.1.6)
-		[_] PDF: (Latex)   __ref: latex.otl           (Version 0.1.7)
+[_] 0% Version 0.2.0: Runtime switching of implementation  (Version 0.1.20)
+	[_] 0% Switchable implementation                       (Version 0.1.8)
+		[_] rnn->createNeuron instead of n = new Neuron()        (Version 0.1.1)
+		[_] rnn->createSynapse instead of s = new Synapse()      (Version 0.1.2)
+		[_] rnnMatrix = new RNN(__RNN_MATRIX)                    (Version 0.1.3)
+		[_] rnnVector = new RNN(__RNN_VECTOR)                    (Version 0.1.4)
+		[_] rnnMatrix << rnnVector                               (Version 0.1.5)
+		[_] rnnVector << rnnMatrix	               		         (Version 0.1.6)
+		[_] update testcases                                     (Version 0.1.8)
+		[_] 0% add testcases                               (Version 0.1.10)
+			[_] rnnMatrix << rnnVector                               (Version 0.1.9)
+			[_] rnnVector << rnnMatrix                               (Version 0.1.10)
+		[_] 0% runtime tests                               (Version 0.1.12)
+			[_] rnnMatrix << rnnVector                               (Version 0.1.11)
+			[_] rnnVector << rnnMatrix                               (Version 0.1.12)
+	[_] 0% Make optional at compile time                   (Version 0.1.15)
+		[_] Matrix implementation                                    (Version 0.1.13)
+		[_] Vector implementation                                    (Version 0.1.14)
+		[_] Switchable implementation                                (Version 0.1.15)
+	[_] 0% Documentation                                   (Version 0.1.17)
+		[_] API: (Doxygen) __ref: doxygen.otl                        (Version 0.1.16)
+		[_] PDF: (Latex)   __ref: latex.otl                          (Version 0.1.17)
 		[_] Homepage:      __ref: homepage.otl
-	[_] 0% Version 0.3.0
-		[_] 0% Xcode support
-		[_] 0% Microsoft Visual Studio support
-		[_] 0% Version 0.2.1 Optimisation -- Speed
-		[_] 0% Version 0.2.2 Optimisation -- Memory
-	
+	[_] 0% Successful Testing:                             (Version 0.1.20)
+		[_] Mac OS X Leopard                                         (Version 0.1.18)
+		[_] Ubuntu Linux                                             (Version 0.1.19)
+		[_] Win XP                                                   (Version 0.1.20)
+[_] 0% Version 0.3.0 Refactoring
+	[_] 0% Xcode support                                   (Version 0.2.x)
+	[_] 0% Microsoft Visual Studio support                 (Version 0.2.x)
+	[_] 0% Optimisation -- Speed                           (Version 0.2.x)
+	[_] 0% Optimisation -- Memory                          (Version 0.2.x)
+	[_] 0% Clean-up source code                            (Version 0.2.x)
+	[_] 0% add testcases                                   (Version 0.2.x)
+		[_] 0% memory leakage                              (Version 0.2.x)
+	[_] 0% add runtime tests                               (Version 0.2.x)
+	[_] 0% Successful Testing:                             (Version 0.2.x)
+		[_] Mac OS X Leopard                                         (Version 0.2.x)
+		[_] Ubuntu Linux                                             (Version 0.2.x)
+		[_] Win XP                                                   (Version 0.2.x)
+[_] 0% Version 0.5.0 Include Boost
+[_] 0% Version 0.6.0 Refactoring / Prepare next versions
+[_] 0% Version 0.7.0 Dynamic linking of neurons
+[_] 0% Version 0.8.0 Dynamic linking of synapses
+[_] 0% Version 0.9.0 Support learning
+[_] 0% Version 1.0.0 Documentation
+
