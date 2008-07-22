@@ -1,6 +1,6 @@
 |librnn Roadmap, Keyan
 
-[_] 0% Version 0.2.0: Runtime switching of implementation  (Version 0.1.20)
+[_] 0% Version 0.2.0: Runtime switching of implementation  (Version 0.1.21)
 	[_] 0% Switchable implementation                       (Version 0.1.8)
 		[_] rnn->createNeuron instead of n = new Neuron()        (Version 0.1.1)
 		[_] rnn->createSynapse instead of s = new Synapse()      (Version 0.1.2)
@@ -23,10 +23,11 @@
 		[_] API: (Doxygen) __ref: doxygen.otl                        (Version 0.1.16)
 		[_] PDF: (Latex)   __ref: latex.otl                          (Version 0.1.17)
 		[_] Homepage:      __ref: homepage.otl
-	[_] 0% Successful Testing:                             (Version 0.1.20)
-		[_] Mac OS X Leopard                                         (Version 0.1.18)
-		[_] Ubuntu Linux                                             (Version 0.1.19)
-		[_] Win XP                                                   (Version 0.1.20)
+	[_]    Install routine                                 (Version 0.1.18)
+	[_] 0% Successful Testing:                             (Version 0.1.21)
+		[_] Mac OS X Leopard                                         (Version 0.1.19)
+		[_] Ubuntu Linux                                             (Version 0.1.20)
+		[_] Win XP                                                   (Version 0.1.21)
 [_] 0% Version 0.3.0 Refactoring
 	[_] 0% Xcode support                                   (Version 0.2.x)
 	[_] 0% Microsoft Visual Studio support                 (Version 0.2.x)
