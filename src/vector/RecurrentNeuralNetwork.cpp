@@ -93,7 +93,7 @@ int RecurrentNeuralNetwork::getNeuronCount()
  * \param Neuron neuron 
  *
  */
-void RecurrentNeuralNetwork::add(Neuron *neuron)
+void RecurrentNeuralNetwork::__add(Neuron *neuron)
 {
   _neurons.push_back(neuron);
 }
@@ -155,7 +155,7 @@ void RecurrentNeuralNetwork::remove(Neuron *neuron)
  * \return boolean if the synapse was added or not
  *
  */
-void RecurrentNeuralNetwork::add(Synapse *synapse)
+void RecurrentNeuralNetwork::__add(Synapse *synapse)
 {
   Neuron *source      = synapse->source();
   Neuron *destination = synapse->destination();
@@ -267,4 +267,20 @@ Neuron* RecurrentNeuralNetwork::getNeuron(int index)
 {
   return _neurons[index];
 }
+
+Neuron* RecurrentNeuralNetwork::createNeuron()
+{
+  // TODO: needs refactoring
+  __add(new Neuron());
+  return _neurons[_neurons.size()-1];
+}
+
+Synapse* RecurrentNeuralNetwork::createSynapse(Neuron *source, Neuron *destination, __REAL strength)
+{
+  // TODO: needs refactoring
+  __add(new Synapse(source, destination, strength));
+  return _synapses[_synapses.size()-1];
+}
+
+
 

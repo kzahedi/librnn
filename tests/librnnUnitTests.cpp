@@ -61,7 +61,7 @@ void librnnUnitTests::testTransferfunction()
 {
   __REAL testActivation = 0.0;
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron *neuron = new Neuron();
+  Neuron *neuron = rnn->createNeuron();
   neuron->setActivation(testActivation);
   CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getActivation(), testActivation,0.0000000001);
   neuron->setTransferfunction(&transferfunction_tanh);
@@ -94,10 +94,8 @@ void librnnUnitTests::testTransferfunction()
 void librnnUnitTests::testSingleNeuronWithOscillation()
 {
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *neuron  = new Neuron();
-  Synapse *synapse = new Synapse(neuron, neuron, -5);
-  rnn->add(neuron);
-  rnn->add(synapse);
+  Neuron  *neuron  = rnn->createNeuron();
+  Synapse *synapse = rnn->createSynapse(neuron, neuron, -5);
   neuron->setTransferfunction(transferfunction_tanh);
   neuron->setActivation(1.0);
   rnn->updateOutput(neuron);
@@ -138,7 +136,7 @@ void librnnUnitTests::testSingleNeuronWithOscillation()
 void librnnUnitTests::testNoTransferfunctionException()
 {
   RecurrentNeuralNetwork *rnn   = new RecurrentNeuralNetwork();
-  Neuron *neuron   = new Neuron();
+  Neuron *neuron   = rnn->createNeuron();
   neuron->setActivation(1.0);
   try
   {
@@ -157,12 +155,10 @@ void librnnUnitTests::testNoTransferfunctionException()
 void librnnUnitTests::testRecurrentNeuralNetworkWithSingleNeuron()
 {
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *neuron = new Neuron();
-  Synapse *s = new Synapse(neuron, neuron, -5);
+  Neuron  *neuron = rnn->createNeuron();
+  Synapse *s = rnn->createSynapse(neuron, neuron, -5);
 
   neuron->setTransferfunction(&transferfunction_tanh);
-  rnn->add(neuron);
-  rnn->add(s);
 
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(neuron));
@@ -205,17 +201,13 @@ void librnnUnitTests::testSmallNeuroModule()
 #endif // USE_LOG4CPP_OUTPUT
 
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *inputNeuron = new Neuron();
-  Neuron  *outputNeuron = new Neuron();
-  Synapse *woi = new Synapse(inputNeuron,  outputNeuron,  2.0);
-  Synapse *woo = new Synapse(outputNeuron, outputNeuron, -2.5);
+  Neuron  *inputNeuron = rnn->createNeuron();
+  Neuron  *outputNeuron = rnn->createNeuron();
+  Synapse *woi = rnn->createSynapse(inputNeuron,  outputNeuron,  2.0);
+  Synapse *woo = rnn->createSynapse(outputNeuron, outputNeuron, -2.5);
 
   inputNeuron->setTransferfunction(&transferfunction_id);
   outputNeuron->setTransferfunction(&transferfunction_tanh);
-  rnn->add(inputNeuron);
-  rnn->add(outputNeuron);
-  rnn->add(woi);
-  rnn->add(woo);
 
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(inputNeuron));
   CPPUNIT_ASSERT_EQUAL(2, rnn->getSynapsesCount(outputNeuron));
@@ -263,21 +255,26 @@ void librnnUnitTests::testAddingAndDeletingOfSynapses()
 #endif // USE_LOG4CPP_OUTPUT
 
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *neuron = new Neuron();
-  Synapse *woo = new Synapse(neuron, neuron, -100);
-  Synapse *w1 = new Synapse(neuron, neuron, -100);
-  Synapse *w2 = new Synapse(neuron, neuron, -100);
-  Synapse *w3 = new Synapse(neuron, neuron, -100);
-  Synapse *w4 = new Synapse(neuron, neuron, -100);
-  Synapse *w5 = new Synapse(neuron, neuron, -100);
+  Neuron  *neuron = rnn->createNeuron();
+  Synapse *woo = rnn->createSynapse(neuron, neuron, -100);
+  Synapse *w1 = rnn->createSynapse(neuron, neuron, -100);
+  Synapse *w2 = rnn->createSynapse(neuron, neuron, -100);
+  Synapse *w3 = rnn->createSynapse(neuron, neuron, -100);
+  Synapse *w4 = rnn->createSynapse(neuron, neuron, -100);
+  Synapse *w5 = rnn->createSynapse(neuron, neuron, -100);
 
   neuron->setTransferfunction(&transferfunction_tanh);
-  rnn->add(neuron);
-  rnn->add(woo);
 
+#ifdef USE_VECTOR
+  CPPUNIT_ASSERT_EQUAL(6, rnn->getSynapsesCount());
+  CPPUNIT_ASSERT_EQUAL(6, rnn->getSynapsesCount(neuron));
+  CPPUNIT_ASSERT_EQUAL(6, rnn->countSynapses());
+#endif
+#ifdef USE_MATRIX
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount());
   CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(neuron));
   CPPUNIT_ASSERT_EQUAL(1, rnn->countSynapses());
+#endif
 
   neuron->setActivation(-10);
   rnn->updateOutput(neuron);
@@ -292,13 +289,13 @@ void librnnUnitTests::testAddingAndDeletingOfSynapses()
   CPPUNIT_ASSERT_DOUBLES_EQUAL(-1.00, neuron->getOutput(), 0.00001);
 
   rnn->remove(woo);
-  CPPUNIT_ASSERT_EQUAL(0, rnn->getSynapsesCount(neuron));
+#ifdef USE_VECTOR
+  CPPUNIT_ASSERT_EQUAL(5, rnn->getSynapsesCount(neuron));
+#endif 
+#ifdef USE_MATRIX
+  CPPUNIT_ASSERT_EQUAL(1, rnn->getSynapsesCount(neuron));
+#endif 
 
-  rnn->add(w1);
-  rnn->add(w2);
-  rnn->add(w3);
-  rnn->add(w4);
-  rnn->add(w5);
 
 #ifdef USE_VECTOR
   CPPUNIT_ASSERT_EQUAL(5, rnn->getSynapsesCount());
@@ -372,17 +369,12 @@ void librnnUnitTests::testAddingAndDeletingOfNeuronsWithNoSynapses()
 #endif // USE_LOG4CPP_OUTPUT
 
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *n1 = new Neuron();
-  Neuron  *n2 = new Neuron();
-  Neuron  *n3 = new Neuron();
-  Neuron  *n4 = new Neuron();
-  Neuron  *n5 = new Neuron();
+  Neuron  *n1 = rnn->createNeuron();
+  Neuron  *n2 = rnn->createNeuron();
+  Neuron  *n3 = rnn->createNeuron();
+  Neuron  *n4 = rnn->createNeuron();
+  Neuron  *n5 = rnn->createNeuron();
 
-  rnn->add(n1);
-  rnn->add(n2);
-  rnn->add(n3);
-  rnn->add(n4);
-  rnn->add(n5);
 
   CPPUNIT_ASSERT_EQUAL(5, rnn->getNeuronCount());
 
@@ -416,53 +408,33 @@ void librnnUnitTests::testAddingAndDeletingOfNeurons()
 #endif // USE_LOG4CPP_OUTPUT
 
   RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *n1 = new Neuron();
-  Neuron  *n2 = new Neuron();
-  Neuron  *n3 = new Neuron();
-  Neuron  *n4 = new Neuron();
-  Neuron  *n5 = new Neuron();
+  Neuron  *n1 = rnn->createNeuron();
+  Neuron  *n2 = rnn->createNeuron();
+  Neuron  *n3 = rnn->createNeuron();
+  Neuron  *n4 = rnn->createNeuron();
+  Neuron  *n5 = rnn->createNeuron();
 
-  Synapse *w51 = new Synapse(n1, n5, 1);
-  Synapse *w55 = new Synapse(n5, n5, 1);
-  Synapse *w52 = new Synapse(n2, n5, 1);
+  Synapse *w51 = rnn->createSynapse(n1, n5, 1);
+  Synapse *w55 = rnn->createSynapse(n5, n5, 1);
+  Synapse *w52 = rnn->createSynapse(n2, n5, 1);
 
-  Synapse *w44 = new Synapse(n4, n4, 1);
-  Synapse *w41 = new Synapse(n1, n4, 1);
-  Synapse *w42 = new Synapse(n2, n4, 1);
-  Synapse *w43 = new Synapse(n3, n4, 1);
+  Synapse *w44 = rnn->createSynapse(n4, n4, 1);
+  Synapse *w41 = rnn->createSynapse(n1, n4, 1);
+  Synapse *w42 = rnn->createSynapse(n2, n4, 1);
+  Synapse *w43 = rnn->createSynapse(n3, n4, 1);
 
-  Synapse *w14 = new Synapse(n4, n1, 1);
+  Synapse *w14 = rnn->createSynapse(n4, n1, 1);
 
-  Synapse *w22 = new Synapse(n2, n2, 1);
-  Synapse *w21 = new Synapse(n1, n2, 1);
+  Synapse *w22 = rnn->createSynapse(n2, n2, 1);
+  Synapse *w21 = rnn->createSynapse(n1, n2, 1);
 
-  Synapse *w31 = new Synapse(n1, n3, 1);
-  Synapse *w32 = new Synapse(n2, n3, 1);
-  Synapse *w33 = new Synapse(n3, n3, 1);
-  Synapse *w34 = new Synapse(n4, n3, 1);
-  Synapse *w35 = new Synapse(n5, n3, 1);
+  Synapse *w31 = rnn->createSynapse(n1, n3, 1);
+  Synapse *w32 = rnn->createSynapse(n2, n3, 1);
+  Synapse *w33 = rnn->createSynapse(n3, n3, 1);
+  Synapse *w34 = rnn->createSynapse(n4, n3, 1);
+  Synapse *w35 = rnn->createSynapse(n5, n3, 1);
 
-  rnn->add(n1);
-  rnn->add(n2);
-  rnn->add(n3);
-  rnn->add(n4);
-  rnn->add(n5);
 
-  rnn->add(w51);
-  rnn->add(w55);
-  rnn->add(w52);
-  rnn->add(w44);
-  rnn->add(w41);
-  rnn->add(w42);
-  rnn->add(w43);
-  rnn->add(w14);
-  rnn->add(w22);
-  rnn->add(w21);
-  rnn->add(w31);
-  rnn->add(w32);
-  rnn->add(w33);
-  rnn->add(w34);
-  rnn->add(w35);
 
   CPPUNIT_ASSERT_EQUAL(5, rnn->getNeuronCount());
 
