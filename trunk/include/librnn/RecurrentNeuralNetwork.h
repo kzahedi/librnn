@@ -82,8 +82,8 @@ namespace librnn
 
       int getNeuronCount();
 
-      void add(Neuron *neuron);
       void remove(Neuron *neuron);
+      void remove(Synapse *synapse);
 
       void updateActivation(Neuron *neuron);
       void updateOutput(Neuron *neuron);
@@ -91,8 +91,6 @@ namespace librnn
       __REAL getActivation(Neuron *neuron);
       __REAL getOutput(Neuron *neuron);
 
-      void add(Synapse *synapse);
-      void remove(Synapse *synapse);
 
       int  getSynapsesCount();
       int  countSynapses();
@@ -101,12 +99,17 @@ namespace librnn
       int  getAdjacentSynapsesCount(Neuron *neuron);
       int  getIncidentSynapsesCount(Neuron *neuron);
 
+      Neuron* createNeuron();
+      Synapse* createSynapse(Neuron* source, Neuron* destination, __REAL strength);
+
       Synapse*  getSynapse(Neuron *neuron, int index);
       Neuron*   getNeuron(int index);
 
       void update();
 
     private:
+      void __add(Neuron *neuron);
+      void __add(Synapse *synapse);
 #ifdef USE_VECTOR
       // TODO for vector only
       /// vector of neurons in the network
