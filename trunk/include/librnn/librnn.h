@@ -39,6 +39,9 @@
 #include <librnn/RecurrentNeuralNetwork.h>
 #include <librnn/transferfunctions.h>
 
+#include <librnn/RNN_Vector.h>
+#include <librnn/RNN_Matrix.h>
+
 #include <librnn/config.h>
 #include <librnn/macros.h>
 
