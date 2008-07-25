@@ -24,9 +24,7 @@
 
 
 
-// first naive implementation to get a feeling for RNN
-// to test between list and vector implementation
-#include <librnn/RecurrentNeuralNetwork.h>
+#include <librnn/librnn.h>
 
 
 using namespace std;
@@ -41,7 +39,7 @@ using namespace librnn;
  * required.
  *
  */
-RecurrentNeuralNetwork::RecurrentNeuralNetwork()
+__RecurrentNeuralNetwork_VectorImplementation::__RecurrentNeuralNetwork_VectorImplementation()
 {
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.debug("constructor called");
@@ -57,7 +55,7 @@ RecurrentNeuralNetwork::RecurrentNeuralNetwork()
  * required.
  *
  */
-RecurrentNeuralNetwork::~RecurrentNeuralNetwork()
+__RecurrentNeuralNetwork_VectorImplementation::~__RecurrentNeuralNetwork_VectorImplementation()
 {
 }
 
@@ -73,7 +71,7 @@ RecurrentNeuralNetwork::~RecurrentNeuralNetwork()
  * network
  *
  */
-int RecurrentNeuralNetwork::getNeuronCount()
+int __RecurrentNeuralNetwork_VectorImplementation::getNeuronCount()
 {
   return _neurons.size();
 }
@@ -93,7 +91,7 @@ int RecurrentNeuralNetwork::getNeuronCount()
  * \param Neuron neuron 
  *
  */
-void RecurrentNeuralNetwork::__add(Neuron *neuron)
+void __RecurrentNeuralNetwork_VectorImplementation::__add(Neuron *neuron)
 {
   _neurons.push_back(neuron);
 }
@@ -112,7 +110,7 @@ void RecurrentNeuralNetwork::__add(Neuron *neuron)
  * \param Neuron neuron 
  *
  */
-void RecurrentNeuralNetwork::remove(Neuron *neuron)
+void __RecurrentNeuralNetwork_VectorImplementation::remove(Neuron *neuron)
 {
   __vSYNAPSE list;
   __vSYNAPSE_ITERATOR i;
@@ -129,7 +127,7 @@ void RecurrentNeuralNetwork::remove(Neuron *neuron)
     if( (*_synapseIterator)->status() == __SYNAPSE_STATUS_DEAD)
     {
 #ifdef USE_LOG4CPP_OUTPUT
-      libRnnLogger.debug("RecurrentNeuralNetwork::remove(Neuron): remove synapse with source %d and destination %d", 
+      libRnnLogger.debug("__RecurrentNeuralNetwork_VectorImplementation::remove(Neuron): remove synapse with source %d and destination %d", 
           (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId());
 #endif
       _synapses.erase(_synapseIterator);
@@ -155,7 +153,7 @@ void RecurrentNeuralNetwork::remove(Neuron *neuron)
  * \return boolean if the synapse was added or not
  *
  */
-void RecurrentNeuralNetwork::__add(Synapse *synapse)
+void __RecurrentNeuralNetwork_VectorImplementation::__add(Synapse *synapse)
 {
   Neuron *source      = synapse->source();
   Neuron *destination = synapse->destination();
@@ -175,7 +173,7 @@ void RecurrentNeuralNetwork::__add(Synapse *synapse)
 
 
 
-void RecurrentNeuralNetwork::remove(Synapse *synapse)
+void __RecurrentNeuralNetwork_VectorImplementation::remove(Synapse *synapse)
 {
   Neuron *source      = synapse->source();
   Neuron *destination = synapse->destination();
@@ -188,14 +186,14 @@ void RecurrentNeuralNetwork::remove(Synapse *synapse)
 
 
 
-int RecurrentNeuralNetwork::getSynapsesCount()
+int __RecurrentNeuralNetwork_VectorImplementation::getSynapsesCount()
 {
   return _synapses.size();
 }
 
 
 
-int RecurrentNeuralNetwork::countSynapses()
+int __RecurrentNeuralNetwork_VectorImplementation::countSynapses()
 {
   int numberOfSynapses = 0;
 
@@ -208,7 +206,7 @@ int RecurrentNeuralNetwork::countSynapses()
 
 
 
-void RecurrentNeuralNetwork::update()
+void __RecurrentNeuralNetwork_VectorImplementation::update()
 {
   __FOR(_neuronIterator, _neurons)
   {
@@ -222,60 +220,60 @@ void RecurrentNeuralNetwork::update()
 }
 
 
-void RecurrentNeuralNetwork::updateActivation(Neuron *neuron)
+void __RecurrentNeuralNetwork_VectorImplementation::updateActivation(Neuron *neuron)
 {
   neuron->updateActivation();
 }
 
-void RecurrentNeuralNetwork::updateOutput(Neuron *neuron)
+void __RecurrentNeuralNetwork_VectorImplementation::updateOutput(Neuron *neuron)
 {
   neuron->updateOutput();
 }
 
-int RecurrentNeuralNetwork::getSynapsesCount(Neuron *neuron)
+int __RecurrentNeuralNetwork_VectorImplementation::getSynapsesCount(Neuron *neuron)
 {
   return neuron->getSynapsesCount();
 }
 
-int RecurrentNeuralNetwork::getAdjacentSynapsesCount(Neuron *neuron)
+int __RecurrentNeuralNetwork_VectorImplementation::getAdjacentSynapsesCount(Neuron *neuron)
 {
   return neuron->getAdjacentSynapsesCount();
 }
 
-int RecurrentNeuralNetwork::getIncidentSynapsesCount(Neuron *neuron)
+int __RecurrentNeuralNetwork_VectorImplementation::getIncidentSynapsesCount(Neuron *neuron)
 {
   return neuron->getIncidentSynapsesCount();
 }
 
 
-Synapse*  RecurrentNeuralNetwork::getSynapse(Neuron *neuron, int index)
+Synapse*  __RecurrentNeuralNetwork_VectorImplementation::getSynapse(Neuron *neuron, int index)
 {
   return neuron->getSynapse(index);
 }
 
-__REAL RecurrentNeuralNetwork::getActivation(Neuron *neuron)
+__REAL __RecurrentNeuralNetwork_VectorImplementation::getActivation(Neuron *neuron)
 {
   return neuron->getActivation();
 }
 
-__REAL RecurrentNeuralNetwork::getOutput(Neuron *neuron)
+__REAL __RecurrentNeuralNetwork_VectorImplementation::getOutput(Neuron *neuron)
 {
   return neuron->getOutput();
 }
 
-Neuron* RecurrentNeuralNetwork::getNeuron(int index)
+Neuron* __RecurrentNeuralNetwork_VectorImplementation::getNeuron(int index)
 {
   return _neurons[index];
 }
 
-Neuron* RecurrentNeuralNetwork::createNeuron()
+Neuron* __RecurrentNeuralNetwork_VectorImplementation::createNeuron()
 {
   // TODO: needs refactoring
   __add(new Neuron());
   return _neurons[_neurons.size()-1];
 }
 
-Synapse* RecurrentNeuralNetwork::createSynapse(Neuron *source, Neuron *destination, __REAL strength)
+Synapse* __RecurrentNeuralNetwork_VectorImplementation::createSynapse(Neuron *source, Neuron *destination, __REAL strength)
 {
   // TODO: needs refactoring
   __add(new Synapse(source, destination, strength));

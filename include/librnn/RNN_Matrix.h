@@ -24,47 +24,26 @@
 
 
 
-#ifndef __RNN_H__
-#define __RNN_H__
+#ifndef __RNN_MATRIX_H__
+#define __RNN_MATRIX_H__
 
 #include <librnn/librnn.h>
 
 #include <string>
 #include <iostream>
 
+#define RNN_MATRIX(a) \
+  __RecurrentNeuralNetwork_MatrixImplementation *a = \
+  new __RecurrentNeuralNetwork_MatrixImplementation();
+
 using namespace librnn;
 using namespace std;
 
 namespace librnn
 {
-  class RecurrentNeuralNetworkException : public std::exception
-  {
-    public:
-      explicit RecurrentNeuralNetworkException(const std::string& what)
-        :
-          m_what(what)
-      {}
-
-      virtual ~RecurrentNeuralNetworkException() throw() {}
-
-      virtual const char * what() const throw()
-      {
-        return m_what.c_str();
-      }
-
-      virtual void message() const throw()
-      {
-        cerr << "RecurrentNeuralNetworkException: " << m_what << endl;
-      }
-
-
-    private:
-      std::string m_what;
-  };
-
 
   /*! 
-   * \class RecurrentNeuralNetwork
+   * \class RecurrentNeuralNetwork - Matrix implementation
    *
    * \brief Implementation of a Recurrent Neural Network, using vectors to 
    *         store neurons and synapses.
@@ -74,40 +53,55 @@ namespace librnn
    * are provided to alter the structure, access information of
    * the current status, and process the neural network.
    */
-  class RecurrentNeuralNetwork 
+  class __RecurrentNeuralNetwork_MatrixImplementation : public RecurrentNeuralNetwork
   {
     public:
+      __RecurrentNeuralNetwork_MatrixImplementation();
+      ~__RecurrentNeuralNetwork_MatrixImplementation();
 
-      virtual int getNeuronCount() = 0;
+      int getNeuronCount();
 
-      virtual void remove(Neuron *neuron) = 0 ;
-      virtual void remove(Synapse *synapse) = 0 ;
+      void remove(Neuron *neuron);
+      void remove(Synapse *synapse);
 
-      virtual void updateActivation(Neuron *neuron) = 0;
-      virtual void updateOutput(Neuron *neuron) = 0 ;
-      
-      virtual __REAL getActivation(Neuron *neuron) = 0;
-      virtual __REAL getOutput(Neuron *neuron) = 0;
+      void updateActivation(Neuron *neuron);
+      void updateOutput(Neuron *neuron);
+
+      __REAL getActivation(Neuron *neuron);
+      __REAL getOutput(Neuron *neuron);
 
 
-      virtual int  getSynapsesCount() = 0;
-      virtual int  countSynapses() = 0;
+      int  getSynapsesCount();
+      int  countSynapses();
 
-      virtual int  getSynapsesCount(Neuron *neuron) = 0;
-      virtual int  getAdjacentSynapsesCount(Neuron *neuron) = 0;
-      virtual int  getIncidentSynapsesCount(Neuron *neuron) = 0;
+      int  getSynapsesCount(Neuron *neuron);
+      int  getAdjacentSynapsesCount(Neuron *neuron);
+      int  getIncidentSynapsesCount(Neuron *neuron);
 
-      virtual Neuron* createNeuron() = 0;
-      virtual Synapse* createSynapse(Neuron* source, Neuron* destination, __REAL strength) = 0;
+      Neuron* createNeuron();
+      Synapse* createSynapse(Neuron* source, Neuron* destination, __REAL strength);
 
-      virtual Synapse*  getSynapse(Neuron *neuron, int index) = 0;
-      virtual Neuron*   getNeuron(int index) = 0;
+      Synapse*  getSynapse(Neuron *neuron, int index);
+      Neuron*   getNeuron(int index);
 
-      virtual void update() = 0;
+      void update();
 
     private:
-      virtual void __add(Neuron *neuron) = 0;
-      virtual void __add(Synapse *synapse) = 0;
+      void __add(Neuron *neuron);
+      void __add(Synapse *synapse);
+
+      void __cleanUpAndExit();
+      void __cleanUp();
+      int __getNeuronIndex(Neuron *neuron);
+      int __getSourceIndex(Synapse *synapse);
+      int __getDestinationIndex(Synapse *synapse);
+      bool __found(Synapse *s);
+      int __synapseIndex(int x, int y);
+      // TODO for matrix only
+      int _numberOfNeurons;
+      int _numberOfSynapses;
+      Neuron              **_neurons;
+      Synapse             **_synapses;
   };
 }
-#endif  //__RNN_H__
+#endif  //__RNN_MATRIX_H__

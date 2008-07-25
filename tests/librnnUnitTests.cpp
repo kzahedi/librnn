@@ -50,24 +50,34 @@ void librnnUnitTests::tearDown()
 
 void librnnUnitTests::testConstructor()
 {
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
 
-//  CPPUNIT_ASSERT_EQUAL(rnn->getNumberOfSynapses(), -1);
-  CPPUNIT_ASSERT_EQUAL(rnn->getNeuronCount(), 0);
+    //  CPPUNIT_ASSERT_EQUAL(rnn->getNumberOfSynapses(), -1);
+    CPPUNIT_ASSERT_EQUAL(rnn->getNeuronCount(), 0);
   delete rnn;
 }
 
 void librnnUnitTests::testTransferfunction()
 {
   __REAL testActivation = 0.0;
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron *neuron = rnn->createNeuron();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    Neuron *neuron = rnn->createNeuron();
   neuron->setActivation(testActivation);
   CPPUNIT_ASSERT_DOUBLES_EQUAL(neuron->getActivation(), testActivation,0.0000000001);
   neuron->setTransferfunction(&transferfunction_tanh);
   rnn->updateOutput(neuron);
   CPPUNIT_ASSERT_DOUBLES_EQUAL(transferfunction_tanh(testActivation), neuron->getActivation(), 0.0000000001);
-  
+
   testActivation = 1.0;
   neuron->setActivation(testActivation);
   rnn->updateOutput(neuron);
@@ -93,8 +103,13 @@ void librnnUnitTests::testTransferfunction()
 
 void librnnUnitTests::testSingleNeuronWithOscillation()
 {
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *neuron  = rnn->createNeuron();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    Neuron  *neuron  = rnn->createNeuron();
   Synapse *synapse = rnn->createSynapse(neuron, neuron, -5);
   neuron->setTransferfunction(transferfunction_tanh);
   neuron->setActivation(1.0);
@@ -135,7 +150,12 @@ void librnnUnitTests::testSingleNeuronWithOscillation()
 
 void librnnUnitTests::testNoTransferfunctionException()
 {
-  RecurrentNeuralNetwork *rnn   = new RecurrentNeuralNetwork();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
   Neuron *neuron   = rnn->createNeuron();
   neuron->setActivation(1.0);
   try
@@ -154,8 +174,13 @@ void librnnUnitTests::testNoTransferfunctionException()
 
 void librnnUnitTests::testRecurrentNeuralNetworkWithSingleNeuron()
 {
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *neuron = rnn->createNeuron();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    Neuron  *neuron = rnn->createNeuron();
   Synapse *s = rnn->createSynapse(neuron, neuron, -5);
 
   neuron->setTransferfunction(&transferfunction_tanh);
@@ -200,8 +225,13 @@ void librnnUnitTests::testSmallNeuroModule()
   libRnnLogger.setPriority(log4cpp::Priority::DEBUG);
 #endif // USE_LOG4CPP_OUTPUT
 
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *inputNeuron = rnn->createNeuron();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    Neuron  *inputNeuron = rnn->createNeuron();
   Neuron  *outputNeuron = rnn->createNeuron();
   Synapse *woi = rnn->createSynapse(inputNeuron,  outputNeuron,  2.0);
   Synapse *woo = rnn->createSynapse(outputNeuron, outputNeuron, -2.5);
@@ -254,8 +284,13 @@ void librnnUnitTests::testAddingAndDeletingOfSynapses()
   libRnnLogger.setPriority(log4cpp::Priority::DEBUG);
 #endif // USE_LOG4CPP_OUTPUT
 
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *neuron = rnn->createNeuron();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    Neuron  *neuron = rnn->createNeuron();
   Synapse *woo = rnn->createSynapse(neuron, neuron, -100);
   Synapse *w1 = rnn->createSynapse(neuron, neuron, -100);
   Synapse *w2 = rnn->createSynapse(neuron, neuron, -100);
@@ -368,8 +403,13 @@ void librnnUnitTests::testAddingAndDeletingOfNeuronsWithNoSynapses()
   libRnnLogger.setPriority(log4cpp::Priority::DEBUG);
 #endif // USE_LOG4CPP_OUTPUT
 
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *n1 = rnn->createNeuron();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    Neuron  *n1 = rnn->createNeuron();
   Neuron  *n2 = rnn->createNeuron();
   Neuron  *n3 = rnn->createNeuron();
   Neuron  *n4 = rnn->createNeuron();
@@ -407,8 +447,13 @@ void librnnUnitTests::testAddingAndDeletingOfNeurons()
   libRnnLogger.setPriority(log4cpp::Priority::DEBUG);
 #endif // USE_LOG4CPP_OUTPUT
 
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *n1 = rnn->createNeuron();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    Neuron  *n1 = rnn->createNeuron();
   Neuron  *n2 = rnn->createNeuron();
   Neuron  *n3 = rnn->createNeuron();
   Neuron  *n4 = rnn->createNeuron();
