@@ -50,8 +50,14 @@ typedef __REAL (*Transferfunction) (__REAL);
 #define __vSYNAPSE vector<Synapse*>
 #define __vNEURON  vector<Neuron*>
 
+#define __vNEURON_MATRIX  vector<__Neuron_MatrixImplementationException*>
+#define __vNEURON_VECTOR  vector<__Neuron_VectorImplementation*>
+
 #define __vSYNAPSE_ITERATOR vector<Synapse*>::iterator
 #define __vNEURON_ITERATOR  vector<Neuron*>::iterator
+
+#define __vNEURON_MARIX_ITERATOR  vector<__Neuron_MatrixImplementation*>::iterator
+#define __vNEURON_VECTOR_ITERATOR  vector<__Neuron_VectorImplementation*>::iterator
 
 //forward declaration, such that synapses and neurons can reference each other
 namespace librnn 

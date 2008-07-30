@@ -42,7 +42,7 @@ namespace librnn
       explicit NeuronException(const std::string& what)
         :
           m_what(what)
-      {}
+    {}
 
       virtual ~NeuronException() throw() {}
 
@@ -61,44 +61,28 @@ namespace librnn
       std::string m_what;
   };
 
-#ifdef USE_VECTOR
   class Neuron
   {
     public:
-      Neuron();
-      ~Neuron();
+      virtual void updateActivation() = 0;
+      virtual void updateOutput() throw(librnn::NeuronException) = 0;
 
-      void updateActivation();
-      void updateOutput() throw(librnn::NeuronException);
+      virtual void setTransferfunction(Transferfunction transferfunction) = 0;
+      virtual __REAL transfer(__REAL x) throw(librnn::NeuronException) = 0;
 
-      void setTransferfunction(Transferfunction transferfunction);
+      virtual void setActivation(__REAL activation) = 0;
 
-      void add(Synapse *synapse);
-      void remove(Synapse *synapse);
-      Synapse* getSynapse(int index);
+      virtual __REAL getActivation() = 0;
 
-      void setActivation(__REAL activation);
+      virtual __REAL getOutput() = 0;
+      virtual void setOutput(__REAL output) = 0;
 
-      int  getSynapsesCount();
-      int  getAdjacentSynapsesCount();
-      int  getIncidentSynapsesCount();
+      virtual void setBias(__REAL bias) = 0;
+      virtual __REAL getBias() = 0;
 
-      __REAL getActivation();
-      __REAL getOutput();
-
-      void setBias(__REAL bias);
-      __REAL getBias();
-
-      void cleanUpConnectionsTo(Neuron *neuron);
-
-      int getId();
-
+      virtual int getId() = 0;
 
     private:
-      void addIncidentSynapse(Synapse *synapse);
-      void addAdjacentSynapse(Synapse *synapse);
-      void delIncidentSynapse(Synapse *synapse);
-      void delAdjacentSynapse(Synapse *synapse);
 
       int _id;
 
@@ -108,49 +92,6 @@ namespace librnn
 
       Transferfunction _transferfunction;
 
-      __vSYNAPSE _incident;
-      __vSYNAPSE _adjacent;
-      __vSYNAPSE _synapses;
-
-      __vSYNAPSE::iterator _synapseIterator;
   };
-#endif // USE_VECTOR
-#ifdef USE_MATRIX
-  class Neuron
-  {
-    public:
-      Neuron();
-      ~Neuron();
-
-      void updateActivation();
-      void updateOutput() throw(librnn::NeuronException);
-
-      void setTransferfunction(Transferfunction transferfunction);
-      __REAL transfer(__REAL x) throw(librnn::NeuronException);
-
-      void setActivation(__REAL activation);
-
-      __REAL getActivation();
-
-      __REAL getOutput();
-      void setOutput(__REAL output);
-
-      void setBias(__REAL bias);
-      __REAL getBias();
-
-      int getId();
-
-      void copy(Neuron *neuron);
-
-    private:
-      int _id;
-
-      __REAL _activation;
-      __REAL _bias;
-      __REAL _output;
-
-      Transferfunction _transferfunction;
-  };
-#endif // USE_MATRIX
 }
 #endif // __NEURON_H__

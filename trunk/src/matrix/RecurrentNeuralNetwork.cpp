@@ -24,11 +24,7 @@
 
 #include <librnn/librnn.h>
 
-
-
-using namespace std;
 using namespace librnn;
-
 
 
 /*! 
@@ -467,7 +463,7 @@ void __RecurrentNeuralNetwork_MatrixImplementation::__cleanUpAndExit()
 
 Neuron* __RecurrentNeuralNetwork_MatrixImplementation::getNeuron(int index)
 {
-  return (_neurons[index]);
+  return (Neuron*)(_neurons[index]);
 }
 
 int __RecurrentNeuralNetwork_MatrixImplementation::__getNeuronIndex(Neuron *neuron)
@@ -509,7 +505,7 @@ bool __RecurrentNeuralNetwork_MatrixImplementation::__found(Synapse *s)
 Neuron* __RecurrentNeuralNetwork_MatrixImplementation::createNeuron()
 {
   // TODO: needs refactoring
-  __add(new Neuron());
+  __add(new __Neuron_MatrixImplementation());
   return getNeuron(_numberOfNeurons-1);
 }
 

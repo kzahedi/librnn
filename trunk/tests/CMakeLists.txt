@@ -33,4 +33,3 @@ endif("${LIBRNN_ADDITIONAL_LIBS_PATHS}")
 
 add_subdirectory(vector)
 add_subdirectory(matrix)
-

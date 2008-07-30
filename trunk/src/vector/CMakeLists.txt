@@ -29,12 +29,9 @@ include_directories("${PROJECT_SOURCE_DIR}/include/" "${PROJECT_BINARY_DIR}/incl
 
 if(LIBRNN_USE_LOG4CPP_OUTPUT)
   target_link_libraries(rnnVector log4cpp)
-  message("linking log4cpp to rnn")
+  message("linking log4cpp to rnnVector")
   message("NOT linking log4cpp to test programs")
 else(LIBRNN_USE_LOG4CPP_OUTPUT)
-  message("NOT linking log4cpp to librnn")
+  message("NOT linking log4cpp to rnnVector")
 endif(LIBRNN_USE_LOG4CPP_OUTPUT)
-
-ADD_DEFINITIONS(-DUSE_VECTOR)
-
 
