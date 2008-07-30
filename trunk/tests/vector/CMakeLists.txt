@@ -35,9 +35,9 @@ ENDIF(LIBRNN_USE_RUNTIME_TEST)
 add_executable(librnnUnitTest    ../librnnUnitTestsMain.cpp   ../librnnUnitTests.cpp)
 
 IF(LIBRNN_USE_RUNTIME_TEST)
-  ADD_TEST(runtime  "${PROJECT_BINARY_DIR}/bin/librnnRuntimeTest")
+  ADD_TEST(vector-runtime  "${PROJECT_BINARY_DIR}/bin/librnnRuntimeTest")
 ENDIF(LIBRNN_USE_RUNTIME_TEST)
-ADD_TEST(unittest "${PROJECT_BINARY_DIR}/bin/librnnUnitTest")
+ADD_TEST(vector-unittest "${PROJECT_BINARY_DIR}/bin/librnnUnitTest")
 
 IF(LIBRNN_USE_RUNTIME_TEST)
   target_link_libraries(librnnRuntimeTest rnnVector)
