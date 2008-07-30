@@ -117,10 +117,10 @@ static long testAddSynapses()
     RNN_VECTOR(rnn)
 #endif
     startTiming();
-  for(int i=0;i < 100; i++)
+  for(int i=0;i < 1000; i++)
   {
     Neuron *n = rnn->createNeuron();
-    for(int j=0;j < 100; j++)
+    for(int j=0;j < 1000; j++)
     {
       Synapse *s = new Synapse();
       rnn->createSynapse(n,n,0);

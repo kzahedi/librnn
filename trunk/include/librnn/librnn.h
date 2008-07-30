@@ -49,4 +49,8 @@
 #include <librnn/config.h>
 #include <librnn/macros.h>
 
+#ifdef USE_LOG4CPP_OUTPUT
+#include <librnn/Logger.hpp>
+#endif // USE_LOG4CPP_OUTPUT
+
 #endif // __LIBRNN_H__
