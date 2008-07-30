@@ -56,8 +56,13 @@ static long testConstructor()
 {
   cout << "RecurrentNeuralNetwork constructor:\t\t";
   startTiming();
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  long time = stopTiming();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    long time = stopTiming();
   printTime(time);
   delete rnn;
   return time;
@@ -66,8 +71,13 @@ static long testConstructor()
 static long testDestructor()
 {
   cout << "RecurrentNeuralNetwork destructor:\t\t";
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  startTiming();
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    startTiming();
   delete rnn;
   long time = stopTiming();
   printTime(time);
@@ -78,12 +88,16 @@ static long testDestructor()
 static long testAddNeurons()
 {
   cout << "RecurrentNeuralNetwork addNeuron (1M adds):\t";
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  startTiming();
-  for(int i=0;i < 1000000; i++)
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    startTiming();
+  for(int i=0;i < 1000; i++)
   {
-    Neuron *n = new Neuron();
-    rnn->add(n);
+    rnn->createNeuron();
   }
   long time = stopTiming();
   printTime(time);
@@ -96,16 +110,20 @@ static long testAddNeurons()
 static long testAddSynapses()
 {
   cout << "RecurrentNeuralNetwork addSynapses (1M adds):\t";
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  startTiming();
-  for(int i=0;i < 1000; i++)
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+    RNN_VECTOR(rnn)
+#endif
+    startTiming();
+  for(int i=0;i < 100; i++)
   {
-    Neuron *n = new Neuron();
-    rnn->add(n);
-    for(int j=0;j < 1000; j++)
+    Neuron *n = rnn->createNeuron();
+    for(int j=0;j < 100; j++)
     {
       Synapse *s = new Synapse();
-      rnn->add(n,s);
+      rnn->createSynapse(n,n,0);
     }
   }
   long time = stopTiming();
@@ -124,18 +142,19 @@ void testLog4cppTimeConsumption()
   libRnnLogger.setPriority(log4cpp::Priority::FATAL);
 #endif // USE_LOG4CPP_OUTPUT
 
-  RecurrentNeuralNetwork *rnn = new RecurrentNeuralNetwork();
-  Neuron  *inputNeuron = new Neuron();
-  Neuron  *outputNeuron = new Neuron();
-  Synapse *woi = new Synapse(inputNeuron,  outputNeuron,  2.0);
-  Synapse *woo = new Synapse(outputNeuron, outputNeuron, -2.5);
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnn)
+#endif
+#ifdef USE_VECTOR
+  RNN_VECTOR(rnn)
+#endif
+  Neuron  *inputNeuron = rnn->createNeuron();
+  Neuron  *outputNeuron = rnn->createNeuron();
+  Synapse *woi = rnn->createSynapse(inputNeuron,  outputNeuron,  2.0);
+  Synapse *woo = rnn->createSynapse(outputNeuron, outputNeuron, -2.5);
 
   inputNeuron->setTransferfunction(&transferfunction_id);
   outputNeuron->setTransferfunction(&transferfunction_tanh);
-  rnn->add(inputNeuron);
-  rnn->add(outputNeuron);
-  rnn->add(woi);
-  rnn->add(woo);
 
   __REAL output = 0;
   __REAL bias   = -1;
@@ -162,10 +181,6 @@ void testLog4cppTimeConsumption()
   printTime(time);
 
   delete rnn;
-  delete inputNeuron;
-  delete outputNeuron;
-  delete woi;
-  delete woo;
 }
 #endif // TIME_CONSUMING
 
