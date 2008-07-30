@@ -34,13 +34,17 @@
 
 #include <librnn/defines.h>
 
-#include <librnn/Neuron.h>
-#include <librnn/Synapse.h>
-#include <librnn/RecurrentNeuralNetwork.h>
 #include <librnn/transferfunctions.h>
 
-#include <librnn/RNN_Vector.h>
+#include <librnn/Neuron.h>
+#include <librnn/Neuron_Matrix.h>
+#include <librnn/Neuron_Vector.h>
+
+#include <librnn/Synapse.h>
+
+#include <librnn/RecurrentNeuralNetwork.h>
 #include <librnn/RNN_Matrix.h>
+#include <librnn/RNN_Vector.h>
 
 #include <librnn/config.h>
 #include <librnn/macros.h>

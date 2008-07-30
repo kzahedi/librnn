@@ -24,7 +24,7 @@
 
 
 
-#include <librnn/Synapse.h>
+#include <librnn/librnn.h>
 
 
 

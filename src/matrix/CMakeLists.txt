@@ -27,17 +27,12 @@
 add_library(rnnMatrix SHARED Neuron.cpp RecurrentNeuralNetwork.cpp Synapse.cpp)
 include_directories("${PROJECT_SOURCE_DIR}/include/" "${PROJECT_BINARY_DIR}/include/")
 
-
-REMOVE_DEFINITIONS(-DUSE_VECTOR)
-ADD_DEFINITIONS(-DUSE_MATRIX)
-
 if(LIBRNN_USE_LOG4CPP_OUTPUT)
   target_link_libraries(rnnMatrix log4cpp)
   message("linking log4cpp to rnnMatrix")
   message("NOT linking log4cpp to test programs")
 else(LIBRNN_USE_LOG4CPP_OUTPUT)
-  message("NOT linking log4cpp to librnnMatrix")
+  message("NOT linking log4cpp to rnnMatrix")
 endif(LIBRNN_USE_LOG4CPP_OUTPUT)
-
 
 

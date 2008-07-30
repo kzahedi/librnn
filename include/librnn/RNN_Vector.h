@@ -95,14 +95,14 @@ namespace librnn
     private:
       // TODO for vector only
       /// vector of neurons in the network
-      __vNEURON           _neurons;
+      __vNEURON_VECTOR           _neurons;
       /// iterator for the neurons vector
-      __vNEURON_ITERATOR  _neuronIterator;
+      __vNEURON_VECTOR_ITERATOR  _neuronIterator;
 
       /// vector of synapses in the network
-      __vSYNAPSE          _synapses;
+      __vSYNAPSE                 _synapses;
       /// iterator for the synapses vector
-      __vSYNAPSE_ITERATOR _synapseIterator;
+      __vSYNAPSE_ITERATOR        _synapseIterator;
   };
 }
 #endif  //__RNN_VECTOR_H__

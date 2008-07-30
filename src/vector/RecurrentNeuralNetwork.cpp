@@ -93,7 +93,7 @@ int __RecurrentNeuralNetwork_VectorImplementation::getNeuronCount()
  */
 void __RecurrentNeuralNetwork_VectorImplementation::__add(Neuron *neuron)
 {
-  _neurons.push_back(neuron);
+  _neurons.push_back((__Neuron_VectorImplementation*)neuron);
 }
 
 
@@ -118,8 +118,8 @@ void __RecurrentNeuralNetwork_VectorImplementation::remove(Neuron *neuron)
   __FOR(_neuronIterator, _neurons)
   {
     //list = (*_neuronIterator)->cleanUpConnectionsTo(neuron);
-    Neuron *n = (*_neuronIterator);
-    n->cleanUpConnectionsTo(neuron);
+    __Neuron_VectorImplementation *n = (*_neuronIterator);
+    n->cleanUpConnectionsTo((__Neuron_VectorImplementation*)neuron);
   }
 
   __FOR(_synapseIterator, _synapses)
@@ -155,8 +155,8 @@ void __RecurrentNeuralNetwork_VectorImplementation::remove(Neuron *neuron)
  */
 void __RecurrentNeuralNetwork_VectorImplementation::__add(Synapse *synapse)
 {
-  Neuron *source      = synapse->source();
-  Neuron *destination = synapse->destination();
+  __Neuron_VectorImplementation *source      = (__Neuron_VectorImplementation*)synapse->source();
+  __Neuron_VectorImplementation *destination = (__Neuron_VectorImplementation*)synapse->destination();
 
   _synapses.push_back(synapse);
 
@@ -175,8 +175,8 @@ void __RecurrentNeuralNetwork_VectorImplementation::__add(Synapse *synapse)
 
 void __RecurrentNeuralNetwork_VectorImplementation::remove(Synapse *synapse)
 {
-  Neuron *source      = synapse->source();
-  Neuron *destination = synapse->destination();
+  __Neuron_VectorImplementation *source      = (__Neuron_VectorImplementation*)synapse->source();
+  __Neuron_VectorImplementation *destination = (__Neuron_VectorImplementation*)synapse->destination();
 
   source->remove(synapse);
   destination->remove(synapse);
@@ -232,23 +232,23 @@ void __RecurrentNeuralNetwork_VectorImplementation::updateOutput(Neuron *neuron)
 
 int __RecurrentNeuralNetwork_VectorImplementation::getSynapsesCount(Neuron *neuron)
 {
-  return neuron->getSynapsesCount();
+  return ((__Neuron_VectorImplementation*)neuron)->getSynapsesCount();
 }
 
 int __RecurrentNeuralNetwork_VectorImplementation::getAdjacentSynapsesCount(Neuron *neuron)
 {
-  return neuron->getAdjacentSynapsesCount();
+  return ((__Neuron_VectorImplementation*)neuron)->getAdjacentSynapsesCount();
 }
 
 int __RecurrentNeuralNetwork_VectorImplementation::getIncidentSynapsesCount(Neuron *neuron)
 {
-  return neuron->getIncidentSynapsesCount();
+  return ((__Neuron_VectorImplementation*)neuron)->getIncidentSynapsesCount();
 }
 
 
 Synapse*  __RecurrentNeuralNetwork_VectorImplementation::getSynapse(Neuron *neuron, int index)
 {
-  return neuron->getSynapse(index);
+  return ((__Neuron_VectorImplementation*)neuron)->getSynapse(index);
 }
 
 __REAL __RecurrentNeuralNetwork_VectorImplementation::getActivation(Neuron *neuron)
@@ -269,8 +269,8 @@ Neuron* __RecurrentNeuralNetwork_VectorImplementation::getNeuron(int index)
 Neuron* __RecurrentNeuralNetwork_VectorImplementation::createNeuron()
 {
   // TODO: needs refactoring
-  __add(new Neuron());
-  return _neurons[_neurons.size()-1];
+  __add(new __Neuron_VectorImplementation());
+  return (Neuron*)(_neurons[_neurons.size()-1]);
 }
 
 Synapse* __RecurrentNeuralNetwork_VectorImplementation::createSynapse(Neuron *source, Neuron *destination, __REAL strength)

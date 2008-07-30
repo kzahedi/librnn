@@ -24,7 +24,7 @@
 
 
 
-#include <librnn/Neuron.h>
+#include <librnn/librnn.h>
 
 #include <iostream>
 
@@ -34,19 +34,17 @@ using namespace librnn;
 
 
 
-Neuron::Neuron()
+__Neuron_VectorImplementation::__Neuron_VectorImplementation()
 {
   _transferfunction = NULL;
   _bias       = 0;
   _activation = 0;
   _output     = 0;
-  _id = numberOfNeurons;
-  numberOfNeurons++;
 }
 
 
 
-Neuron::~Neuron()
+__Neuron_VectorImplementation::~__Neuron_VectorImplementation()
 {
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.debug("This neuron is deleted");
@@ -55,14 +53,14 @@ Neuron::~Neuron()
 
 
 
-void Neuron::updateActivation()
+void __Neuron_VectorImplementation::updateActivation()
 {
   _activation = _bias;
   int i=0;
   double w = 0.0;
   double o = 0.0;
 #ifdef USE_LOG4CPP_OUTPUT
-  libRnnLogger.debug("Neuron::updateActivation activation before loop = %f",
+  libRnnLogger.debug("__Neuron_VectorImplementation::updateActivation activation before loop = %f",
       _activation);
 #endif
   for(_synapseIterator = _incident.begin();
@@ -73,7 +71,7 @@ void Neuron::updateActivation()
     _activation += w * o;
 #ifdef USE_LOG4CPP_OUTPUT
     libRnnLogger.debug(
-        "Neuron::updateActivation activation in loop = %f ( += %f * %f)",
+        "__Neuron_VectorImplementation::updateActivation activation in loop = %f ( += %f * %f)",
         _activation, w, o);
 #endif
   }
@@ -81,7 +79,7 @@ void Neuron::updateActivation()
 
 
 
-void Neuron::updateOutput() throw(NeuronException)
+void __Neuron_VectorImplementation::updateOutput() throw(NeuronException)
 {
   if(_transferfunction == NULL)
   {
@@ -92,70 +90,70 @@ void Neuron::updateOutput() throw(NeuronException)
 
 
 
-void Neuron::setTransferfunction(Transferfunction transferfunction)
+void __Neuron_VectorImplementation::setTransferfunction(Transferfunction transferfunction)
 {
   _transferfunction = transferfunction;
 }
 
 
 
-__REAL Neuron::getOutput()
+__REAL __Neuron_VectorImplementation::getOutput()
 {
   return _output;
 }
 
 
 
-__REAL Neuron::getActivation()
+__REAL __Neuron_VectorImplementation::getActivation()
 {
   return _activation;
 }
 
 
 
-void Neuron::setActivation(__REAL activation)
+void __Neuron_VectorImplementation::setActivation(__REAL activation)
 {
   _activation = activation;
 }
 
 
 
-void Neuron::add(Synapse *synapse)
+void __Neuron_VectorImplementation::add(Synapse *synapse)
 {
   _synapses.push_back(synapse);
 
-  if(synapse->source() == this)
+  if(synapse->source() == (Neuron*)this)
   {
-    addAdjacentSynapse(synapse);
+    __addAdjacentSynapse(synapse);
   }
 
-  if(synapse->destination() == this)
+  if(synapse->destination() == (Neuron*)this)
   {
-    addIncidentSynapse(synapse);
+    __addIncidentSynapse(synapse);
   }
 }
 
 
 
-void Neuron::remove(Synapse *synapse)
+void __Neuron_VectorImplementation::remove(Synapse *synapse)
 {
 
   __REMOVE_ELEMENT_FROM_VECTOR(_synapses, synapse, _synapseIterator)
 
-  if(synapse->source() == this)
+  if(synapse->source() == (Neuron*)this)
   {
-    delAdjacentSynapse(synapse);
+    __delAdjacentSynapse(synapse);
   }
 
-  if(synapse->destination() == this)
+  if(synapse->destination() == (Neuron*)this)
   {
-    delIncidentSynapse(synapse);
+    __delIncidentSynapse(synapse);
   }
 }
 
 
 
-void Neuron::delIncidentSynapse(Synapse *synapse)
+void __Neuron_VectorImplementation::__delIncidentSynapse(Synapse *synapse)
 {
 
   __REMOVE_ELEMENT_FROM_VECTOR(_incident, synapse, _synapseIterator);
@@ -164,73 +162,77 @@ void Neuron::delIncidentSynapse(Synapse *synapse)
 
 
 
-void Neuron::addIncidentSynapse(Synapse *synapse)
+void __Neuron_VectorImplementation::__addIncidentSynapse(Synapse *synapse)
 {
   _incident.push_back(synapse);
 }
 
 
 
-void Neuron::delAdjacentSynapse(Synapse *synapse)
+void __Neuron_VectorImplementation::__delAdjacentSynapse(Synapse *synapse)
 {
   __REMOVE_ELEMENT_FROM_VECTOR(_adjacent, synapse, _synapseIterator);
 }
 
 
 
-void Neuron::addAdjacentSynapse(Synapse *synapse)
+void __Neuron_VectorImplementation::__addAdjacentSynapse(Synapse *synapse)
 {
   _adjacent.push_back(synapse);
 }
 
 
 
-int Neuron::getSynapsesCount()
+int __Neuron_VectorImplementation::getSynapsesCount()
 {
   return _synapses.size();
 }
 
 
 
-int Neuron::getIncidentSynapsesCount()
+int __Neuron_VectorImplementation::getIncidentSynapsesCount()
 {
   return _incident.size();
 }
 
 
 
-int Neuron::getAdjacentSynapsesCount()
+int __Neuron_VectorImplementation::getAdjacentSynapsesCount()
 {
   return _adjacent.size();
 }
 
 
 
-Synapse* Neuron::getSynapse(int index)
+Synapse* __Neuron_VectorImplementation::getSynapse(int index)
 {
   return _synapses[index];
 }
 
 
 
-void Neuron::setBias(__REAL bias)
+void __Neuron_VectorImplementation::setBias(__REAL bias)
 {
   _bias = bias;
 }
 
 
 
-__REAL Neuron::getBias()
+__REAL __Neuron_VectorImplementation::getBias()
 {
   return _bias;
 }
 
 
+void __Neuron_VectorImplementation::cleanUpConnectionsTo(Neuron *neuron)
+{
+  cleanUpConnectionsTo((__Neuron_VectorImplementation*)neuron);
+}
 
-void Neuron::cleanUpConnectionsTo(Neuron *neuron)
+void __Neuron_VectorImplementation::cleanUpConnectionsTo(__Neuron_VectorImplementation *neuron)
 {
 #ifdef USE_LOG4CPP_OUTPUT
-      libRnnLogger.debug("Neuron::cleanUpConnectionsTo: START %d\n_synapses.size() = %d", _id, _synapses.size());
+      libRnnLogger.debug("__Neuron_VectorImplementation::cleanUpConnectionsTo: START %d\n_synapses.size() = %d", _id, _synapses.size());
 #endif
   bool inList = false;
 
@@ -241,8 +243,8 @@ void Neuron::cleanUpConnectionsTo(Neuron *neuron)
           (*_synapseIterator)->source()->getId(), (*_synapseIterator)->destination()->getId(),
           (*_synapseIterator)->status());
 #endif
-    if( (*_synapseIterator)->source() == neuron ||
-        (*_synapseIterator)->destination() == neuron)
+    if( (*_synapseIterator)->source() == (Neuron*)neuron ||
+        (*_synapseIterator)->destination() == (Neuron*)neuron)
     {
       (*_synapseIterator)->setStatus(__SYNAPSE_STATUS_DEAD);
 #ifdef USE_LOG4CPP_OUTPUT
@@ -342,13 +344,24 @@ void Neuron::cleanUpConnectionsTo(Neuron *neuron)
 
 
 #ifdef USE_LOG4CPP_OUTPUT
-      libRnnLogger.debug("Neuron::cleanUpConnectionsTo: END");
+      libRnnLogger.debug("__Neuron_VectorImplementation::cleanUpConnectionsTo: END");
 #endif
 }
 
 
 
-int Neuron::getId()
+int __Neuron_VectorImplementation::getId()
 {
   return _id;
 }
+
+void __Neuron_VectorImplementation::setOutput(__REAL output)
+{
+  _output = output;
+}
+
+__REAL __Neuron_MatrixImplementation::transfer(__REAL x) throw(NeuronException)
+{
+  return 0; // TODO: needs refactoring
+}
+

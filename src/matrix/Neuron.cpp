@@ -24,29 +24,23 @@
 
 
 
-#include <librnn/Neuron.h>
+#include <librnn/librnn.h>
 
 #include <iostream>
 
-
-
 using namespace librnn;
 
-
-
-Neuron::Neuron()
+__Neuron_MatrixImplementation::__Neuron_MatrixImplementation()
 {
   _transferfunction = NULL;
   _bias       = 0;
   _activation = 0;
   _output     = 0;
-  _id = numberOfNeurons;
-  numberOfNeurons++;
 }
 
 
 
-Neuron::~Neuron()
+__Neuron_MatrixImplementation::~__Neuron_MatrixImplementation()
 {
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.debug("This neuron is deleted");
@@ -55,12 +49,26 @@ Neuron::~Neuron()
 
 
 
-void Neuron::setTransferfunction(Transferfunction transferfunction)
+void __Neuron_MatrixImplementation::updateOutput() throw(NeuronException)
+{
+  // TODO: needs refactoring
+}
+
+
+
+void __Neuron_MatrixImplementation::updateActivation()
+{
+  // TODO: needs refactoring
+}
+
+
+
+void __Neuron_MatrixImplementation::setTransferfunction(Transferfunction transferfunction)
 {
   _transferfunction = transferfunction;
 }
 
-__REAL Neuron::transfer(__REAL x) throw(NeuronException)
+__REAL __Neuron_MatrixImplementation::transfer(__REAL x) throw(NeuronException)
 {
   if(_transferfunction == NULL)
   {
@@ -70,53 +78,55 @@ __REAL Neuron::transfer(__REAL x) throw(NeuronException)
 }
 
 
-void Neuron::setOutput(__REAL output)
+void __Neuron_MatrixImplementation::setOutput(__REAL output)
 {
   _output = output;
 }
 
 
-__REAL Neuron::getOutput()
+__REAL __Neuron_MatrixImplementation::getOutput()
 {
   return _output;
 }
 
 
 
-__REAL Neuron::getActivation()
+__REAL __Neuron_MatrixImplementation::getActivation()
 {
   return _activation;
 }
 
 
 
-void Neuron::setActivation(__REAL activation)
+void __Neuron_MatrixImplementation::setActivation(__REAL activation)
 {
   _activation = activation;
 }
 
 
 
-void Neuron::setBias(__REAL bias)
+void __Neuron_MatrixImplementation::setBias(__REAL bias)
 {
   _bias = bias;
 }
 
 
 
-__REAL Neuron::getBias()
+__REAL __Neuron_MatrixImplementation::getBias()
 {
   return _bias;
 }
 
 
 
-int Neuron::getId()
+int __Neuron_MatrixImplementation::getId()
 {
   return _id;
 }
 
-void Neuron::copy(Neuron *neuron)
+void __Neuron_MatrixImplementation::copy(__Neuron_MatrixImplementation *neuron)
 {
 
 }
+
+
