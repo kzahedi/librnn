@@ -29,9 +29,9 @@ REMOVE_DEFINITIONS(-DUSE_VECTOR)
 ADD_DEFINITIONS(-DUSE_MATRIX)
 
 IF(LIBRNN_USE_RUNTIME_TEST)
-  add_executable(librnnMatrixRuntimeTest ../librnnRuntimeTestMain.cpp ../timing.hpp)
+  add_executable(librnnMatrixRuntimeTest ../librnnRuntimeTestMain.cpp ../timing.hpp ../../include/librnn/Logger.hpp)
 ENDIF(LIBRNN_USE_RUNTIME_TEST)
-add_executable(librnnMatrixUnitTest    ../librnnUnitTestsMain.cpp   ../librnnUnitTests.cpp)
+add_executable(librnnMatrixUnitTest    ../librnnUnitTestsMain.cpp   ../librnnUnitTests.cpp ../../include/librnn/Logger.hpp)
 
 IF(LIBRNN_USE_RUNTIME_TEST)
   ADD_TEST(matrix-runtime  "${PROJECT_BINARY_DIR}/bin/librnnMatrixRuntimeTest")

@@ -30,9 +30,9 @@ link_directories("${PROJECT_BINARY_DIR}/lib/")
 ADD_DEFINITIONS(-DUSE_VECTOR)
 
 IF(LIBRNN_USE_RUNTIME_TEST)
-  add_executable(librnnRuntimeTest ../librnnRuntimeTestMain.cpp ../timing.hpp)
+  add_executable(librnnRuntimeTest ../librnnRuntimeTestMain.cpp ../timing.hpp ../../include/librnn/Logger.hpp)
 ENDIF(LIBRNN_USE_RUNTIME_TEST)
-add_executable(librnnUnitTest    ../librnnUnitTestsMain.cpp   ../librnnUnitTests.cpp)
+add_executable(librnnUnitTest    ../librnnUnitTestsMain.cpp   ../librnnUnitTests.cpp ../../include/librnn/Logger.hpp)
 
 IF(LIBRNN_USE_RUNTIME_TEST)
   ADD_TEST(vector-runtime  "${PROJECT_BINARY_DIR}/bin/librnnRuntimeTest")

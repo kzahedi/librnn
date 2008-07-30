@@ -105,7 +105,7 @@ namespace librnn
 
       virtual void update() = 0;
 
-      virtual void operator<<(RecurrentNeuralNetwork* rnn) = 0;
+      //virtual void operator<<(RecurrentNeuralNetwork* rnn) = 0;
 
     private:
       virtual void __add(Neuron *neuron) = 0;

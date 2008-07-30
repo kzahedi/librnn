@@ -68,4 +68,7 @@ namespace librnn
 
 static int numberOfNeurons = 0;
 
+#ifdef USE_LOG4CPP_OUTPUT
+#endif
+
 #endif //__DEFINES_H__

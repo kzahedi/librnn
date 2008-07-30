@@ -40,6 +40,7 @@ void librnnUnitTests::setUp()
 {
 #ifdef USE_LOG4CPP_OUTPUT
   initLogger();
+  libRnnLogger.setPriority(log4cpp::Priority::FATAL);
 #endif
 }
 

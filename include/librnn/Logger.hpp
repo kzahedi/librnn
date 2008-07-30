@@ -61,7 +61,6 @@ extern "C"
     libRnnLogger.setAppender(app2);
     libRnnLogger.addAppender(app);
     libRnnLogger.setPriority(log4cpp::Priority::FATAL);
-
   }
 }
 
