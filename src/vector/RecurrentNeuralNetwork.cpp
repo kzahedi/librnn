@@ -246,9 +246,14 @@ int __RecurrentNeuralNetwork_VectorImplementation::getIncidentSynapsesCount(Neur
 }
 
 
-Synapse*  __RecurrentNeuralNetwork_VectorImplementation::getSynapse(Neuron *neuron, int index)
+Synapse*  __RecurrentNeuralNetwork_VectorImplementation::getSynapse(Neuron *source, Neuron* destination)
 {
-  return ((__Neuron_VectorImplementation*)neuron)->getSynapse(index);
+  return ((__Neuron_VectorImplementation*)source)->getAdjacentSynapse(destination);
+}
+
+Synapse* __RecurrentNeuralNetwork_VectorImplementation::getSynapse(int sourceIndex, int destinationIndex)
+{
+  return NULL;
 }
 
 __REAL __RecurrentNeuralNetwork_VectorImplementation::getActivation(Neuron *neuron)
@@ -279,3 +284,28 @@ Synapse* __RecurrentNeuralNetwork_VectorImplementation::createSynapse(Neuron *so
   __add(new Synapse(source, destination, strength));
   return _synapses[_synapses.size()-1];
 }
+
+void __RecurrentNeuralNetwork_VectorImplementation::copy(RecurrentNeuralNetwork *source)
+{
+  this->__cleanUp();
+  this->createNeurons(source->getNeuronCount());
+}
+
+
+
+void __RecurrentNeuralNetwork_VectorImplementation::createNeurons(int numberOfNewNeurons)
+{
+  // TODO: needs refactoring
+  for(int i = 0; i < numberOfNewNeurons; i++)
+  {
+    this->createNeuron();
+  }
+}
+
+void __RecurrentNeuralNetwork_VectorImplementation::__cleanUp()
+{
+  _neurons.clear();
+  _synapses.clear();
+}
+
+

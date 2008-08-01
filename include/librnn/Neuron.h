@@ -68,6 +68,7 @@ namespace librnn
       virtual void updateOutput() throw(librnn::NeuronException) = 0;
 
       virtual void setTransferfunction(Transferfunction transferfunction) = 0;
+      virtual Transferfunction getTransferfunction() = 0;
       virtual __REAL transfer(__REAL x) throw(librnn::NeuronException) = 0;
 
       virtual void setActivation(__REAL activation) = 0;
@@ -81,6 +82,8 @@ namespace librnn
       virtual __REAL getBias() = 0;
 
       virtual int getId() = 0;
+      
+      virtual void copy(Neuron *source) = 0;
 
     private:
 

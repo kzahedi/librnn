@@ -431,10 +431,16 @@ int __RecurrentNeuralNetwork_MatrixImplementation::getIncidentSynapsesCount(Neur
 }
 
 
-Synapse*  __RecurrentNeuralNetwork_MatrixImplementation::getSynapse(Neuron *neuron, int index)
+Synapse*  __RecurrentNeuralNetwork_MatrixImplementation::getSynapse(Neuron *source, Neuron *destination)
 {
-  int dindex = __getNeuronIndex(neuron);
-  return _synapses[__synapseIndex(dindex,index)];
+  int sourceIndex = __getNeuronIndex(source);
+  int destinationIndex = __getNeuronIndex(destination);
+  return getSynapse(sourceIndex, destinationIndex);
+}
+
+Synapse* __RecurrentNeuralNetwork_MatrixImplementation::getSynapse(int sourceIndex, int destinationIndex)
+{
+  return _synapses[__synapseIndex(sourceIndex,destinationIndex)];
 }
 
 __REAL __RecurrentNeuralNetwork_MatrixImplementation::getActivation(Neuron *neuron)
@@ -514,6 +520,21 @@ Synapse* __RecurrentNeuralNetwork_MatrixImplementation::createSynapse(Neuron *so
   // TODO: needs refactoring
   __add(new Synapse(source, destination, strength));
   return _synapses[__synapseIndex(__getNeuronIndex(source), __getNeuronIndex(destination))];
+}
+
+void __RecurrentNeuralNetwork_MatrixImplementation::copy(RecurrentNeuralNetwork *source)
+{
+  this->__cleanUp();
+  this->createNeurons(source->getNeuronCount());
+}
+
+void __RecurrentNeuralNetwork_MatrixImplementation::createNeurons(int numberOfNewNeurons)
+{
+  // TODO: needs refactoring
+  for(int i = 0; i < numberOfNewNeurons; i++)
+  {
+    this->createNeuron();
+  }
 }
 
 
