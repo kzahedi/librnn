@@ -85,15 +85,12 @@ namespace librnn
      Neuron*   getNeuron(int index);
 
      void update();
+     void operator<<(RecurrentNeuralNetwork* rnn);
 
     private:
      void __add(Neuron *neuron);
      void __add(Synapse *synapse);
 
-
-
-    private:
-      // TODO for vector only
       /// vector of neurons in the network
       __vNEURON_VECTOR           _neurons;
       /// iterator for the neurons vector

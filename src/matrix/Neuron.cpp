@@ -124,9 +124,6 @@ int __Neuron_MatrixImplementation::getId()
   return _id;
 }
 
-void __Neuron_MatrixImplementation::copy(__Neuron_MatrixImplementation *neuron)
-{
 
-}
 
 

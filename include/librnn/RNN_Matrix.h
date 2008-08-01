@@ -85,6 +85,8 @@ namespace librnn
       Neuron*   getNeuron(int index);
 
       void update();
+      // copy function
+      void operator<<(RecurrentNeuralNetwork* rnn);
 
     private:
       void __add(Neuron *neuron);

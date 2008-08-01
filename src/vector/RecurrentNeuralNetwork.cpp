@@ -279,6 +279,3 @@ Synapse* __RecurrentNeuralNetwork_VectorImplementation::createSynapse(Neuron *so
   __add(new Synapse(source, destination, strength));
   return _synapses[_synapses.size()-1];
 }
-
-
-
