@@ -74,6 +74,13 @@ __REAL Synapse::strength()
 
 
 
+void Synapse::setStrength(__REAL strength) 
+{
+  _strength = strength;
+}
+
+
+
 void Synapse::init()
 {
   _strength = 0;

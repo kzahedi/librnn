@@ -102,6 +102,7 @@ namespace librnn
       virtual Synapse* createSynapse(Neuron* source, Neuron* destination, __REAL strength) = 0;
 
       virtual Synapse*  getSynapse(Neuron *source, Neuron *destination) = 0;
+      virtual Synapse*  getSynapse(int sourceIndex, int destinationIndex) = 0;
       virtual Neuron*   getNeuron(int index) = 0;
 
       virtual void update() = 0;
