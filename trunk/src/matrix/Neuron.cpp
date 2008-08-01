@@ -68,6 +68,11 @@ void __Neuron_MatrixImplementation::setTransferfunction(Transferfunction transfe
   _transferfunction = transferfunction;
 }
 
+Transferfunction __Neuron_MatrixImplementation::getTransferfunction()
+{
+  return _transferfunction;
+}
+
 __REAL __Neuron_MatrixImplementation::transfer(__REAL x) throw(NeuronException)
 {
   if(_transferfunction == NULL)
@@ -124,6 +129,13 @@ int __Neuron_MatrixImplementation::getId()
   return _id;
 }
 
-
+void __Neuron_MatrixImplementation::copy(Neuron* source)
+{
+  _bias = source->getBias();
+  _activation = source->getActivation();
+  _output = source->getOutput();
+  _id = source->getId();
+  setTransferfunction(source->getTransferfunction());
+}
 
 

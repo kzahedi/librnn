@@ -98,13 +98,19 @@ namespace librnn
       virtual int  getIncidentSynapsesCount(Neuron *neuron) = 0;
 
       virtual Neuron* createNeuron() = 0;
+      virtual void createNeurons(int numberOfNewNeurons) = 0;
       virtual Synapse* createSynapse(Neuron* source, Neuron* destination, __REAL strength) = 0;
 
-      virtual Synapse*  getSynapse(Neuron *neuron, int index) = 0;
+      virtual Synapse*  getSynapse(Neuron *source, Neuron *destination) = 0;
       virtual Neuron*   getNeuron(int index) = 0;
 
       virtual void update() = 0;
+
+      virtual void copy(RecurrentNeuralNetwork *source) = 0;
       
+    protected:
+      virtual void __cleanUp() = 0;
+
     private:
       virtual void __add(Neuron *neuron) = 0;
       virtual void __add(Synapse *synapse) = 0;

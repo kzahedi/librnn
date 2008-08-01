@@ -79,13 +79,19 @@ namespace librnn
      int  getIncidentSynapsesCount(Neuron *neuron);
 
      Neuron* createNeuron();
+     void createNeurons(int numberOfNewNeurons);
      Synapse* createSynapse(Neuron* source, Neuron* destination, __REAL strength);
 
-     Synapse*  getSynapse(Neuron *neuron, int index);
-     Neuron*   getNeuron(int index);
+     Synapse* getSynapse(Neuron *source, Neuron *destination);
+     Synapse* getSynapse(int sourceIndex, int destinationIndex);
+     Neuron*  getNeuron(int index);
 
      void update();
-     void operator<<(RecurrentNeuralNetwork* rnn);
+
+     void copy(RecurrentNeuralNetwork *source);
+
+    protected:
+      void __cleanUp();
 
     private:
      void __add(Neuron *neuron);

@@ -97,6 +97,13 @@ void __Neuron_VectorImplementation::setTransferfunction(Transferfunction transfe
 
 
 
+Transferfunction __Neuron_VectorImplementation::getTransferfunction()
+{
+  return _transferfunction;
+}
+
+
+
 __REAL __Neuron_VectorImplementation::getOutput()
 {
   return _output;
@@ -366,4 +373,41 @@ __REAL __Neuron_VectorImplementation::transfer(__REAL x) throw(NeuronException)
 }
 
 
+void __Neuron_VectorImplementation::copy(Neuron* source)
+{
+  _bias = source->getBias();
+  _activation = source->getActivation();
+  _output = source->getOutput();
+  _id = source->getId();
+  setTransferfunction(source->getTransferfunction());
+}
+
+
+
+Synapse* __Neuron_VectorImplementation::getAdjacentSynapse(Neuron *destination)
+{
+  __FOR(_synapseIterator, _adjacent)
+  {
+    if((*_synapseIterator)->destination() == destination)
+    {
+      return (*_synapseIterator);
+    }
+  }
+  return NULL;
+}
+
+
+
+Synapse* __Neuron_VectorImplementation::getIncidentSynapse(Neuron *source)
+{
+  __FOR(_synapseIterator, _incident)
+  {
+    if((*_synapseIterator)->source() == source)
+    {
+      return (*_synapseIterator);
+    }
+  }
+  return NULL;
+
+}
 
