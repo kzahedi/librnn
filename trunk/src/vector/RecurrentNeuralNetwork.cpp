@@ -289,6 +289,17 @@ void __RecurrentNeuralNetwork_VectorImplementation::copy(RecurrentNeuralNetwork 
 {
   this->__cleanUp();
   this->createNeurons(source->getNeuronCount());
+  for(int i = 0; i < source->getNeuronCount(); i++)
+  {
+    for(int j = 0; j < source->getNeuronCount(); j++)
+    {
+      Synapse *s = source->getSynapse(i,j);
+      if(s != NULL)
+      {
+        this->createSynapse(_neurons[i],_neurons[j], s->strength());
+      }
+    }
+  }
 }
 
 
@@ -300,6 +311,7 @@ void __RecurrentNeuralNetwork_VectorImplementation::createNeurons(int numberOfNe
   {
     this->createNeuron();
   }
+
 }
 
 void __RecurrentNeuralNetwork_VectorImplementation::__cleanUp()

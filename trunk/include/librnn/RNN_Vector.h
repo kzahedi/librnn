@@ -82,8 +82,8 @@ namespace librnn
      void createNeurons(int numberOfNewNeurons);
      Synapse* createSynapse(Neuron* source, Neuron* destination, __REAL strength);
 
-     Synapse* getSynapse(Neuron *source, Neuron *destination);
      Synapse* getSynapse(int sourceIndex, int destinationIndex);
+     Synapse* getSynapse(Neuron *source, Neuron *destination);
      Neuron*  getNeuron(int index);
 
      void update();

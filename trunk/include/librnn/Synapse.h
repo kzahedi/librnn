@@ -50,6 +50,7 @@ namespace librnn
       int status();
 
       __REAL strength();
+      void setStrength(__REAL strength);
 
     private:
       void init();
