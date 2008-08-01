@@ -360,8 +360,10 @@ void __Neuron_VectorImplementation::setOutput(__REAL output)
   _output = output;
 }
 
-__REAL __Neuron_MatrixImplementation::transfer(__REAL x) throw(NeuronException)
+__REAL __Neuron_VectorImplementation::transfer(__REAL x) throw(NeuronException)
 {
   return 0; // TODO: needs refactoring
 }
+
+
 
