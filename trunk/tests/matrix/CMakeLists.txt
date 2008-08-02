@@ -41,7 +41,7 @@ ADD_TEST(matrix-unittest "${PROJECT_BINARY_DIR}/bin/librnnMatrixUnitTest")
 IF(LIBRNN_USE_RUNTIME_TEST)
   target_link_libraries(librnnMatrixRuntimeTest rnnMatrix)
 ENDIF(LIBRNN_USE_RUNTIME_TEST)
-target_link_libraries(librnnMatrixUnitTest    rnnMatrix  cppunit)
+target_link_libraries(librnnMatrixUnitTest    rnnVector rnnMatrix  cppunit)
 
 IF(LIBRNN_USE_LOG4CPP_OUTPUT)
   IF(LIBRNN_USE_RUNTIME_TEST)

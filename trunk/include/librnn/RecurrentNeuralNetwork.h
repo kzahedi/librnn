@@ -89,7 +89,6 @@ namespace librnn
       virtual __REAL getActivation(Neuron *neuron) = 0;
       virtual __REAL getOutput(Neuron *neuron) = 0;
 
-
       virtual int  getSynapsesCount() = 0;
       virtual int  countSynapses() = 0;
 

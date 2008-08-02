@@ -253,7 +253,7 @@ Synapse*  __RecurrentNeuralNetwork_VectorImplementation::getSynapse(Neuron *sour
 
 Synapse* __RecurrentNeuralNetwork_VectorImplementation::getSynapse(int sourceIndex, int destinationIndex)
 {
-  return NULL;
+  return ((__Neuron_VectorImplementation*)_neurons[sourceIndex])->getAdjacentSynapse(_neurons[destinationIndex]);
 }
 
 __REAL __RecurrentNeuralNetwork_VectorImplementation::getActivation(Neuron *neuron)
@@ -291,12 +291,14 @@ void __RecurrentNeuralNetwork_VectorImplementation::copy(RecurrentNeuralNetwork 
   this->createNeurons(source->getNeuronCount());
   for(int i = 0; i < source->getNeuronCount(); i++)
   {
+    _neurons[i]->copy(source->getNeuron(i));
     for(int j = 0; j < source->getNeuronCount(); j++)
     {
       Synapse *s = source->getSynapse(i,j);
       if(s != NULL)
       {
-        this->createSynapse(_neurons[i],_neurons[j], s->strength());
+        Synapse *newSynapse = this->createSynapse(_neurons[i],_neurons[j], s->strength());
+        newSynapse->copy(s);
       }
     }
   }

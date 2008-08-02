@@ -113,3 +113,9 @@ int Synapse::status()
 {
   return _status;
 }
+
+void Synapse::copy(Synapse *source)
+{
+  _status = source->status();
+  _strength = source->strength();
+}

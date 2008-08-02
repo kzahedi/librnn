@@ -44,6 +44,7 @@ class librnnUnitTests : public CppUnit::TestFixture
 #ifdef TIME_CONSUMING_TEST
   CPPUNIT_TEST(testSmallNeuroModule);
 #endif // TIME_CONSUMING
+  CPPUNIT_TEST(testRecurrentNeuralNetworkConversion);
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -61,6 +62,7 @@ public:
   void testAddingAndDeletingOfSynapses();
   void testAddingAndDeletingOfNeurons();
   void testAddingAndDeletingOfNeuronsWithNoSynapses();
+  void testRecurrentNeuralNetworkConversion();
 };
 
 #endif // __LIBRNN_TEST_H__

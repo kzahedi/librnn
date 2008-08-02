@@ -528,12 +528,13 @@ void __RecurrentNeuralNetwork_MatrixImplementation::copy(RecurrentNeuralNetwork 
   this->createNeurons(source->getNeuronCount());
   for(int i = 0; i < source->getNeuronCount(); i++)
   {
+    _neurons[i]->copy(source->getNeuron(i));
     for(int j = 0; j < source->getNeuronCount(); j++)
     {
       Synapse *s = source->getSynapse(i,j);
       if(s != NULL)
       {
-        _synapses[__synapseIndex(i,j)]->setStrength(s->strength());
+        _synapses[__synapseIndex(i,j)]->copy(s);
       }
     }
   }
