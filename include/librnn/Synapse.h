@@ -52,6 +52,8 @@ namespace librnn
       __REAL strength();
       void setStrength(__REAL strength);
 
+      void copy(Synapse *source);
+
     private:
       void init();
 

@@ -530,3 +530,60 @@ void librnnUnitTests::testAddingAndDeletingOfNeurons()
 
   CPPUNIT_ASSERT_EQUAL(3, rnn->getSynapsesCount(n5));
 }
+
+void librnnUnitTests::testRecurrentNeuralNetworkConversion()
+{
+  RNN_MATRIX(rnnMatrix);
+  RNN_VECTOR(rnnVector);
+
+#ifdef USE_VECTOR
+  Neuron  *m1 = rnnMatrix->createNeuron();
+  Neuron  *m2 = rnnMatrix->createNeuron();
+  Synapse *m12 = rnnMatrix->createSynapse(m1,m2,1.0);
+  Synapse *m22 = rnnMatrix->createSynapse(m2,m2,-1.0);
+  m1->setTransferfunction(transferfunction_id);
+  m2->setTransferfunction(transferfunction_tanh);
+
+  rnnVector->copy(rnnMatrix);
+  Neuron *v1 = rnnVector->getNeuron(0);
+  Neuron *v2 = rnnVector->getNeuron(1);
+#endif // USE_VECTOR
+
+#ifdef USE_MATRIX
+  Neuron  *v1 = rnnVector->createNeuron();
+  Neuron  *v2 = rnnVector->createNeuron();
+  Synapse *v12 = rnnVector->createSynapse(v1,v2,1.0);
+  Synapse *v22 = rnnVector->createSynapse(v2,v2,-1.0);
+  v1->setTransferfunction(transferfunction_id);
+  v2->setTransferfunction(transferfunction_tanh);
+
+  rnnMatrix->copy(rnnVector);
+  Neuron *m1 = rnnMatrix->getNeuron(0);
+  Neuron *m2 = rnnMatrix->getNeuron(1);
+#endif // USE_MATRIX
+
+
+  __REAL output = 0;
+  __REAL bias   = -1;
+  __REAL delta  = 2.0 / 1000.0;
+
+  // mini bifurcation diagram test
+  for(int i=0; i < 1000; i++)
+  {
+    m1->setBias(bias);
+    v1->setBias(bias);
+    rnnMatrix->updateActivation(m1);
+    rnnMatrix->updateOutput(m1);
+    rnnVector->updateActivation(v1);
+    rnnVector->updateOutput(v1);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(v1->getOutput(), m1->getOutput(), 0.000001);
+    for(int j=0; j < 100; j++)
+    {
+      rnnVector->update();
+      rnnMatrix->update();
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(v2->getOutput(), m2->getOutput(), 0.000001);
+    }
+    bias += delta;
+  }
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(v2->getOutput(), m2->getOutput(), 0.000001);
+}

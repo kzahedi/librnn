@@ -42,7 +42,7 @@ ADD_TEST(vector-unittest "${PROJECT_BINARY_DIR}/bin/librnnUnitTest")
 IF(LIBRNN_USE_RUNTIME_TEST)
   target_link_libraries(librnnRuntimeTest rnnVector)
 ENDIF(LIBRNN_USE_RUNTIME_TEST)
-target_link_libraries(librnnUnitTest    rnnVector cppunit)
+target_link_libraries(librnnUnitTest    rnnVector rnnMatrix cppunit)
 
 IF(LIBRNN_USE_LOG4CPP_OUTPUT)
   IF(LIBRNN_USE_RUNTIME_TEST)
