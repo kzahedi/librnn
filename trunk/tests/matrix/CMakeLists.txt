@@ -39,7 +39,7 @@ ENDIF(LIBRNN_USE_RUNTIME_TEST)
 ADD_TEST(matrix-unittest "${PROJECT_BINARY_DIR}/bin/librnnMatrixUnitTest")
 
 IF(LIBRNN_USE_RUNTIME_TEST)
-  target_link_libraries(librnnMatrixRuntimeTest rnnMatrix)
+  target_link_libraries(librnnMatrixRuntimeTest rnnMatrix rnnVector)
 ENDIF(LIBRNN_USE_RUNTIME_TEST)
 target_link_libraries(librnnMatrixUnitTest    rnnVector rnnMatrix  cppunit)
 
