@@ -68,10 +68,8 @@ README.txt
 3. Known issues
 
 	3.1 General
-		- Currently the chosen implementation has to be determined at compile time. 
 		- No install routine (make install). Will be available with version 0.2
-    - With Log4cpp enabled, the unittest take forever. The reason is currently
-      unknown.
+		- With Log4cpp enabled, the unittest take forever. The reason is currently unknown.
 
 	3.2 WinXP
 		- WinXP: In order for the testcases to run, the libraries must be copied manually

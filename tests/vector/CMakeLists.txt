@@ -40,7 +40,7 @@ ENDIF(LIBRNN_USE_RUNTIME_TEST)
 ADD_TEST(vector-unittest "${PROJECT_BINARY_DIR}/bin/librnnUnitTest")
 
 IF(LIBRNN_USE_RUNTIME_TEST)
-  target_link_libraries(librnnRuntimeTest rnnVector)
+  target_link_libraries(librnnRuntimeTest rnnVector rnnMatrix)
 ENDIF(LIBRNN_USE_RUNTIME_TEST)
 target_link_libraries(librnnUnitTest    rnnVector rnnMatrix cppunit)
 

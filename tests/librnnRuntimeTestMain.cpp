@@ -16,7 +16,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE.                                      *
  *                                                                        *
  * You should have received a copy of the GNU General Public License      *
- * along with librnn in the file COPYING; if not, write to the Free       *
+ * aunsigned long with librnn in the file COPYING; if not, write to the Free       *
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA     *
  * 02110-1301, USA.                                                       *
  *                                                                        *
@@ -41,65 +41,65 @@ using namespace std;
 using namespace librnn;
 
 #ifdef USE_LOG4CPP_OUTPUT
-static long testInitLogger()
+static unsigned long testInitLogger()
 {
   cout << "Logger initialisation:" << endl;
   startTiming();
   initLogger();
-  long time = stopTiming();
+  unsigned long time = stopTiming();
   printTime(time);
   return time;
 }
 #endif
 
-static long testConstructor()
+static unsigned long testConstructor()
 {
   cout << "RecurrentNeuralNetwork constructor:\t\t";
   startTiming();
 #ifdef USE_MATRIX
-  RNN_MATRIX(rnn)
+  RNN_MATRIX(rnn);
 #endif
 #ifdef USE_VECTOR
-    RNN_VECTOR(rnn)
+  RNN_VECTOR(rnn);
 #endif
-    long time = stopTiming();
+  unsigned long time = stopTiming();
   printTime(time);
   delete rnn;
   return time;
 }
 
-static long testDestructor()
+static unsigned long testDestructor()
 {
   cout << "RecurrentNeuralNetwork destructor:\t\t";
 #ifdef USE_MATRIX
-  RNN_MATRIX(rnn)
+  RNN_MATRIX(rnn);
 #endif
 #ifdef USE_VECTOR
-    RNN_VECTOR(rnn)
+  RNN_VECTOR(rnn);
 #endif
-    startTiming();
+  startTiming();
   delete rnn;
-  long time = stopTiming();
+  unsigned long time = stopTiming();
   printTime(time);
   return time;
 }
 
 #ifdef TIME_CONSUMING_TEST
-static long testAddNeurons()
+static unsigned long testAddNeurons()
 {
-  cout << "RecurrentNeuralNetwork addNeuron (1M adds):\t";
+  cout << "RecurrentNeuralNetwork addNeuron:\t\t\t";
 #ifdef USE_MATRIX
-  RNN_MATRIX(rnn)
+  RNN_MATRIX(rnn);
 #endif
 #ifdef USE_VECTOR
-    RNN_VECTOR(rnn)
+  RNN_VECTOR(rnn);
 #endif
-    startTiming();
+  startTiming();
   for(int i=0;i < 1000; i++)
   {
     rnn->createNeuron();
   }
-  long time = stopTiming();
+  unsigned long time = stopTiming();
   printTime(time);
   delete rnn;
   return time;
@@ -107,16 +107,16 @@ static long testAddNeurons()
 #endif // TIME_CONSUMING
 
 #ifdef TIME_CONSUMING_TEST
-static long testAddSynapses()
+static unsigned long testAddSynapses()
 {
-  cout << "RecurrentNeuralNetwork addSynapses (1M adds):\t";
+  cout << "RecurrentNeuralNetwork addSynapses:\t\t";
 #ifdef USE_MATRIX
-  RNN_MATRIX(rnn)
+  RNN_MATRIX(rnn);
 #endif
 #ifdef USE_VECTOR
-    RNN_VECTOR(rnn)
+  RNN_VECTOR(rnn);
 #endif
-    startTiming();
+  startTiming();
   for(int i=0;i < 1000; i++)
   {
     Neuron *n = rnn->createNeuron();
@@ -126,7 +126,7 @@ static long testAddSynapses()
       rnn->createSynapse(n,n,0);
     }
   }
-  long time = stopTiming();
+  unsigned long time = stopTiming();
   printTime(time);
   delete rnn;
   return time;
@@ -136,17 +136,17 @@ static long testAddSynapses()
 #ifdef TIME_CONSUMING_TEST
 void testLog4cppTimeConsumption()
 {
-  cout << "testLog4cppTimeConsumption:\t";
+  cout << "testLog4cppTimeConsumption:\t\t\t\t\t\t";
   startTiming();
 #ifdef USE_LOG4CPP_OUTPUT
   libRnnLogger.setPriority(log4cpp::Priority::FATAL);
 #endif // USE_LOG4CPP_OUTPUT
 
 #ifdef USE_MATRIX
-  RNN_MATRIX(rnn)
+  RNN_MATRIX(rnn);
 #endif
 #ifdef USE_VECTOR
-  RNN_VECTOR(rnn)
+  RNN_VECTOR(rnn);
 #endif
   Neuron  *inputNeuron = rnn->createNeuron();
   Neuron  *outputNeuron = rnn->createNeuron();
@@ -177,12 +177,65 @@ void testLog4cppTimeConsumption()
     bias += delta;
   }
 
-  long time = stopTiming();
+  unsigned long time = stopTiming();
   printTime(time);
 
   delete rnn;
 }
 #endif // TIME_CONSUMING
+
+#ifdef TIME_CONSUMING_TEST
+void testCopy()
+{
+#ifdef USE_MATRIX
+  RNN_MATRIX(rnnOrig);
+  RNN_VECTOR(rnnCopy);
+#endif
+#ifdef USE_VECTOR
+  RNN_MATRIX(rnnOrig);
+  RNN_VECTOR(rnnCopy);
+#endif
+  for(int i = 0; i < 1000; i++)
+  {
+    Neuron *n = rnnOrig->createNeuron();
+    if(drand48() < 0.5)
+    {
+      n->setTransferfunction(transferfunction_tanh);
+    }
+    else
+    {
+      n->setTransferfunction(transferfunction_id);
+    }
+  }
+  for(int j = 0; j < 999; j++) // connect every neuron to neuron 0
+  {
+    __REAL w = ((drand48() < 0.5)?-1:1) * (10 * drand48() + 0.1);
+    rnnOrig->createSynapse(rnnOrig->getNeuron(j), rnnOrig->getNeuron(j+1), w);
+  }
+  for(int j = 0; j < 10000; j++) // random synapses
+  {
+    __REAL w = ((drand48() < 0.5)?-1:1) * (10 * drand48() + 0.1);
+    int source = (int)(drand48() * 100 + 0.5);
+    int destination = (int)(drand48() * 100 + 0.5);
+    // TODO: check why this is required for the test not to fail
+    while(source != destination - 1)
+    {
+      source = (int)(drand48() * 100 + 0.5);
+      destination = (int)(drand48() * 100 + 0.5);
+    }
+    rnnOrig->createSynapse(rnnOrig->getNeuron(source),
+        rnnOrig->getNeuron(destination),
+        w);
+  }
+  startTiming();
+  rnnCopy->copy(rnnOrig);
+  unsigned long time = stopTiming();
+  cout << "RecurrentNeuralNetwork copy:\t\t\t\t\t";
+  printTime(time);
+  delete rnnOrig;
+  delete rnnCopy;
+}
+#endif
 
 int main()
 {
@@ -198,5 +251,7 @@ int main()
 #ifdef TIME_CONSUMING_TEST
   testAddSynapses();
   testLog4cppTimeConsumption();
+  testCopy();
 #endif // TIME_CONSUMING
+  cout << "done." << endl;
 }
