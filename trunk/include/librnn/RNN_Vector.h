@@ -33,8 +33,7 @@
 #include <iostream>
 
 #define RNN_VECTOR(a) \
-  __RecurrentNeuralNetwork_VectorImplementation *a = \
-  new __RecurrentNeuralNetwork_VectorImplementation();
+  a = new __RecurrentNeuralNetwork_VectorImplementation();
 
 using namespace librnn;
 using namespace std;
@@ -82,8 +81,10 @@ namespace librnn
      void createNeurons(int numberOfNewNeurons);
      Synapse* createSynapse(Neuron* source, Neuron* destination, __REAL strength);
 
+     // TODO: create [source, destination] operators
      Synapse* getSynapse(int sourceIndex, int destinationIndex);
      Synapse* getSynapse(Neuron *source, Neuron *destination);
+     // TODO: create [index] operator
      Neuron*  getNeuron(int index);
 
      void update();
