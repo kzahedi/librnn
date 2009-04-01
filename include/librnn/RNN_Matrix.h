@@ -33,8 +33,7 @@
 #include <iostream>
 
 #define RNN_MATRIX(a) \
-  __RecurrentNeuralNetwork_MatrixImplementation *a = \
-  new __RecurrentNeuralNetwork_MatrixImplementation();
+  a = new __RecurrentNeuralNetwork_MatrixImplementation();
 
 using namespace librnn;
 using namespace std;
